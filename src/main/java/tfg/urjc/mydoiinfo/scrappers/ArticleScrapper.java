@@ -2,6 +2,8 @@ package tfg.urjc.mydoiinfo.scrappers;
 
 import org.jsoup.Connection.*;
 import org.jsoup.Jsoup;
+import tfg.urjc.mydoiinfo.domain.ArticleInfo;
+
 import java.io.IOException;
 
 public abstract class ArticleScrapper {
@@ -21,10 +23,10 @@ public abstract class ArticleScrapper {
         try {
             response = Jsoup.connect(url).userAgent("Mozilla/5.0").timeout(100000).ignoreHttpErrors(true).execute();
         } catch (IOException ex) {
-            System.out.println("Excepción al obtener el código de estado: " + ex.getMessage());
+            System.out.println("Exception obtaining the status code: " + ex.getMessage());
         }
         return response.statusCode();
     }
 
-    public abstract void getArticleInfoFromDOI(String DOI);
+    public abstract ArticleInfo getArticleInfoFromDOI(String DOI);
 }

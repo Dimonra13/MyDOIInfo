@@ -15,7 +15,7 @@ public abstract class JSOUPArticleScrapper extends ArticleScrapper {
         try {
             document = Jsoup.connect(url).userAgent("Mozilla/5.0").timeout(100000).get();
         } catch (IOException ex) {
-            System.out.println("Excepción al obtener la página web" + ex.getMessage());
+            System.out.println("Exception obtaining the web page: " + ex.getMessage());
         }
         return document;
     }

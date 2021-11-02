@@ -2,10 +2,7 @@ package tfg.urjc.mydoiinfo.controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.servlet.ModelAndView;
-import tfg.urjc.mydoiinfo.scrappers.*;
 import tfg.urjc.mydoiinfo.services.ArticleScrapperService;
 
 import java.util.Arrays;
@@ -26,6 +23,6 @@ public class testController {
 
     @RequestMapping("/")
     public void test() {
-        articleScrapperService.getArticleInfoFromDOIList(Arrays.asList(DOIList));
+        System.out.println(articleScrapperService.getArticleInfoFromDOIList(Arrays.asList(DOIList)).toString());
     }
 }
