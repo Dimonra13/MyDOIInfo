@@ -1,6 +1,5 @@
 package tfg.urjc.mydoiinfo.scrappers;
 
-import org.jsoup.select.Elements;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.phantomjs.PhantomJSDriver;

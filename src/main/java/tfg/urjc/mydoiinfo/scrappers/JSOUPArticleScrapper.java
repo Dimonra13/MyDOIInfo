@@ -2,7 +2,6 @@ package tfg.urjc.mydoiinfo.scrappers;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
-import java.io.IOException;
 
 public abstract class JSOUPArticleScrapper extends ArticleScrapper {
 
@@ -14,7 +13,7 @@ public abstract class JSOUPArticleScrapper extends ArticleScrapper {
         Document document = null;
         try {
             document = Jsoup.connect(url).userAgent("Mozilla/5.0").timeout(100000).get();
-        } catch (IOException ex) {
+        } catch (Exception ex) {
             System.out.println("Exception obtaining the web page: " + ex.getMessage());
         }
         return document;

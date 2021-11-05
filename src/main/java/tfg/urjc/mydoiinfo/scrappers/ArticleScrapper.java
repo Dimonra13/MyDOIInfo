@@ -4,8 +4,6 @@ import org.jsoup.Connection.*;
 import org.jsoup.Jsoup;
 import tfg.urjc.mydoiinfo.domain.ArticleInfo;
 
-import java.io.IOException;
-
 public abstract class ArticleScrapper {
 
     private final String journalPrefix;
