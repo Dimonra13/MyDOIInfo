@@ -3,12 +3,12 @@ package tfg.urjc.mydoiinfo.scrappersTests;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 import tfg.urjc.mydoiinfo.domain.ArticleInfo;
-import tfg.urjc.mydoiinfo.scrappers.ACMArticleScrapper;
+import tfg.urjc.mydoiinfo.scrappers.IEEEArticleScrapper;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Arrays;
 import java.util.Date;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Locale;
 
@@ -16,19 +16,19 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
 
 @SpringBootTest
-public class ACMArticleScrapperTests {
+public class IEEEArticleScrapperTests {
 
-    private String journalPrefix = "10.1145";
+    private String journalPrefix = "10.1126";
 
     @Test
     public void getArticleInfoFromMalformedURLTest(){
-        //GIVEN: The ACMArticleScrapper
-        ACMArticleScrapper acmArticleScrapper = new ACMArticleScrapper(journalPrefix);
+        //GIVEN: The IEEEArticleScrapper
+        IEEEArticleScrapper ieeeArticleScrapper = new IEEEArticleScrapper(journalPrefix);
         //AND: A fake url
         String malformedURL = "malformed";
 
         //WHEN: The getArticleInfoFromDOI is called with the malformed URL
-        ArticleInfo output = acmArticleScrapper.getArticleInfoFromDOI(malformedURL);
+        ArticleInfo output = ieeeArticleScrapper.getArticleInfoFromDOI(malformedURL);
 
         //THEN: The output must be null
         assertNull(output);
@@ -36,13 +36,13 @@ public class ACMArticleScrapperTests {
 
     @Test
     public void getArticleInfoFromErroneousURLTest(){
-        //GIVEN: The ACMArticleScrapper
-        ACMArticleScrapper acmArticleScrapper = new ACMArticleScrapper(journalPrefix);
+        //GIVEN: The IEEEArticleScrapper
+        IEEEArticleScrapper ieeeArticleScrapper = new IEEEArticleScrapper(journalPrefix);
         //AND: A erroneous url
         String erroneousURL = "http://www.erroneousURL.com";
 
         //WHEN: The getArticleInfoFromDOI is called with the erroneous URL
-        ArticleInfo output = acmArticleScrapper.getArticleInfoFromDOI(erroneousURL);
+        ArticleInfo output = ieeeArticleScrapper.getArticleInfoFromDOI(erroneousURL);
 
         //THEN: The output must be null
         assertNull(output);
@@ -50,13 +50,13 @@ public class ACMArticleScrapperTests {
 
     @Test
     public void getArticleInfoFromURLWithStatusCodeDistinctTo200Test(){
-        //GIVEN: The ACMArticleScrapper
-        ACMArticleScrapper acmArticleScrapper = new ACMArticleScrapper(journalPrefix);
+        //GIVEN: The IEEEArticleScrapper
+        IEEEArticleScrapper ieeeArticleScrapper = new IEEEArticleScrapper(journalPrefix);
         //AND: A url that returns 404 Not Found error
         String url404 = "http://www.google.com/erroneousURL";
 
         //WHEN: The getArticleInfoFromDOI is called with the 404 error url
-        ArticleInfo output = acmArticleScrapper.getArticleInfoFromDOI(url404);
+        ArticleInfo output = ieeeArticleScrapper.getArticleInfoFromDOI(url404);
 
         //THEN: The output must be null
         assertNull(output);
@@ -64,25 +64,24 @@ public class ACMArticleScrapperTests {
 
     @Test
     public void getArticleInfoFromCorrectURLTest(){
-        //GIVEN: The ACMArticleScrapper
-        ACMArticleScrapper acmArticleScrapper = new ACMArticleScrapper(journalPrefix);
-        //AND: A correct url from ACM
-        String correctACM = "https://doi.org/10.1145/3488554";
+        //GIVEN: The IEEEArticleScrapper
+        IEEEArticleScrapper ieeeArticleScrapper = new IEEEArticleScrapper(journalPrefix);
+        //AND: A correct url from IEEE
+        String correctIEEE = "https://doi.org/10.1109/LCA.2021.3081752";
         //AND: The expected output (an ArticleInfo object with the correct information)
         Date date = null;
         SimpleDateFormat format = new SimpleDateFormat("dd MMMM yyyy", Locale.US);
         try {
-            date = format.parse("25 October 2021");
+            date = format.parse("19 May 2021");
         } catch (ParseException exception) {
             System.err.println(exception);
         }
-        List<String> authors = new LinkedList<>();
-        authors.add("Moshe Y. Vardi");
-        ArticleInfo expectedOutput = new ArticleInfo("The paradox of choice in computing-research conferences","https://doi.org/10.1145/3488554",
-                authors,"Communications of the ACM","Volume 64, pp 5",date,"25 October 2021");
+        List<String> authors = Arrays.asList(new String[]{"Yongjoo Jang", "Sejin Kim", "Daehoon Kim", "Sungjin Lee", "Jaeha Kung"});
+        ArticleInfo expectedOutput = new ArticleInfo("Deep Partitioned Training From Near-Storage Computing to DNN Accelerators","https://doi.org/10.1109/LCA.2021.3081752",
+                authors,"IEEE Computer Architecture Letters","Volume: 20, Issue: 1, pp 70 - 73",date,"19 May 2021");
 
-        //WHEN: The getArticleInfoFromDOI is called with the correct ACM url
-        ArticleInfo output = acmArticleScrapper.getArticleInfoFromDOI(correctACM);
+        //WHEN: The getArticleInfoFromDOI is called with the correct IEEE url
+        ArticleInfo output = ieeeArticleScrapper.getArticleInfoFromDOI(correctIEEE);
 
         //THEN: The output must the same as the expectedOutput
         assertEquals(expectedOutput,output);
