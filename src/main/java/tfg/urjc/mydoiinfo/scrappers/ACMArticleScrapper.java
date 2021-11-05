@@ -1,6 +1,5 @@
 package tfg.urjc.mydoiinfo.scrappers;
 
-import org.jsoup.nodes.DataNode;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;

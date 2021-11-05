@@ -22,10 +22,14 @@ public abstract class ArticleScrapper {
         Response response = null;
         try {
             response = Jsoup.connect(url).userAgent("Mozilla/5.0").timeout(100000).ignoreHttpErrors(true).execute();
-        } catch (IOException ex) {
-            System.out.println("Exception obtaining the status code: " + ex.getMessage());
+        } catch (Exception ex) {
+            System.err.println("Exception obtaining the status code: " + ex.getMessage());
+            return 400;
         }
-        return response.statusCode();
+        if(response!=null)
+            return response.statusCode();
+        else
+            return 400;
     }
 
     public abstract ArticleInfo getArticleInfoFromDOI(String DOI);

@@ -22,6 +22,7 @@ public class IEEEArticleScrapper extends PhantomArticleScrapper {
 
     @Override
     public ArticleInfo getArticleInfoFromDOI(String DOI) {
+
         int httpStatusCode = getHTTPStatusCode(DOI);
 
         if (httpStatusCode == 200) {
@@ -40,23 +41,8 @@ public class IEEEArticleScrapper extends PhantomArticleScrapper {
                 System.err.println(exception.getMessage());
             }
 
-            List<WebElement> authors;
-            List<String> authorList = null;
             try {
-                authors = driver.findElements(By.className("authors-info"));
-                if (authors != null && authors.size() > 0) {
-                    if (authors.size() == 1) {
-                        authorList = new ArrayList<>();
-                        authorList.add(authors.get(0).getText());
-                    } else {
-                        authorList = authors.stream().map(elem -> elem.getText()).collect(Collectors.toList());
-                    }
-                }
-            } catch (Exception exception) {
-                System.err.println(exception.getMessage());
-            }
-
-            try {
+                //Perform a click to open the metadata information section of the page and obtain the necessary data
                 driver.executeScript("document.querySelector(\".icon-caret-abstract\").click();");
             } catch (Exception exception) {
                 System.err.println(exception.getMessage());
@@ -98,6 +84,30 @@ public class IEEEArticleScrapper extends PhantomArticleScrapper {
                         date = format.parse(dateString);
                     } catch (ParseException exception) {
                         System.err.println(exception);
+                    }
+                }
+            } catch (Exception exception) {
+                System.err.println(exception.getMessage());
+            }
+
+            try {
+                //Open the all authors page to obtain the authors info
+                driver.executeScript("document.querySelector('.authors-viewall-link').click();");
+                driver.executeScript("document.querySelector('a[routerlink=\"authors\"]').click();");
+            } catch (Exception exception) {
+                System.err.println(exception.getMessage());
+            }
+
+            List<WebElement> authors;
+            List<String> authorList = null;
+            try {
+                authors = driver.findElements(By.cssSelector(".author-card > div > div > div > a"));
+                if (authors != null && authors.size() > 0) {
+                    if (authors.size() == 1) {
+                        authorList = new ArrayList<>();
+                        authorList.add(authors.get(0).getText());
+                    } else {
+                        authorList = authors.stream().map(elem -> elem.getText().replaceAll(";","")).filter(elem-> (elem!=null && elem!="" && elem!=" " && elem.length()>0)).collect(Collectors.toList());
                     }
                 }
             } catch (Exception exception) {
