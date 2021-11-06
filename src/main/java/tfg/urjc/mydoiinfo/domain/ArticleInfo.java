@@ -100,7 +100,7 @@ public class ArticleInfo {
         if (title != null)
             out = out + "title='" + title + '\'';
         if(DOI != null)
-            out = out + "DOI='" + DOI + "\'";
+            out = out + ", DOI='" + DOI + "\'";
         if (authors != null)
             out = out + ", authors=" + authors;
         if (journal != null)
