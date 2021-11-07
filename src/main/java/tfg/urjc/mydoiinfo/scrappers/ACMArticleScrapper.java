@@ -15,8 +15,8 @@ import java.util.stream.Collectors;
 
 public class ACMArticleScrapper extends JSOUPArticleScrapper {
 
-    public ACMArticleScrapper(String journalPrefix) {
-        super(journalPrefix);
+    public ACMArticleScrapper(String[] journalPrefixList) {
+        super(journalPrefixList);
     }
 
     public ArticleInfo getArticleInfoFromDOI(String DOI){

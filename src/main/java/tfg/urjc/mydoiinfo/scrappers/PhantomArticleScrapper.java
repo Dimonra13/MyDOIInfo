@@ -6,8 +6,8 @@ import org.openqa.selenium.remote.DesiredCapabilities;
 
 public abstract class PhantomArticleScrapper extends ArticleScrapper {
 
-    public PhantomArticleScrapper(String journalPrefix) {
-        super(journalPrefix);
+    public PhantomArticleScrapper(String[] journalPrefixList) {
+        super(journalPrefixList);
     }
 
     protected PhantomJSDriver getPhantomDriver(){

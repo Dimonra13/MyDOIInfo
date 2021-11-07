@@ -18,12 +18,12 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 @SpringBootTest
 public class ACMArticleScrapperTests {
 
-    private String journalPrefix = "10.1145";
+    private String[] journalPrefixList = new String[]{"10.1145"};
 
     @Test
     public void getArticleInfoFromMalformedURLTest(){
         //GIVEN: The ACMArticleScrapper
-        ACMArticleScrapper acmArticleScrapper = new ACMArticleScrapper(journalPrefix);
+        ACMArticleScrapper acmArticleScrapper = new ACMArticleScrapper(journalPrefixList);
         //AND: A fake url
         String malformedURL = "malformed";
 
@@ -37,7 +37,7 @@ public class ACMArticleScrapperTests {
     @Test
     public void getArticleInfoFromErroneousURLTest(){
         //GIVEN: The ACMArticleScrapper
-        ACMArticleScrapper acmArticleScrapper = new ACMArticleScrapper(journalPrefix);
+        ACMArticleScrapper acmArticleScrapper = new ACMArticleScrapper(journalPrefixList);
         //AND: A erroneous url
         String erroneousURL = "http://www.erroneousURL.com";
 
@@ -51,7 +51,7 @@ public class ACMArticleScrapperTests {
     @Test
     public void getArticleInfoFromURLWithStatusCodeDistinctTo200Test(){
         //GIVEN: The ACMArticleScrapper
-        ACMArticleScrapper acmArticleScrapper = new ACMArticleScrapper(journalPrefix);
+        ACMArticleScrapper acmArticleScrapper = new ACMArticleScrapper(journalPrefixList);
         //AND: A url that returns 404 Not Found error
         String url404 = "http://www.google.com/erroneousURL";
 
@@ -65,7 +65,7 @@ public class ACMArticleScrapperTests {
     @Test
     public void getArticleInfoFromCorrectURLTest(){
         //GIVEN: The ACMArticleScrapper
-        ACMArticleScrapper acmArticleScrapper = new ACMArticleScrapper(journalPrefix);
+        ACMArticleScrapper acmArticleScrapper = new ACMArticleScrapper(journalPrefixList);
         //AND: A correct url from ACM
         String correctACM = "https://doi.org/10.1145/3488554";
         //AND: The expected output (an ArticleInfo object with the correct information)

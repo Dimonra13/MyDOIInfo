@@ -16,12 +16,12 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 @SpringBootTest
 public class ScienceArticleScrapperTests {
 
-    private String journalPrefix = "10.1126";
+    private String[] journalPrefixList = new String[]{"10.1126"};
 
     @Test
     public void getArticleInfoFromMalformedURLTest(){
         //GIVEN: The ScienceArticleScrapper
-        ScienceArticleScrapper scienceArticleScrapper = new ScienceArticleScrapper(journalPrefix);
+        ScienceArticleScrapper scienceArticleScrapper = new ScienceArticleScrapper(journalPrefixList);
         //AND: A fake url
         String malformedURL = "malformed";
 
@@ -35,7 +35,7 @@ public class ScienceArticleScrapperTests {
     @Test
     public void getArticleInfoFromErroneousURLTest(){
         //GIVEN: The ScienceArticleScrapper
-        ScienceArticleScrapper scienceArticleScrapper = new ScienceArticleScrapper(journalPrefix);
+        ScienceArticleScrapper scienceArticleScrapper = new ScienceArticleScrapper(journalPrefixList);
         //AND: A erroneous url
         String erroneousURL = "http://www.erroneousURL.com";
 
@@ -49,7 +49,7 @@ public class ScienceArticleScrapperTests {
     @Test
     public void getArticleInfoFromURLWithStatusCodeDistinctTo200Test(){
         //GIVEN: The ScienceArticleScrapper
-        ScienceArticleScrapper scienceArticleScrapper = new ScienceArticleScrapper(journalPrefix);
+        ScienceArticleScrapper scienceArticleScrapper = new ScienceArticleScrapper(journalPrefixList);
         //AND: A url that returns 404 Not Found error
         String url404 = "http://www.google.com/erroneousURL";
 
@@ -63,7 +63,7 @@ public class ScienceArticleScrapperTests {
     @Test
     public void getArticleInfoFromCorrectURLTest(){
         //GIVEN: The ScienceArticleScrapper
-        ScienceArticleScrapper scienceArticleScrapper = new ScienceArticleScrapper(journalPrefix);
+        ScienceArticleScrapper scienceArticleScrapper = new ScienceArticleScrapper(journalPrefixList);
         //AND: A correct url from Science
         String correctScience = "https://doi.org/10.1126/science.abf1015";
         //AND: The expected output (an ArticleInfo object with the correct information)

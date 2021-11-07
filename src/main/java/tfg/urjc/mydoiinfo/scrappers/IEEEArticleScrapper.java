@@ -15,8 +15,8 @@ import java.util.stream.Collectors;
 
 public class IEEEArticleScrapper extends PhantomArticleScrapper {
 
-    public IEEEArticleScrapper(String journalPrefix) {
-        super(journalPrefix);
+    public IEEEArticleScrapper(String[] journalPrefixList) {
+        super(journalPrefixList);
     }
 
     @Override

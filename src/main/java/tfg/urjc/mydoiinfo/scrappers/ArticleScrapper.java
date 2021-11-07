@@ -4,16 +4,22 @@ import org.jsoup.Connection.*;
 import org.jsoup.Jsoup;
 import tfg.urjc.mydoiinfo.domain.ArticleInfo;
 
+import java.util.Arrays;
+
 public abstract class ArticleScrapper {
 
-    private final String journalPrefix;
+    private final String[] journalPrefixList;
 
-    public ArticleScrapper(String journalPrefix) {
-        this.journalPrefix = journalPrefix;
+    public ArticleScrapper(String[] journalPrefixList) {
+        this.journalPrefixList = journalPrefixList;
     }
 
     public boolean isCorrectJournalScrapper(String DOI) {
-        return DOI.contains("/"+journalPrefix+"/") || DOI.startsWith(journalPrefix);
+        for (String journalPrefix:journalPrefixList){
+            if(DOI.contains("/"+journalPrefix+"/") || DOI.startsWith(journalPrefix))
+                return true;
+        }
+        return false;
     }
 
     protected int getHTTPStatusCode(String url) {

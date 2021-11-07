@@ -10,13 +10,15 @@ import static org.junit.jupiter.api.Assertions.*;
 @SpringBootTest
 public class JSOUPArticleScrapperTests {
 
+    private String[] journalPrefixList = new String[]{"10.1145"};
+
     @Test
     public void getHtmlDocumentTest200OK(){
         //GIVEN: A correct url
         String correctUrl = "https://www.google.com/";
 
         //WHEN: The getHtmlDocument is called (using a subclass to access the protected method)
-        Document document = new ACMArticleScrapper("10.1145"){
+        Document document = new ACMArticleScrapper(journalPrefixList){
             public Document getHtmlDocument(String url){
                 return super.getHtmlDocument(url);
             }
@@ -32,7 +34,7 @@ public class JSOUPArticleScrapperTests {
         String notFoundUrl = "https://www.google.com/not_found";
 
         //WHEN: The getHtmlDocument is called (using a subclass to access the protected method)
-        Document document = new ACMArticleScrapper("10.1145"){
+        Document document = new ACMArticleScrapper(journalPrefixList){
             public Document getHtmlDocument(String url){
                 return super.getHtmlDocument(url);
             }
@@ -48,7 +50,7 @@ public class JSOUPArticleScrapperTests {
         String wrongUrl = "wrongurl";
 
         //WHEN: The getHtmlDocument is called (using a subclass to access the protected method)
-        Document document = new ACMArticleScrapper("10.1145"){
+        Document document = new ACMArticleScrapper(journalPrefixList){
             public Document getHtmlDocument(String url){
                 return super.getHtmlDocument(url);
             }

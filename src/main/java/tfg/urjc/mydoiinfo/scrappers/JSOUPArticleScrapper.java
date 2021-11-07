@@ -5,8 +5,8 @@ import org.jsoup.nodes.Document;
 
 public abstract class JSOUPArticleScrapper extends ArticleScrapper {
 
-    public JSOUPArticleScrapper(String journalPrefix) {
-        super(journalPrefix);
+    public JSOUPArticleScrapper(String[] journalPrefixList) {
+        super(journalPrefixList);
     }
 
     protected Document getHtmlDocument(String url) {

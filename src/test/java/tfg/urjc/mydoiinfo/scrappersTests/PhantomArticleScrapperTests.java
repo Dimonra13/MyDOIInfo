@@ -12,7 +12,7 @@ public class PhantomArticleScrapperTests {
     @Test
     public void getPhantomDriverTest(){
         //WHEN: The getPhantomDriver is called (using a subclass to access the protected method)
-        PhantomJSDriver driver = new IEEEArticleScrapper("10.1109"){
+        PhantomJSDriver driver = new IEEEArticleScrapper(new String[]{"10.1109"}){
             public PhantomJSDriver getPhantomDriver(){
                 return super.getPhantomDriver();
             }

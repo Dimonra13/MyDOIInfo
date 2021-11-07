@@ -15,12 +15,12 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 @SpringBootTest
 public class ElsevierArticleScrapperTests {
 
-    private String journalPrefix = "10.1016";
+    private String[] journalPrefixList = new String[]{"10.1016"};
 
     @Test
     public void getArticleInfoFromMalformedURLTest(){
         //GIVEN: The ElsevierArticleScrapper
-        ElsevierArticleScrapper elsevierArticleScrapper = new ElsevierArticleScrapper(journalPrefix);
+        ElsevierArticleScrapper elsevierArticleScrapper = new ElsevierArticleScrapper(journalPrefixList);
         //AND: A fake url
         String malformedURL = "malformed";
 
@@ -34,7 +34,7 @@ public class ElsevierArticleScrapperTests {
     @Test
     public void getArticleInfoFromErroneousURLTest(){
         //GIVEN: The ElsevierArticleScrapper
-        ElsevierArticleScrapper elsevierArticleScrapper = new ElsevierArticleScrapper(journalPrefix);
+        ElsevierArticleScrapper elsevierArticleScrapper = new ElsevierArticleScrapper(journalPrefixList);
         //AND: A erroneous url
         String erroneousURL = "http://www.erroneousURL.com";
 
@@ -48,7 +48,7 @@ public class ElsevierArticleScrapperTests {
     @Test
     public void getArticleInfoFromURLWithStatusCodeDistinctTo200Test(){
         //GIVEN: The ElsevierArticleScrapper
-        ElsevierArticleScrapper elsevierArticleScrapper = new ElsevierArticleScrapper(journalPrefix);
+        ElsevierArticleScrapper elsevierArticleScrapper = new ElsevierArticleScrapper(journalPrefixList);
         //AND: A url that returns 404 Not Found error
         String url404 = "http://www.google.com/erroneousURL";
 
@@ -62,7 +62,7 @@ public class ElsevierArticleScrapperTests {
     @Test
     public void getArticleInfoFromCorrectURLTest(){
         //GIVEN: The ElsevierArticleScrapper
-        ElsevierArticleScrapper elsevierArticleScrapper = new ElsevierArticleScrapper(journalPrefix);
+        ElsevierArticleScrapper elsevierArticleScrapper = new ElsevierArticleScrapper(journalPrefixList);
         //AND: A correct url from Elsevier
         String correctElsevier = "https://doi.org/10.1016/j.ecoleng.2014.09.079";
         //AND: The expected output (an ArticleInfo object with the correct information)
@@ -75,7 +75,7 @@ public class ElsevierArticleScrapperTests {
         }
         List<String> authors = Arrays.asList(new String[]{"Josu G. Alday", "Víctor M. Santana", "Rob H. Marrs", "Carolina Martínez-Ruiz"});
         ArticleInfo expectedOutput = new ArticleInfo("Shrub-induced understory vegetation changes in reclaimed mine sites","https://doi.org/10.1016/j.ecoleng.2014.09.079",
-                authors,"Ecological Engineering","Volume 73, Pages 691-698",date,"December 2014");
+                authors,"Ecological Engineering","Volume 73, pp 691-698",date,"December 2014");
 
         //WHEN: The getArticleInfoFromDOI is called with the correct Elsevier url
         ArticleInfo output = elsevierArticleScrapper.getArticleInfoFromDOI(correctElsevier);

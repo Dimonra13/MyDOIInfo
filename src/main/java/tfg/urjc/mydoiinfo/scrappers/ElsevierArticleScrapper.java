@@ -17,8 +17,8 @@ import java.util.stream.Collectors;
 
 public class ElsevierArticleScrapper extends JSOUPArticleScrapper {
 
-    public ElsevierArticleScrapper(String journalPrefix) {
-        super(journalPrefix);
+    public ElsevierArticleScrapper(String[] journalPrefixList) {
+        super(journalPrefixList);
     }
 
     private String forgeRedirectUrl(String DOI){
@@ -77,10 +77,10 @@ public class ElsevierArticleScrapper extends JSOUPArticleScrapper {
             if(elemMetadata != null){
                 String[] splitedMetadata = elemMetadata.text().split(", ");
                 if (splitedMetadata.length==3){
-                    volumeInfo = splitedMetadata[0]+", "+splitedMetadata[2];
+                    volumeInfo = splitedMetadata[0]+", "+splitedMetadata[2].replace("Pages","pp");
                     dateString = splitedMetadata[1];
                 } else if (splitedMetadata.length==4){
-                    volumeInfo = splitedMetadata[0]+", "+splitedMetadata[1]+", "+splitedMetadata[3];
+                    volumeInfo = splitedMetadata[0]+", "+splitedMetadata[1]+", "+splitedMetadata[3].replace("Pages","pp");
                     dateString = splitedMetadata[2];
                 }
             }

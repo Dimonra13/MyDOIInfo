@@ -13,9 +13,9 @@ import java.util.List;
 import java.util.Locale;
 import java.util.stream.Collectors;
 
-public class ScienceArticleScrapper extends JSOUPArticleScrapper {
+public class SpringerArticleScrapper extends JSOUPArticleScrapper {
 
-    public ScienceArticleScrapper(String[] journalPrefixList) {
+    public SpringerArticleScrapper(String[] journalPrefixList) {
         super(journalPrefixList);
     }
 
@@ -26,42 +26,58 @@ public class ScienceArticleScrapper extends JSOUPArticleScrapper {
         if (httpStatusCode == 200) {
             Document document = getHtmlDocument(DOI);
 
-            Element titleElement = document.select("h1[property=\"name\"]").first();
+            Element titleElement = document.select("h1.c-article-title").first();
             String title = null;
             if(titleElement != null)
                 title = titleElement.text();
 
-            Elements authors = document.select("span[property=\"author\"] > a:not([property])");
+            Elements authors = document.select("a[data-test=\"author-name\"]");
             List<String> authorList = null;
             if(authors != null && authors.size()>0){
                 if(authors.size()==1){
                     authorList = new ArrayList<>();
-                    authorList.add(authors.first().attr("title"));
+                    authorList.add(authors.first().text());
                 }else {
                     authorList = authors.stream().map(elem->elem.text()).collect(Collectors.toList());
                 }
             }
 
-            Element elemJournal = document.select("span[property=\"name\"]").first();
+
+            Element elemJournal = document.select("i[data-test=\"journal-title\"]").first();
             String journal = null;
             String volumeInfo = null;
             if(elemJournal != null){
                 journal = elemJournal.text();
-                Element elemVolume = document.select("span.core-enumeration").first();
+                Element elemVolume = document.select("b[data-test=\"journal-volume\"]").first();
                 if(elemVolume != null)
                     volumeInfo = elemVolume.text();
+                Element elemMetadataInfo = document.select("p.c-article-info-details").first();
+                if(elemMetadataInfo != null){
+                    String[] splitedMetadataInfo = elemMetadataInfo.text().split("pages ");
+                    if(splitedMetadataInfo.length>1){
+                        String[] splitedPagesInfo = splitedMetadataInfo[1].split(" ");
+                        if (splitedPagesInfo.length>0){
+                            volumeInfo = volumeInfo + ", pp " + splitedPagesInfo[0];
+                        }
+                    }
+                }
             }
 
-            Element dateElement = document.select("span[property=\"datePublished\"]").first();
+            Element dateElement = document.select("time").first();
             Date date = null;
             String dateString = null;
             if(dateElement != null){
                 dateString = dateElement.text();
-                SimpleDateFormat format = new SimpleDateFormat("dd MMM yyyy", Locale.US);
+                SimpleDateFormat format = new SimpleDateFormat("dd MMMM yyyy", Locale.US);
                 try {
                     date = format.parse(dateString);
                 } catch (ParseException ex) {
-                    System.err.println(ex);
+                    SimpleDateFormat otherFormat = new SimpleDateFormat("MMMM yyyy", Locale.US);
+                    try {
+                        date = otherFormat.parse(dateString);
+                    } catch (ParseException exception) {
+                        System.err.println(exception);
+                    }
                 }
             }
 

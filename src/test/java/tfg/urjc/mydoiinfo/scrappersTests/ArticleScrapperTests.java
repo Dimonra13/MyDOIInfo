@@ -13,9 +13,9 @@ public class ArticleScrapperTests {
     @Test
     public void isCorrectJournalTest(){
         //GIVEN: A specific journalPrefix (ACM)
-        String journalPrefix = "10.1145";
+        String[] journalPrefixList = new String[]{"10.1145"};
         //AND: An article Scrapper with that prefix
-        ArticleScrapper articleScrapper = new ACMArticleScrapper(journalPrefix);
+        ArticleScrapper articleScrapper = new ACMArticleScrapper(journalPrefixList);
         //AND: A url with the correct prefix
         String url = "https://doi.org/10.1145/3488554";
 
@@ -29,9 +29,9 @@ public class ArticleScrapperTests {
     @Test
     public void isWrongJournalPrefixTest(){
         //GIVEN: A specific journalPrefix (ACM)
-        String journalPrefix = "10.1145";
+        String[] journalPrefixList = new String[]{"10.1145"};
         //AND: An article Scrapper with that prefix
-        ArticleScrapper articleScrapper = new ACMArticleScrapper(journalPrefix);
+        ArticleScrapper articleScrapper = new ACMArticleScrapper(journalPrefixList);
         //AND: A url with the incorrect prefix
         String url = "https://doi.org/10.1109/JIOT.2020.2983228";
 
@@ -45,9 +45,9 @@ public class ArticleScrapperTests {
     @Test
     public void isIncorrectJournalURLTest(){
         //GIVEN: A specific journalPrefix (ACM)
-        String journalPrefix = "10.1145";
+        String[] journalPrefixList = new String[]{"10.1145"};
         //AND: An article Scrapper with that prefix
-        ArticleScrapper articleScrapper = new ACMArticleScrapper(journalPrefix);
+        ArticleScrapper articleScrapper = new ACMArticleScrapper(journalPrefixList);
         //AND: A wrong url
         String url = "https://www.google.com/";
 
@@ -64,7 +64,7 @@ public class ArticleScrapperTests {
         String correctUrl = "https://www.google.com/";
 
         //WHEN: The getHTTPStatusCode is called (using a subclass to access the protected method)
-        int statusCode = new ACMArticleScrapper("10.1145"){
+        int statusCode = new ACMArticleScrapper(new String[]{"10.1145"}){
             public int getHTTPStatusCode(String url){
                 return super.getHTTPStatusCode(url);
             }
@@ -80,7 +80,7 @@ public class ArticleScrapperTests {
         String notFoundUrl = "https://www.google.com/not_found";
 
         //WHEN: The getHTTPStatusCode is called (using a subclass to access the protected method)
-        int statusCode = new ACMArticleScrapper("10.1145"){
+        int statusCode = new ACMArticleScrapper(new String[]{"10.1145"}){
             public int getHTTPStatusCode(String url){
                 return super.getHTTPStatusCode(url);
             }
@@ -96,7 +96,7 @@ public class ArticleScrapperTests {
         String wrongUrl = "wrongurl";
 
         //WHEN: The getHTTPStatusCode is called (using a subclass to access the protected method)
-        int statusCode = new ACMArticleScrapper("10.1145"){
+        int statusCode = new ACMArticleScrapper(new String[]{"10.1145"}){
             public int getHTTPStatusCode(String url){
                 return super.getHTTPStatusCode(url);
             }

@@ -18,12 +18,12 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 @SpringBootTest
 public class IEEEArticleScrapperTests {
 
-    private String journalPrefix = "10.1126";
+    private String[] journalPrefixList = new String[]{"10.1109"};
 
     @Test
     public void getArticleInfoFromMalformedURLTest(){
         //GIVEN: The IEEEArticleScrapper
-        IEEEArticleScrapper ieeeArticleScrapper = new IEEEArticleScrapper(journalPrefix);
+        IEEEArticleScrapper ieeeArticleScrapper = new IEEEArticleScrapper(journalPrefixList);
         //AND: A fake url
         String malformedURL = "malformed";
 
@@ -37,7 +37,7 @@ public class IEEEArticleScrapperTests {
     @Test
     public void getArticleInfoFromErroneousURLTest(){
         //GIVEN: The IEEEArticleScrapper
-        IEEEArticleScrapper ieeeArticleScrapper = new IEEEArticleScrapper(journalPrefix);
+        IEEEArticleScrapper ieeeArticleScrapper = new IEEEArticleScrapper(journalPrefixList);
         //AND: A erroneous url
         String erroneousURL = "http://www.erroneousURL.com";
 
@@ -51,7 +51,7 @@ public class IEEEArticleScrapperTests {
     @Test
     public void getArticleInfoFromURLWithStatusCodeDistinctTo200Test(){
         //GIVEN: The IEEEArticleScrapper
-        IEEEArticleScrapper ieeeArticleScrapper = new IEEEArticleScrapper(journalPrefix);
+        IEEEArticleScrapper ieeeArticleScrapper = new IEEEArticleScrapper(journalPrefixList);
         //AND: A url that returns 404 Not Found error
         String url404 = "http://www.google.com/erroneousURL";
 
@@ -65,7 +65,7 @@ public class IEEEArticleScrapperTests {
     @Test
     public void getArticleInfoFromCorrectURLTest(){
         //GIVEN: The IEEEArticleScrapper
-        IEEEArticleScrapper ieeeArticleScrapper = new IEEEArticleScrapper(journalPrefix);
+        IEEEArticleScrapper ieeeArticleScrapper = new IEEEArticleScrapper(journalPrefixList);
         //AND: A correct url from IEEE
         String correctIEEE = "https://doi.org/10.1109/LCA.2021.3081752";
         //AND: The expected output (an ArticleInfo object with the correct information)
