@@ -50,7 +50,7 @@ public class SpringerArticleScrapper extends JSOUPArticleScrapper {
                 journal = elemJournal.text();
                 Element elemVolume = document.select("b[data-test=\"journal-volume\"]").first();
                 if(elemVolume != null)
-                    volumeInfo = elemVolume.text();
+                    volumeInfo = elemVolume.text().replaceAll("\u00A0"," ");
                 Element elemMetadataInfo = document.select("p.c-article-info-details").first();
                 if(elemMetadataInfo != null){
                     String[] splitedMetadataInfo = elemMetadataInfo.text().split("pages ");
