@@ -3,7 +3,6 @@ package tfg.urjc.mydoiinfo.scrappers;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
-import tfg.urjc.mydoiinfo.domain.ArticleInfo;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;

@@ -3,7 +3,6 @@ package tfg.urjc.mydoiinfo.scrappers;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.phantomjs.PhantomJSDriver;
-import tfg.urjc.mydoiinfo.domain.ArticleInfo;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;

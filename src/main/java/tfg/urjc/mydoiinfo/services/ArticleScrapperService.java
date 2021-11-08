@@ -1,7 +1,7 @@
 package tfg.urjc.mydoiinfo.services;
 
 import org.springframework.stereotype.Service;
-import tfg.urjc.mydoiinfo.domain.ArticleInfo;
+import tfg.urjc.mydoiinfo.scrappers.ArticleInfo;
 import tfg.urjc.mydoiinfo.scrappers.*;
 
 import java.util.ArrayList;

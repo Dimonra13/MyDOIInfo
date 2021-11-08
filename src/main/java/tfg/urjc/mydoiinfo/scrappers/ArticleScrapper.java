@@ -2,9 +2,6 @@ package tfg.urjc.mydoiinfo.scrappers;
 
 import org.jsoup.Connection.*;
 import org.jsoup.Jsoup;
-import tfg.urjc.mydoiinfo.domain.ArticleInfo;
-
-import java.util.Arrays;
 
 public abstract class ArticleScrapper {
 

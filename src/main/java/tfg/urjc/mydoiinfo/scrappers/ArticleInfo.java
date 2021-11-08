@@ -1,16 +1,11 @@
-package tfg.urjc.mydoiinfo.domain;
+package tfg.urjc.mydoiinfo.scrappers;
 
-import javax.persistence.*;
 import java.util.*;
 
-@Entity
 public class ArticleInfo {
-    @Id
-    @GeneratedValue(strategy= GenerationType.AUTO)
-    private Long id;
+
     private String title;
     private String DOI;
-    @ElementCollection(targetClass=String.class,fetch=FetchType.EAGER)
     private List<String> authors;
     private String journal;
     private String volumeInfo;
@@ -133,13 +128,5 @@ public class ArticleInfo {
     @Override
     public int hashCode() {
         return Objects.hash(getTitle(), getDOI(), getAuthors(), getJournal(), getVolumeInfo(), getPublicationDate(), getPublicationDateText(), getPublicationYear());
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public Long getId() {
-        return id;
     }
 }
