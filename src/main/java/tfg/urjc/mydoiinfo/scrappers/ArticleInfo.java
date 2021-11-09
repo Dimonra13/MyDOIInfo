@@ -36,16 +36,8 @@ public class ArticleInfo {
         return title;
     }
 
-    public void setTitle(String title) {
-        this.title = title;
-    }
-
     public String getDOI() {
         return DOI;
-    }
-
-    public void setDOI(String DOI) {
-        this.DOI = DOI;
     }
 
     public List<String> getAuthors() {
@@ -60,37 +52,20 @@ public class ArticleInfo {
         return journal;
     }
 
-    public void setJournal(String journal) {
-        this.journal = journal;
-    }
-
     public String getVolumeInfo() {
         return volumeInfo;
-    }
-
-    public void setVolumeInfo(String volumeInfo) {
-        this.volumeInfo = volumeInfo;
     }
 
     public Date getPublicationDate() {
         return publicationDate;
     }
 
-    public void setPublicationDate(Date publicationDate) {
-        this.publicationDate = publicationDate;
-    }
-
     public String getPublicationDateText() {
         return publicationDateText;
     }
 
-    public void setPublicationDateText(String publicationDateText) {
-        this.publicationDateText = publicationDateText;
-        try{
-            this.publicationYear = Integer.parseInt(publicationDateText.substring(publicationDateText.length()-4));
-        }catch (Exception e){
-            System.err.println(e.getMessage());
-        }
+    public Integer getPublicationYear() {
+        return publicationYear;
     }
 
     @Override
@@ -113,9 +88,6 @@ public class ArticleInfo {
         return out + '}';
     }
 
-    public Integer getPublicationYear() {
-        return publicationYear;
-    }
 
     @Override
     public boolean equals(Object o) {

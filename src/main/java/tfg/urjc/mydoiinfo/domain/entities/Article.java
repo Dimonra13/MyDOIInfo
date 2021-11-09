@@ -1,4 +1,4 @@
-package tfg.urjc.mydoiinfo.domain;
+package tfg.urjc.mydoiinfo.domain.entities;
 
 
 import javax.persistence.*;
@@ -15,7 +15,7 @@ public class Article {
     private String title;
     @Column(nullable = false)
     private String DOI;
-    @ElementCollection(targetClass=String.class,fetch=FetchType.EAGER)
+    @ElementCollection(targetClass=String.class)
     private List<String> authors;
     @ManyToOne
     private JCRRegistry jcrRegistry;
