@@ -7,5 +7,5 @@ import tfg.urjc.mydoiinfo.domain.entities.Journal;
 @Repository
 public interface JournalRepository extends JpaRepository<Journal, Long> {
 
-    public Journal findFirstByNameIgnoreCase(String name);
+    public Journal findFirstByTitleIgnoreCase(String title);
 }

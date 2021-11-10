@@ -10,7 +10,8 @@ public class Journal {
     @Id
     @GeneratedValue
     private Long id;
-    private String name;
+    private String title;
+    private String shortTitle;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "journal",fetch = FetchType.EAGER)
     private List<JCRRegistry> jcrRegistries;
 
@@ -18,9 +19,10 @@ public class Journal {
         this.jcrRegistries = new ArrayList<>();
     }
 
-    public Journal(String name) {
+    public Journal(String title,String shortTitle) {
         this();
-        this.name = name;
+        this.title = title;
+        this.shortTitle = shortTitle;
     }
 
     public void setId(Long id) {
@@ -31,12 +33,20 @@ public class Journal {
         return id;
     }
 
-    public String getName() {
-        return name;
+    public String getTitle() {
+        return title;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public String getShortTitle() {
+        return shortTitle;
+    }
+
+    public void setShortTitle(String shortTitle) {
+        this.shortTitle = shortTitle;
     }
 
     public List<JCRRegistry> getJcrRegistries() {

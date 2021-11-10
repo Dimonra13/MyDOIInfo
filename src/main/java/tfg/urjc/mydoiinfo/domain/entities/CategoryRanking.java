@@ -11,14 +11,16 @@ public class CategoryRanking {
     private Long id;
     private String name;
     private String ranking;
+    private String journalField;
 
     public CategoryRanking(){
 
     }
 
-    public CategoryRanking(String name, String ranking) {
+    public CategoryRanking(String name, String ranking, String journalField) {
         this.name = name;
         this.ranking = ranking;
+        setJournalField(journalField);
     }
 
     public void setId(Long id) {
@@ -43,5 +45,23 @@ public class CategoryRanking {
 
     public void setRanking(String ranking) {
         this.ranking = ranking;
+    }
+
+    public String getJournalField() {
+        return journalField;
+    }
+
+    public void setJournalField(String journalField) {
+        //JournalField can only be Science, Social Sciences or null
+        this.journalField = (journalField.equals("Sciences") || journalField.equals("Social Sciences")) ? journalField : this.journalField;
+    }
+
+    @Override
+    public String toString() {
+        return "CategoryRanking{" +
+                "name='" + name + '\'' +
+                ", ranking='" + ranking + '\'' +
+                ", journalField='" + journalField + '\'' +
+                '}';
     }
 }
