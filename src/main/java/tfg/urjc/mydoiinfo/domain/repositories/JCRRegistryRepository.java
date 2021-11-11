@@ -7,4 +7,7 @@ import tfg.urjc.mydoiinfo.domain.entities.JCRRegistry;
 @Repository
 public interface JCRRegistryRepository extends JpaRepository<JCRRegistry, Long> {
     public JCRRegistry findFirstByYearAndJournalTitleIgnoreCase(Integer year,String journalTitle);
+    public JCRRegistry findFirstByYearAndJournalShortTitleIgnoreCase(Integer year,String journalShortTitle);
+    public JCRRegistry findFirstByYearAndCategoryRankingListJournalField(Integer year, String journalField);
+
 }

@@ -23,12 +23,81 @@ public class Article {
     private Date publicationDate;
     private String publicationDateText;
 
+    public Article() {
+    }
+
+    public Article(String title, String DOI, List<String> authors, JCRRegistry jcrRegistry, String volumeInfo, Date publicationDate, String publicationDateText) {
+        this.title = title;
+        this.DOI = DOI;
+        this.authors = authors;
+        this.jcrRegistry = jcrRegistry;
+        this.volumeInfo = volumeInfo;
+        this.publicationDate = publicationDate;
+        this.publicationDateText = publicationDateText;
+    }
+
     public void setId(Long id) {
         this.id = id;
     }
 
     public Long getId() {
         return id;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public String getDOI() {
+        return DOI;
+    }
+
+    public void setDOI(String DOI) {
+        this.DOI = DOI;
+    }
+
+    public List<String> getAuthors() {
+        return authors;
+    }
+
+    public void setAuthors(List<String> authors) {
+        this.authors = authors;
+    }
+
+    public JCRRegistry getJcrRegistry() {
+        return jcrRegistry;
+    }
+
+    public void setJcrRegistry(JCRRegistry jcrRegistry) {
+        this.jcrRegistry = jcrRegistry;
+    }
+
+    public String getVolumeInfo() {
+        return volumeInfo;
+    }
+
+    public void setVolumeInfo(String volumeInfo) {
+        this.volumeInfo = volumeInfo;
+    }
+
+    public Date getPublicationDate() {
+        return publicationDate;
+    }
+
+    public void setPublicationDate(Date publicationDate) {
+        this.publicationDate = publicationDate;
+    }
+
+    public String getPublicationDateText() {
+        return publicationDateText;
+    }
+
+    public void setPublicationDateText(String publicationDateText) {
+        this.publicationDateText = publicationDateText;
     }
 
     @Override
