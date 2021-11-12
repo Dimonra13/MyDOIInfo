@@ -92,4 +92,22 @@ public class JCRRegistry {
     public void setCategoryRankingList(List<CategoryRanking> categoryRankingList) {
         this.categoryRankingList = categoryRankingList;
     }
+
+    @Override
+    public String toString() {
+        String out = "JCRRegistry{";
+        if (year != null)
+            out = out + "year=" + year;
+        if(journal != null)
+            out = out + ", journal=" + journal.toString();
+        if (impactFactor != null)
+            out = out + ", impactFactor=" + impactFactor;
+        if (impactFactorFiveYear != null)
+            out = out + ", impactFactorFiveYear=" + impactFactorFiveYear;
+        if(quartile != null)
+            out = out + ", quartile='" + quartile + '\'';
+        if (categoryRankingList != null)
+            out = out + ", categoryRankingList=" + categoryRankingList.toString();
+        return out + '}';
+    }
 }

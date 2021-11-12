@@ -6,5 +6,5 @@ import tfg.urjc.mydoiinfo.domain.entities.Article;
 
 @Repository
 public interface ArticleRepository extends JpaRepository<Article, Long> {
-
+    public Article findFirstByDOI(String doi);
 }

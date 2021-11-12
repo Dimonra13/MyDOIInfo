@@ -58,10 +58,13 @@ public class CategoryRanking {
 
     @Override
     public String toString() {
-        return "CategoryRanking{" +
-                "name='" + name + '\'' +
-                ", ranking='" + ranking + '\'' +
-                ", journalField='" + journalField + '\'' +
-                '}';
+        String out = "CategoryRanking{";
+        if (name != null)
+            out = out + "name='" + name + '\'';
+        if(ranking != null)
+            out = out + ", ranking='" + ranking + '\'';
+        if (journalField != null)
+            out = out + ", journalField='" + journalField + '\'';
+        return out + '}';
     }
 }

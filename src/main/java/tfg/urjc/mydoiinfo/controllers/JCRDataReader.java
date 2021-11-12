@@ -66,17 +66,17 @@ public class JCRDataReader implements CommandLineRunner {
 
         //Check if the file is empty
         if (data.equals("")){
-            System.out.println("File"+"./JCRData/" + field + "_" + year + ".txt"+" is empty.");
+            System.err.println("File"+"./JCRData/" + field + "_" + year + ".txt"+" is empty.");
             return;
         }
 
         String journalField = (field.equals("science")) ? "Sciences" : ((field.equals("social")) ? "Social Sciences" : null);
 
-        //Read the first short title to check if the data has already been added for old JCRRegistries that don't have category info
+        //The short title of the first JCRRegistry in the current file, it will be used to check if the data has already been added for old JCRRegistries that don't have category info
         String firstShortTitle = data.split("</td>")[0].replace("<td class=\" sorting_1\">","").replace("<tr class=\"odd\">","");
         //Check if the data has already been added to the database to prevent duplicates
         if(jcrRegistryRepository.findFirstByYearAndCategoryRankingListJournalField(year,journalField)!=null ||
-                //For old JCRData that don't have categoryInfo to check it's necessary to check if the first JCRRegistry has already been added
+                //For old JCRData that don't have categoryInfo to check, it's necessary to verify if the first JCRRegistry has already been added
                 ( year <= 2010 && jcrRegistryRepository.findFirstByYearAndJournalShortTitleIgnoreCase(year,firstShortTitle)!=null &&
                         //Check that the jcrRegistry really don't have category data
                         jcrRegistryRepository.findFirstByYearAndJournalShortTitleIgnoreCase(year,firstShortTitle).getCategoryRankingList().size()==0

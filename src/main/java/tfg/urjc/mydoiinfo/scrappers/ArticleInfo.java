@@ -68,6 +68,14 @@ public class ArticleInfo {
         return publicationYear;
     }
 
+    public Integer getPublicationDateYear() {
+        if(publicationDate==null)
+            return null;
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(this.publicationDate);
+        return calendar.get(Calendar.YEAR);
+    }
+
     @Override
     public String toString() {
         String out = "ArticleInfo{";

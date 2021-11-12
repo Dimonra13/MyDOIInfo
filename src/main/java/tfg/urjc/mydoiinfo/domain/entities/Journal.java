@@ -56,4 +56,14 @@ public class Journal {
     public void setJcrRegistries(List<JCRRegistry> jcrRegistries) {
         this.jcrRegistries = jcrRegistries;
     }
+
+    @Override
+    public String toString() {
+        String out = "Journal{";
+        if (title != null)
+            out = out + "title='" + title + '\'';
+        if(shortTitle != null)
+            out = out + ", shortTitle='" + shortTitle + '\'';
+        return out + '}';
+    }
 }
