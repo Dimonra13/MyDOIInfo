@@ -3,6 +3,7 @@ package tfg.urjc.mydoiinfo.domain.entities;
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 @Entity
 public class Journal {
@@ -55,6 +56,19 @@ public class Journal {
 
     public void setJcrRegistries(List<JCRRegistry> jcrRegistries) {
         this.jcrRegistries = jcrRegistries;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Journal)) return false;
+        Journal journal = (Journal) o;
+        return Objects.equals(getTitle(), journal.getTitle()) && Objects.equals(getShortTitle(), journal.getShortTitle());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(getTitle(), getShortTitle());
     }
 
     @Override

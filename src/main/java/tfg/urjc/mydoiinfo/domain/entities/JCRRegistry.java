@@ -3,6 +3,7 @@ package tfg.urjc.mydoiinfo.domain.entities;
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 @Entity
 public class JCRRegistry {
@@ -91,6 +92,19 @@ public class JCRRegistry {
 
     public void setCategoryRankingList(List<CategoryRanking> categoryRankingList) {
         this.categoryRankingList = categoryRankingList;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof JCRRegistry)) return false;
+        JCRRegistry that = (JCRRegistry) o;
+        return Objects.equals(getYear(), that.getYear()) && Objects.equals(getJournal(), that.getJournal()) && Objects.equals(getImpactFactor(), that.getImpactFactor()) && Objects.equals(getImpactFactorFiveYear(), that.getImpactFactorFiveYear()) && Objects.equals(getQuartile(), that.getQuartile());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(getYear(), getJournal(), getImpactFactor(), getImpactFactorFiveYear(), getQuartile());
     }
 
     @Override
