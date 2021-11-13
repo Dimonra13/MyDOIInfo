@@ -19,6 +19,20 @@ public class ScienceArticleScrapperTests {
     private String[] journalPrefixList = new String[]{"10.1126"};
 
     @Test
+    public void getArticleInfoFromNullURLTest(){
+        //GIVEN: The ScienceArticleScrapper
+        ScienceArticleScrapper scienceArticleScrapper = new ScienceArticleScrapper(journalPrefixList);
+        //AND: A null url
+        String nullURL = null;
+
+        //WHEN: The getArticleInfoFromDOI is called with the null URL
+        ArticleInfo output = scienceArticleScrapper.getArticleInfoFromDOI(nullURL);
+
+        //THEN: The output must be null
+        assertNull(output);
+    }
+
+    @Test
     public void getArticleInfoFromMalformedURLTest(){
         //GIVEN: The ScienceArticleScrapper
         ScienceArticleScrapper scienceArticleScrapper = new ScienceArticleScrapper(journalPrefixList);

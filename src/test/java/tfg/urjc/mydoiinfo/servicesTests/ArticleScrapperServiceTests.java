@@ -15,6 +15,18 @@ public class ArticleScrapperServiceTests {
     ArticleScrapperService articleScrapperService;
 
     @Test
+    public void getArticleFromNullDOITest(){
+        //GIVEN: A null doi
+        String nullDOI = null;
+
+        //WHEN: The getArticleInfoFromDOI is called with the null doi
+        ArticleInfo output = articleScrapperService.getArticleInfoFromDOI(nullDOI);
+
+        //THEN: The output must be null
+        assertNull(output);
+    }
+
+    @Test
     public void getArticleInfoFromMalformedDOITest(){
         //GIVEN: A fake doi
         String malformedDOI = "malformed";

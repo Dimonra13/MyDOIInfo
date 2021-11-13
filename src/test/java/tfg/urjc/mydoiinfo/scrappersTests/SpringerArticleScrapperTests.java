@@ -3,6 +3,7 @@ package tfg.urjc.mydoiinfo.scrappersTests;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 import tfg.urjc.mydoiinfo.scrappers.ArticleInfo;
+import tfg.urjc.mydoiinfo.scrappers.ScienceArticleScrapper;
 import tfg.urjc.mydoiinfo.scrappers.SpringerArticleScrapper;
 
 import java.text.ParseException;
@@ -19,6 +20,20 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 public class SpringerArticleScrapperTests {
 
     private String[] journalPrefixList = new String[]{"10.1134","10.0007"};
+
+    @Test
+    public void getArticleInfoFromNullURLTest(){
+        //GIVEN: The SpringerArticleScrapper
+        SpringerArticleScrapper springerArticleScrapper = new SpringerArticleScrapper(journalPrefixList);
+        //AND: A null url
+        String nullURL = null;
+
+        //WHEN: The getArticleInfoFromDOI is called with the null URL
+        ArticleInfo output = springerArticleScrapper.getArticleInfoFromDOI(nullURL);
+
+        //THEN: The output must be null
+        assertNull(output);
+    }
 
     @Test
     public void getArticleInfoFromMalformedURLTest(){

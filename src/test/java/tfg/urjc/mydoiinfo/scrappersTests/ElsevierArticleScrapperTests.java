@@ -18,6 +18,20 @@ public class ElsevierArticleScrapperTests {
     private String[] journalPrefixList = new String[]{"10.1016"};
 
     @Test
+    public void getArticleInfoFromNullURLTest(){
+        //GIVEN: The ElsevierArticleScrapper
+        ElsevierArticleScrapper elsevierArticleScrapper = new ElsevierArticleScrapper(journalPrefixList);
+        //AND: A null url
+        String nullURL = null;
+
+        //WHEN: The getArticleInfoFromDOI is called with the null URL
+        ArticleInfo output = elsevierArticleScrapper.getArticleInfoFromDOI(nullURL);
+
+        //THEN: The output must be null
+        assertNull(output);
+    }
+
+    @Test
     public void getArticleInfoFromMalformedURLTest(){
         //GIVEN: The ElsevierArticleScrapper
         ElsevierArticleScrapper elsevierArticleScrapper = new ElsevierArticleScrapper(journalPrefixList);
