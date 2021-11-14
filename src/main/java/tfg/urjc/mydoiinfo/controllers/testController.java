@@ -24,6 +24,6 @@ public class testController {
 
     @RequestMapping("/")
     public void test() {
-        System.out.println(articleService.getArticleFromDOIList(Arrays.asList(DOIList)).toString());
+        System.out.println(articleService.getArticlesFromDOIList(Arrays.asList(DOIList)).toString());
     }
 }

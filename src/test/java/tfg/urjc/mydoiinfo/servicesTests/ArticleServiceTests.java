@@ -12,6 +12,9 @@ import tfg.urjc.mydoiinfo.domain.repositories.JCRRegistryRepository;
 import tfg.urjc.mydoiinfo.domain.repositories.JournalRepository;
 import tfg.urjc.mydoiinfo.services.ArticleService;
 
+import java.util.Arrays;
+import java.util.List;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
@@ -140,4 +143,99 @@ public class ArticleServiceTests {
         //AND: Output's Journal must be the Journal of the article with the correct doi stored in the database
         assertEquals(testJournal,output.getJcrRegistry().getJournal());
     }
+
+    @Test
+    public void getArticleFromNullDOIListTest(){
+        //GIVEN: A null list
+        List<String> nullDOIList = null;
+
+        //WHEN: The getArticlesFromDOIList is called with the null doi list
+        List<Article> output = articleService.getArticlesFromDOIList(nullDOIList);
+
+        //THEN: The output must be an empty list
+        assertTrue(output.isEmpty());
+    }
+
+    @Test
+    public void getArticleFromListWithNullDOITest(){
+        //GIVEN: A list with a null object
+        List<String> nullDOIList = Arrays.asList(new String[]{null});
+
+        //WHEN: The getArticlesFromDOIList is called with the doi list with a null object
+        List<Article> output = articleService.getArticlesFromDOIList(nullDOIList);
+
+        //THEN: The output must be an empty list
+        assertTrue(output.isEmpty());
+    }
+
+    @Test
+    public void getArticleFromListWithMalformedDOITest(){
+        //GIVEN: A list with a malformed doi
+        List<String> malformedDOIList = Arrays.asList(new String[]{"malformed"});
+
+        //WHEN: The getArticlesFromDOIList is called with the doi list with a malformed doi
+        List<Article> output = articleService.getArticlesFromDOIList(malformedDOIList);
+
+        //THEN: The output must be an empty list
+        assertTrue(output.isEmpty());
+    }
+
+    @Test
+    public void getArticleFromListWithErroneousDOITest(){
+        //GIVEN: A list with an erroneous doi
+        List<String> erroneousDOIList = Arrays.asList(new String[]{"http://www.erroneousDOI.com"});
+
+        //WHEN: The getArticlesFromDOIList is called with the doi list with an erroneous doi
+        List<Article> output = articleService.getArticlesFromDOIList(erroneousDOIList);
+
+        //THEN: The output must be an empty list
+        assertTrue(output.isEmpty());
+    }
+
+    @Test
+    public void getArticleFromListWithDOIWithStatusCodeDistinctTo200Test(){
+        //GIVEN: A list with a doi that returns 404 Not Found error
+        List<String> DOIList404 = Arrays.asList(new String[]{"http://www.google.com/erroneousDOI"});
+
+        //WHEN: The getArticlesFromDOIList is called with the doi list with a doi that returns 404
+        List<Article> output = articleService.getArticlesFromDOIList(DOIList404);
+
+        //THEN: The output must be an empty list
+        assertTrue(output.isEmpty());
+    }
+
+    @Test
+    public void getArticleFromListWIthCorrectDOITest(){
+        //GIVEN: A correct doi
+        String correctDOI = "https://doi.org/10.1126/science.370.6523.1384";
+
+        //AND: A list with a correct doi
+        List<String> doiList = Arrays.asList(new String[]{correctDOI});
+
+        //WHEN: The getArticlesFromDOIList is called with the doi list
+        List<Article> output = articleService.getArticlesFromDOIList(doiList);
+
+        //THEN: The output must be not empty
+        assertFalse(output.isEmpty());
+        //AND: The output must be a list that contains the article with the correct doi stored in the database
+        assertTrue(output.contains(articleRepository.findFirstByDOI(correctDOI)));
+    }
+
+    @Test
+    public void getArticleFromListWIthCorrectDOIAndIncorrectDOITest(){
+        //GIVEN: A correct doi
+        String correctDOI = "https://doi.org/10.1126/science.370.6523.1384";
+
+        //AND: A list with a correct doi and an incorrect doi
+        List<String> doiList = Arrays.asList(new String[]{correctDOI,"https://dsvfbnhsgfds.com"});
+
+        //WHEN: The getArticlesFromDOIList is called with the doi list
+        List<Article> output = articleService.getArticlesFromDOIList(doiList);
+
+        //THEN: The output must be not empty
+        assertFalse(output.isEmpty());
+        //AND: The output must be a list that contains the article with the correct doi stored in the database
+        assertTrue(output.contains(articleRepository.findFirstByDOI(correctDOI)));
+    }
+
 }

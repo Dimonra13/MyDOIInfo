@@ -46,12 +46,14 @@ public class ArticleService {
         return article;
     }
 
-    public List<Article> getArticleFromDOIList(List<String> doiList){
+    public List<Article> getArticlesFromDOIList(List<String> doiList){
         List<Article> output = new ArrayList<>();
-        for(String doi: doiList){
-            Article article = getArticleFromDOI(doi);
-            if (article != null)
-                output.add(article);
+        if(doiList!=null){
+            for(String doi: doiList){
+                Article article = getArticleFromDOI(doi);
+                if (article != null)
+                    output.add(article);
+            }
         }
         return output;
     }
