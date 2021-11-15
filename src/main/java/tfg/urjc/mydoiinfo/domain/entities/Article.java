@@ -22,6 +22,7 @@ public class Article {
     private List<String> authors;
     @ManyToOne
     private JCRRegistry jcrRegistry;
+    private String journalTitle;
     private String volumeInfo;
     private Date publicationDate;
     private String publicationDateText;
@@ -47,6 +48,7 @@ public class Article {
         this.volumeInfo = articleInfo.getVolumeInfo();
         this.publicationDate = articleInfo.getPublicationDate();
         this.publicationDateText = articleInfo.getPublicationDateText();
+        this.journalTitle = articleInfo.getJournal();
     }
 
     public void setId(Long id) {
@@ -113,6 +115,14 @@ public class Article {
         this.publicationDateText = publicationDateText;
     }
 
+    public String getJournalTitle() {
+        return journalTitle;
+    }
+
+    public void setJournalTitle(String journalTitle) {
+        this.journalTitle = journalTitle;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -137,6 +147,8 @@ public class Article {
             out = out + ", authors=" + authors.toString();
         if (jcrRegistry != null)
             out = out + ", jcrRegistry=" + jcrRegistry.toString();
+        else if(journalTitle!=null)
+            out = out + ", journal=" + journalTitle;
         if (volumeInfo != null)
             out = out + ", volumeInfo='" + volumeInfo + '\'';
         if (publicationDateText != null)
