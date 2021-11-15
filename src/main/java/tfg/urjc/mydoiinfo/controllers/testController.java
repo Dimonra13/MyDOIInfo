@@ -2,16 +2,23 @@ package tfg.urjc.mydoiinfo.controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
+import tfg.urjc.mydoiinfo.domain.entities.Article;
+import tfg.urjc.mydoiinfo.services.ArticleScrapperService;
 import tfg.urjc.mydoiinfo.services.ArticleService;
 
 import java.util.Arrays;
+import java.util.List;
 
 @Controller
 public class testController {
 
     @Autowired
     ArticleService articleService;
+
+    @Autowired
+    ArticleScrapperService articleScrapperService;
 
     public static final String[] DOIList = {
             //Springer, Elsevier, Science, IEEE, ACM
@@ -22,8 +29,10 @@ public class testController {
             "https://dl.acm.org/doi/10.1145/3470005","https://doi.org/10.1145/3488554","https://doi.org/10.1145/3483382.3483388"//,"https://doi.org/10.1145/3483382.3483384" //,"https://dl.acm.org/doi/10.1145/3476415.3476417" //,"https://dl.acm.org/doi/10.1145/1067268.1067287" //ACM
     };
 
-    @RequestMapping("/")
-    public void test() {
-        System.out.println(articleService.getArticlesFromDOIList(Arrays.asList(DOIList)).toString());
+    @RequestMapping("/test")
+    public String test(Model model) {
+        List<Article> articleList = articleService.getArticlesFromDOIList(Arrays.asList(DOIList));
+        model.addAttribute("articleList",articleList);
+        return "table";
     }
 }

@@ -54,7 +54,7 @@ public class ElsevierArticleScrapper extends JSOUPArticleScrapper {
             if(authors != null && authors.size()>0){
                 if(authors.size()==1){
                     authorList = new ArrayList<>();
-                    authorList.add(authors.first().text());
+                    authorList.add(authors.first().select(".given-name").text()+" "+authors.first().select(".surname").text());
                 }else {
                     authorList = authors.stream().map(elem->elem.select(".given-name").text()+" "+elem.select(".surname").text()).collect(Collectors.toList());
                 }

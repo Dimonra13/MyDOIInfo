@@ -62,7 +62,7 @@ public class JCRRegistry {
         this.journal = journal;
     }
 
-    public float getImpactFactor() {
+    public Float getImpactFactor() {
         return impactFactor;
     }
 
@@ -70,7 +70,7 @@ public class JCRRegistry {
         this.impactFactor = impactFactor;
     }
 
-    public float getImpactFactorFiveYear() {
+    public Float getImpactFactorFiveYear() {
         return impactFactorFiveYear;
     }
 

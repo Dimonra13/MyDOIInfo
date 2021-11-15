@@ -1,0 +1,30 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://thymeleaf.org">
+<head></head>
+<body>
+<table>
+    <tr>
+        <th>Title</th>
+        <th>DOI</th>
+        <th>Authors</th>
+        <th>Journal</th>
+        <th>Volume</th>
+        <th>Publication Date</th>
+        <th>Impact Factor</th>
+        <th>Impact Factor Five Years</th>
+        <th>Quartile</th>
+    </tr>
+    <tr th:each="article: ${articleList}">
+        <td th:text="${article?.title}"/>
+        <td th:text="${article?.DOI}"/>
+        <td th:text="${article?.authors}"/>
+        <td th:text="${article?.jcrRegistry?.journal?.title}"/>
+        <td th:text="${article?.volumeInfo}"/>
+        <td th:text="${article?.publicationDateText}"/>
+        <td th:text="${article?.jcrRegistry?.impactFactor}"/>
+        <td th:text="${article?.jcrRegistry?.impactFactorFiveYear}"/>
+        <td th:text="${article?.jcrRegistry?.quartile}"/>
+    </tr>
+</table>
+</body>
+</html>

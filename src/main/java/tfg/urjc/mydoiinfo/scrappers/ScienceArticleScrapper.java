@@ -35,7 +35,7 @@ public class ScienceArticleScrapper extends JSOUPArticleScrapper {
             if(authors != null && authors.size()>0){
                 if(authors.size()==1){
                     authorList = new ArrayList<>();
-                    authorList.add(authors.first().attr("title"));
+                    authorList.add(authors.first().text());
                 }else {
                     authorList = authors.stream().map(elem->elem.text()).collect(Collectors.toList());
                 }
