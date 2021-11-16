@@ -24,6 +24,10 @@ public class ACMArticleScrapper extends JSOUPArticleScrapper {
 
         if (httpStatusCode == 200) {
             Document document = getHtmlDocument(DOI);
+            if(document==null){
+                System.err.println("Error scrapping ACM DOI: "+DOI);
+                return null;
+            }
 
             Element titleElement = document.select("h1.citation__title").first();
             String title = null;
@@ -75,7 +79,7 @@ public class ACMArticleScrapper extends JSOUPArticleScrapper {
 
             return new ArticleInfo(title,DOI,authorList,journal,volumeInfo,date,dateString);
         } else {
-            System.err.println("ERROR: Status code is " + httpStatusCode);
+            System.err.println("ERROR: Status code is " + httpStatusCode + " scrapping DOI " + DOI);
             return null;
         }
     }

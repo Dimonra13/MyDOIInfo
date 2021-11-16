@@ -22,9 +22,10 @@ public abstract class ArticleScrapper {
     protected int getHTTPStatusCode(String url) {
         Response response = null;
         try {
-            response = Jsoup.connect(url).userAgent("Mozilla/5.0").timeout(100000).ignoreHttpErrors(true).execute();
+            response = Jsoup.connect(url).userAgent("Mozilla/5.0").timeout(1000000).ignoreHttpErrors(true).execute();
         } catch (Exception ex) {
             System.err.println("Exception obtaining the status code: " + ex.getMessage());
+            ex.printStackTrace();
             return 400;
         }
         if(response!=null)

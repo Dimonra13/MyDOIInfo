@@ -16,6 +16,7 @@
             <th>Impact Factor</th>
             <th>Impact Factor Five Years</th>
             <th>Quartile</th>
+            <th>Category Ranking List</th>
         </tr>
     </thead>
     <tbody>
@@ -29,6 +30,13 @@
             <td th:text="${article?.jcrRegistry?.impactFactor}"/>
             <td th:text="${article?.jcrRegistry?.impactFactorFiveYear}"/>
             <td th:text="${article?.jcrRegistry?.quartile}"/>
+            <td>
+                <p th:each="categoryRanking: ${article?.jcrRegistry?.categoryRankingList}">
+                    <span th:text="${'Category: ' + categoryRanking?.name + ','}"></span>
+                    <span th:text="${'Ranking: ' + categoryRanking?.ranking + ','}"></span>
+                    <span th:text="${'Field: ' + categoryRanking?.journalField}"></span>
+                </p>
+            </td>
         </tr>
     </tbody>
 </table>

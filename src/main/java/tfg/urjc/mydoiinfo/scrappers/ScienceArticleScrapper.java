@@ -24,6 +24,10 @@ public class ScienceArticleScrapper extends JSOUPArticleScrapper {
 
         if (httpStatusCode == 200) {
             Document document = getHtmlDocument(DOI);
+            if(document==null){
+                System.err.println("Error scrapping Science DOI: "+DOI);
+                return null;
+            }
 
             Element titleElement = document.select("h1[property=\"name\"]").first();
             String title = null;

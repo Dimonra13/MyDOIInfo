@@ -24,6 +24,10 @@ public class SpringerArticleScrapper extends JSOUPArticleScrapper {
 
         if (httpStatusCode == 200) {
             Document document = getHtmlDocument(DOI);
+            if(document==null){
+                System.err.println("Error scrapping Springer DOI: "+DOI);
+                return null;
+            }
 
             Element titleElement = document.select("h1.c-article-title").first();
             String title = null;

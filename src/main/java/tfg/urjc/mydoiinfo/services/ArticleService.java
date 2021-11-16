@@ -33,9 +33,12 @@ public class ArticleService {
          */
         if(article==null || article.getJcrRegistry() == null){
             ArticleInfo articleInfo = articleScrapperService.getArticleInfoFromDOI(doi);
-            if(articleInfo == null)
-                return null;
-            else {
+            if(articleInfo == null){
+                if(article!=null)
+                    return article;
+                else
+                    return null;
+            } else {
                 article = new Article(articleInfo);
                 Integer year = (articleInfo.getPublicationYear() != null) ? articleInfo.getPublicationYear() : articleInfo.getPublicationDateYear();
                 JCRRegistry jcrRegistry = jcrRegistryRepository.findFirstByYearAndJournalTitleIgnoreCase(year,articleInfo.getJournal());

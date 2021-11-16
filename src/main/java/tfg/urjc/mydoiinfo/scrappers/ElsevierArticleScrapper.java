@@ -41,8 +41,10 @@ public class ElsevierArticleScrapper extends JSOUPArticleScrapper {
         if (httpStatusCode == 200) {
 
             Document document = getHtmlDocument(forgeRedirectUrl(DOI));
-            if(document == null)
+            if(document==null){
+                System.err.println("Error scrapping Elsevier DOI: "+DOI);
                 return null;
+            }
 
             Element titleElement = document.select("span.title-text").first();
             String title = null;
