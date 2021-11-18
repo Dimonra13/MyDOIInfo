@@ -2,10 +2,7 @@ package tfg.urjc.mydoiinfo.services;
 
 import org.springframework.stereotype.Service;
 import tfg.urjc.mydoiinfo.scrappers.ArticleInfo;
-import tfg.urjc.mydoiinfo.scrappers.*;
-
-import java.util.ArrayList;
-import java.util.List;
+import tfg.urjc.mydoiinfo.scrappers.articleScrappers.*;
 
 @Service
 public class ArticleScrapperService {

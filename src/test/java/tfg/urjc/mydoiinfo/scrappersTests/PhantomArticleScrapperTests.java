@@ -3,7 +3,7 @@ package tfg.urjc.mydoiinfo.scrappersTests;
 import org.junit.jupiter.api.Test;
 import org.openqa.selenium.phantomjs.PhantomJSDriver;
 import org.springframework.boot.test.context.SpringBootTest;
-import tfg.urjc.mydoiinfo.scrappers.IEEEArticleScrapper;
+import tfg.urjc.mydoiinfo.scrappers.articleScrappers.IEEEArticleScrapper;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 @SpringBootTest

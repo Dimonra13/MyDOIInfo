@@ -3,7 +3,7 @@ package tfg.urjc.mydoiinfo.scrappersTests;
 import org.jsoup.nodes.Document;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
-import tfg.urjc.mydoiinfo.scrappers.ACMArticleScrapper;
+import tfg.urjc.mydoiinfo.scrappers.articleScrappers.ACMArticleScrapper;
 
 import static org.junit.jupiter.api.Assertions.*;
 

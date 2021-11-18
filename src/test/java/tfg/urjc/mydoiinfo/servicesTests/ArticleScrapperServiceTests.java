@@ -3,7 +3,8 @@ package tfg.urjc.mydoiinfo.servicesTests;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import tfg.urjc.mydoiinfo.scrappers.*;
+import tfg.urjc.mydoiinfo.scrappers.ArticleInfo;
+import tfg.urjc.mydoiinfo.scrappers.articleScrappers.*;
 import tfg.urjc.mydoiinfo.services.ArticleScrapperService;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;

@@ -1,4 +1,4 @@
-package tfg.urjc.mydoiinfo.scrappers;
+package tfg.urjc.mydoiinfo.scrappers.articleScrappers;
 
 import org.openqa.selenium.phantomjs.PhantomJSDriver;
 import org.openqa.selenium.phantomjs.PhantomJSDriverService;

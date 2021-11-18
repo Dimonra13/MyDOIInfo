@@ -1,13 +1,9 @@
-package tfg.urjc.mydoiinfo.scrappers;
+package tfg.urjc.mydoiinfo.scrappers.citationsScrappers;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 
-public abstract class JSOUPArticleScrapper extends ArticleScrapper {
-
-    public JSOUPArticleScrapper(String[] journalPrefixList) {
-        super(journalPrefixList);
-    }
+public abstract class JSOUPCitationsScrapper extends CitationsScrapper {
 
     protected Document getHtmlDocument(String url) {
         Document document = null;

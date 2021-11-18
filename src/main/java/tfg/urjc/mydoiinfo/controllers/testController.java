@@ -5,6 +5,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import tfg.urjc.mydoiinfo.domain.entities.Article;
+import tfg.urjc.mydoiinfo.scrappers.ArticleInfo;
+import tfg.urjc.mydoiinfo.scrappers.citationsScrappers.ScholarCitationsScrapper;
 import tfg.urjc.mydoiinfo.services.ArticleScrapperService;
 import tfg.urjc.mydoiinfo.services.ArticleService;
 
@@ -31,6 +33,9 @@ public class testController {
 
     @RequestMapping("/test")
     public String test(Model model) {
+        /*ArticleInfo articleInfo = articleScrapperService.getArticleInfoFromDOI("https://doi.org/10.1016/j.ecoleng.2014.09.079");
+        ScholarCitationsScrapper scholarCitationsScrapper = new ScholarCitationsScrapper();
+        scholarCitationsScrapper.getCitationsFromArticleInfo(articleInfo);*/
         List<Article> articleList = articleService.getArticlesFromDOIList(Arrays.asList(DOIList));
         model.addAttribute("articleList",articleList);
         return "table";

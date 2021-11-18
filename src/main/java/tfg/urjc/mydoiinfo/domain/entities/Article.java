@@ -24,6 +24,7 @@ public class Article {
     private JCRRegistry jcrRegistry;
     private String journalTitle;
     private String volumeInfo;
+    Integer citations;
     private Date publicationDate;
     private String publicationDateText;
 
@@ -99,6 +100,14 @@ public class Article {
         this.volumeInfo = volumeInfo;
     }
 
+    public Integer getCitations() {
+        return citations;
+    }
+
+    public void setCitations(Integer citations) {
+        this.citations = citations;
+    }
+
     public Date getPublicationDate() {
         return publicationDate;
     }
@@ -151,6 +160,8 @@ public class Article {
             out = out + ", journal=" + journalTitle;
         if (volumeInfo != null)
             out = out + ", volumeInfo='" + volumeInfo + '\'';
+        if(citations != null)
+            out = out + ", citations=" + citations;
         if (publicationDateText != null)
             out = out + ", publicationDate=" + publicationDateText;
         return out + '}';

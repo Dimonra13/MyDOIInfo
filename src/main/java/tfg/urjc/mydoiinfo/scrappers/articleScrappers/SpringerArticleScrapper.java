@@ -1,8 +1,9 @@
-package tfg.urjc.mydoiinfo.scrappers;
+package tfg.urjc.mydoiinfo.scrappers.articleScrappers;
 
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
+import tfg.urjc.mydoiinfo.scrappers.ArticleInfo;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -86,7 +87,7 @@ public class SpringerArticleScrapper extends JSOUPArticleScrapper {
 
             return new ArticleInfo(title,DOI,authorList,journal,volumeInfo,date,dateString);
         } else {
-            System.err.println("ERROR: Status code is " + httpStatusCode);
+            System.err.println("ERROR: Status code is " + httpStatusCode + " scrapping DOI " + DOI);
             return null;
         }
     }

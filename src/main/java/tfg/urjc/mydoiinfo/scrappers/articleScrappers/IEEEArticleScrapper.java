@@ -1,8 +1,9 @@
-package tfg.urjc.mydoiinfo.scrappers;
+package tfg.urjc.mydoiinfo.scrappers.articleScrappers;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.phantomjs.PhantomJSDriver;
+import tfg.urjc.mydoiinfo.scrappers.ArticleInfo;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -116,7 +117,7 @@ public class IEEEArticleScrapper extends PhantomArticleScrapper {
 
             return new ArticleInfo(title, DOI, authorList, journal, volumeInfo, date, dateString);
         } else {
-            System.err.println("ERROR: Status code is " + httpStatusCode);
+            System.err.println("ERROR: Status code is " + httpStatusCode + " scrapping DOI " + DOI);
             return null;
         }
     }

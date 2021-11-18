@@ -1,8 +1,9 @@
-package tfg.urjc.mydoiinfo.scrappers;
+package tfg.urjc.mydoiinfo.scrappers.articleScrappers;
 
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
+import tfg.urjc.mydoiinfo.scrappers.ArticleInfo;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;

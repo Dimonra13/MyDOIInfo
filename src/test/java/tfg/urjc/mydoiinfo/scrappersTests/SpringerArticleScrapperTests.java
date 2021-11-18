@@ -3,8 +3,7 @@ package tfg.urjc.mydoiinfo.scrappersTests;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 import tfg.urjc.mydoiinfo.scrappers.ArticleInfo;
-import tfg.urjc.mydoiinfo.scrappers.ScienceArticleScrapper;
-import tfg.urjc.mydoiinfo.scrappers.SpringerArticleScrapper;
+import tfg.urjc.mydoiinfo.scrappers.articleScrappers.SpringerArticleScrapper;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
