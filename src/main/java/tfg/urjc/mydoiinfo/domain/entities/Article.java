@@ -24,7 +24,7 @@ public class Article {
     private JCRRegistry jcrRegistry;
     private String journalTitle;
     private String volumeInfo;
-    Integer citations;
+    private Integer citations;
     private Date publicationDate;
     private String publicationDateText;
 

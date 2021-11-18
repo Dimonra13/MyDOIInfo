@@ -2,7 +2,7 @@ package tfg.urjc.mydoiinfo.scrappers.citationsScrappers;
 
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
-import tfg.urjc.mydoiinfo.scrappers.ArticleInfo;
+import tfg.urjc.mydoiinfo.domain.entities.Article;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
@@ -12,14 +12,14 @@ public class ScholarCitationsScrapper extends JSOUPCitationsScrapper{
 
     private final String scholarBaseUrl="https://scholar.google.com/scholar?hl=es&q=";
 
-    private String forgeEncodedUrl(ArticleInfo articleInfo) {
-        if(articleInfo.getTitle()==null)
+    private String forgeEncodedUrl(Article article) {
+        if(article.getTitle()==null)
             return null;
-        String searchUrl = articleInfo.getTitle() + " ";
-        if(articleInfo.getJournal()!=null)
-            searchUrl = searchUrl + articleInfo.getJournal() + " ";
-        if(articleInfo.getAuthors()!=null && articleInfo.getAuthors().size()>0)
-            searchUrl = searchUrl + articleInfo.getAuthors().get(0) + " ";
+        String searchUrl = article.getTitle() + " ";
+        if(article.getJournalTitle()!=null)
+            searchUrl = searchUrl + article.getJournalTitle() + " ";
+        if(article.getAuthors()!=null && article.getAuthors().size()>0)
+            searchUrl = searchUrl + article.getAuthors().get(0) + " ";
         String encodedUrl = null;
         try {
             encodedUrl = URLEncoder.encode(searchUrl, StandardCharsets.UTF_8.toString());
@@ -31,10 +31,10 @@ public class ScholarCitationsScrapper extends JSOUPCitationsScrapper{
     }
 
     @Override
-    public Integer getCitationsFromArticleInfo(ArticleInfo articleInfo) {
-        if(articleInfo == null)
+    public Integer getCitationsFromArticle(Article article) {
+        if(article == null)
             return null;
-        String encodedUrl = forgeEncodedUrl(articleInfo);
+        String encodedUrl = forgeEncodedUrl(article);
         if (encodedUrl == null)
             return null;
         int httpStatusCode = getHTTPStatusCode(encodedUrl);
@@ -42,7 +42,7 @@ public class ScholarCitationsScrapper extends JSOUPCitationsScrapper{
         if (httpStatusCode == 200) {
             Document document = getHtmlDocument(encodedUrl);
             if(document==null){
-                System.err.println("Error scrapping citations for article "+articleInfo.getTitle());
+                System.err.println("Error scrapping citations for article "+article.getTitle());
                 return null;
             }
             Element searchResult = document.select("div.gs_r.gs_or.gs_scl").first();
@@ -55,7 +55,7 @@ public class ScholarCitationsScrapper extends JSOUPCitationsScrapper{
                 } else {
                    String title = titleElement.text();
                    //Check that the element to scrap is the correct one
-                   if(articleInfo.getTitle().equalsIgnoreCase(title) || articleInfo.getTitle().contains(title) || title.contains(articleInfo.getTitle())){
+                   if(article.getTitle().equalsIgnoreCase(title) || article.getTitle().contains(title) || title.contains(article.getTitle())){
                         Element citationsElement = searchResult.select("a[href^=\"/scholar?cites\"] ").first();
                         if(citationsElement==null){
                             return null;
@@ -75,7 +75,7 @@ public class ScholarCitationsScrapper extends JSOUPCitationsScrapper{
                 }
             }
         } else {
-            System.err.println("ERROR: Status code is " + httpStatusCode + " scrapping citations for article "+articleInfo.getTitle());
+            System.err.println("ERROR: Status code is " + httpStatusCode + " scrapping citations for article "+article.getTitle());
             return null;
         }
     }

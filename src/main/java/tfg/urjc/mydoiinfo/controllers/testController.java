@@ -35,7 +35,7 @@ public class testController {
     public String test(Model model) {
         /*ArticleInfo articleInfo = articleScrapperService.getArticleInfoFromDOI("https://doi.org/10.1016/j.ecoleng.2014.09.079");
         ScholarCitationsScrapper scholarCitationsScrapper = new ScholarCitationsScrapper();
-        scholarCitationsScrapper.getCitationsFromArticleInfo(articleInfo);*/
+        scholarCitationsScrapper.getCitationsFromArticle(new Article(articleInfo));*/
         List<Article> articleList = articleService.getArticlesFromDOIList(Arrays.asList(DOIList));
         model.addAttribute("articleList",articleList);
         return "table";
