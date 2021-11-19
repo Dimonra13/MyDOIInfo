@@ -10,6 +10,7 @@
             <th>Title</th>
             <th>DOI</th>
             <th>Authors</th>
+            <th>Citations</th>
             <th>Journal</th>
             <th>Volume</th>
             <th>Publication Date</th>
@@ -24,6 +25,7 @@
             <td th:text="${article?.title}"/>
             <td th:text="${article?.DOI}"/>
             <td th:text="${article?.authors}"/>
+            <td th:text="${article?.citations}"/>
             <td th:text="${article?.jcrRegistry != null} ? ${article?.jcrRegistry?.journal?.title} : ${article?.journalTitle}"/>
             <td th:text="${article?.volumeInfo}"/>
             <td th:text="${article?.publicationDateText}"/>

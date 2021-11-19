@@ -10,6 +10,11 @@ import java.nio.charset.StandardCharsets;
 
 public class ScholarCitationsScrapper extends JSOUPCitationsScrapper{
 
+    /*
+    Important: Although the code present in this class works correctly, its use is not recommended since it may lead to
+    the banning of the IP address. It is kept in the code as an example and model for the development of possible new
+    JSOUPCitationScrappers.
+     */
     private final String scholarBaseUrl="https://scholar.google.com/scholar?hl=es&q=";
 
     private String forgeEncodedUrl(Article article) {
@@ -31,7 +36,7 @@ public class ScholarCitationsScrapper extends JSOUPCitationsScrapper{
     }
 
     @Override
-    public Integer getCitationsFromArticle(Article article) {
+    public Long getCitationsFromArticle(Article article) {
         if(article == null)
             return null;
         String encodedUrl = forgeEncodedUrl(article);
@@ -61,9 +66,9 @@ public class ScholarCitationsScrapper extends JSOUPCitationsScrapper{
                             return null;
                         } else {
                             String citations = citationsElement.text().replace("Citado por ","");
-                            Integer citationNumber = null;
+                            Long citationNumber = null;
                             try {
-                                citationNumber = Integer.parseInt(citations);
+                                citationNumber = Long.parseLong(citations);
                             }catch (Exception exception){
                                 exception.printStackTrace();
                             }

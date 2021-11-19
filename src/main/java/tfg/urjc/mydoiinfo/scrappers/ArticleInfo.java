@@ -102,11 +102,11 @@ public class ArticleInfo {
         if (this == o) return true;
         if (!(o instanceof ArticleInfo)) return false;
         ArticleInfo that = (ArticleInfo) o;
-        return Objects.equals(getTitle(), that.getTitle()) && Objects.equals(getDOI(), that.getDOI()) && Objects.equals(getAuthors(), that.getAuthors()) && Objects.equals(getJournal(), that.getJournal()) && Objects.equals(getVolumeInfo(), that.getVolumeInfo()) && Objects.equals(getPublicationDate(), that.getPublicationDate()) && Objects.equals(getPublicationDateText(), that.getPublicationDateText()) && Objects.equals(getPublicationYear(), that.getPublicationYear());
+        return Objects.equals(getTitle(), that.getTitle()) && Objects.equals(getDOI(), that.getDOI()) && Objects.equals(getJournal(), that.getJournal()) && Objects.equals(getVolumeInfo(), that.getVolumeInfo()) && Objects.equals(getPublicationDate(), that.getPublicationDate()) && Objects.equals(getPublicationDateText(), that.getPublicationDateText()) && Objects.equals(getPublicationYear(), that.getPublicationYear());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(getTitle(), getDOI(), getAuthors(), getJournal(), getVolumeInfo(), getPublicationDate(), getPublicationDateText(), getPublicationYear());
+        return Objects.hash(getTitle(), getDOI(), getJournal(), getVolumeInfo(), getPublicationDate(), getPublicationDateText(), getPublicationYear());
     }
 }

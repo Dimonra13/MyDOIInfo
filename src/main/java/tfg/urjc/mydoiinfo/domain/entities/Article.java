@@ -24,7 +24,7 @@ public class Article {
     private JCRRegistry jcrRegistry;
     private String journalTitle;
     private String volumeInfo;
-    private Integer citations;
+    private Long citations;
     private Date publicationDate;
     private String publicationDateText;
 
@@ -100,11 +100,11 @@ public class Article {
         this.volumeInfo = volumeInfo;
     }
 
-    public Integer getCitations() {
+    public Long getCitations() {
         return citations;
     }
 
-    public void setCitations(Integer citations) {
+    public void setCitations(Long citations) {
         this.citations = citations;
     }
 
@@ -137,12 +137,12 @@ public class Article {
         if (this == o) return true;
         if (!(o instanceof Article)) return false;
         Article article = (Article) o;
-        return Objects.equals(DOI, article.DOI);
+        return Objects.equals(getTitle(), article.getTitle()) && Objects.equals(getDOI(), article.getDOI()) && Objects.equals(getJournalTitle(), article.getJournalTitle()) && Objects.equals(getVolumeInfo(), article.getVolumeInfo()) && Objects.equals(getPublicationDate(), article.getPublicationDate()) && Objects.equals(getPublicationDateText(), article.getPublicationDateText());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(DOI);
+        return Objects.hash(getTitle(), getDOI(), getJournalTitle(), getVolumeInfo(), getPublicationDate(), getPublicationDateText());
     }
 
     @Override

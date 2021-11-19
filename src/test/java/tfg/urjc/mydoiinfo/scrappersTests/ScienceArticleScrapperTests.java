@@ -92,7 +92,7 @@ public class ScienceArticleScrapperTests {
                 "J. Arballo", "S. Atreya", "H. N. Becker", "J. Bloxham", "S. Brown", "L. N. Fletcher", "E. Galanti", "S. Gulkis", "M. Janssen", "A. Ingersoll",
                 "J. L. Lunine", "S. Misra", "P. Steffes", "D. Stevenson", "J. H. Waite", "R. K. Yadav", "Z. Zhang"});
         ArticleInfo expectedOutput = new ArticleInfo("Microwave observations reveal the deep extent and structure of Jupiter’s atmospheric vortices","https://doi.org/10.1126/science.abf1015",
-                authors,"Science","First Release",date,"28 Oct 2021");
+                authors,"Science","Vol 374, Issue 6570",date,"28 Oct 2021");
 
         //WHEN: The getArticleInfoFromDOI is called with the correct Science url
         ArticleInfo output = scienceArticleScrapper.getArticleInfoFromDOI(correctScience);
