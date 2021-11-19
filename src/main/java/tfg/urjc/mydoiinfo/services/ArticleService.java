@@ -66,21 +66,23 @@ public class ArticleService {
                     return null;
                 }
             } else {
-                //Create the new Article
-                Article newArticle = new Article(articleInfo);
+                //If the article is null, create a new one
+                if(article==null){
+                    article = new Article(articleInfo);
+                }
                 //Scrap the citations for the article
                 Long citations = citationsScrapperService.getCitationsFromArticleInfo(articleInfo);
                 //If the scrapped citations are null but the article is not null, then the original article citations
                 //are used for the updated article
                 if(citations==null && article!=null)
                     citations=article.getCitations();
-                newArticle.setCitations(citations);
+                article.setCitations(citations);
                 //Find the JCRRegistry for the article
                 Integer year = (articleInfo.getPublicationYear() != null) ? articleInfo.getPublicationYear() : articleInfo.getPublicationDateYear();
                 JCRRegistry jcrRegistry = jcrRegistryRepository.findFirstByYearAndJournalTitleIgnoreCase(year,articleInfo.getJournal());
-                newArticle.setJcrRegistry(jcrRegistry);
+                article.setJcrRegistry(jcrRegistry);
                 //Save the article
-                article = articleRepository.save(newArticle);
+                article = articleRepository.save(article);
             }
         } else {
             //Even if the article is already in the database, it is necessary to scrap the number of citations to keep it up to date
