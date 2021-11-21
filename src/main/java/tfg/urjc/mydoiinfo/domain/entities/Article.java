@@ -54,6 +54,7 @@ public class Article {
         this.publicationDate = articleInfo.getPublicationDate();
         this.publicationDateText = articleInfo.getPublicationDateText();
         this.journalTitle = articleInfo.getJournal();
+        this.conferenceAcronym = articleInfo.getConferenceAcronym();
     }
 
     public void setId(Long id) {
@@ -134,6 +135,22 @@ public class Article {
 
     public void setJournalTitle(String journalTitle) {
         this.journalTitle = journalTitle;
+    }
+
+    public String getConferenceAcronym() {
+        return conferenceAcronym;
+    }
+
+    public void setConferenceAcronym(String conferenceAcronym) {
+        this.conferenceAcronym = conferenceAcronym;
+    }
+
+    public Conference getConference() {
+        return conference;
+    }
+
+    public void setConference(Conference conference) {
+        this.conference = conference;
     }
 
     @Override

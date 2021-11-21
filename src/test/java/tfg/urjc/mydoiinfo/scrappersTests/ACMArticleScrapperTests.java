@@ -12,8 +12,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Locale;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
 public class ACMArticleScrapperTests {
@@ -100,6 +99,24 @@ public class ACMArticleScrapperTests {
 
         //THEN: The output must the same as the expectedOutput
         assertEquals(expectedOutput,output);
+    }
+
+    @Test
+    public void getArticleInfoFromCorrectConferenceURLTest(){
+        //GIVEN: The ACMArticleScrapper
+        ACMArticleScrapper acmArticleScrapper = new ACMArticleScrapper(journalPrefixList);
+        //AND: A correct url from ACM (article publicised in a conference)
+        String correctACM = "https://doi.org/10.1145/3372297.3417280";
+        //AND: The expected output conference acronym
+        String expectedOutput = "CCS";
+
+        //WHEN: The getArticleInfoFromDOI is called with the correct ACM url
+        ArticleInfo output = acmArticleScrapper.getArticleInfoFromDOI(correctACM);
+
+        //THEN: The output must not null
+        assertNotNull(output);
+        //AND: The output conference acronym must be the same as the expectedOutput
+        assertEquals(expectedOutput,output.getConferenceAcronym());
     }
 
 }

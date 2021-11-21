@@ -12,8 +12,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
 public class IEEEArticleScrapperTests {
@@ -99,6 +98,24 @@ public class IEEEArticleScrapperTests {
 
         //THEN: The output must the same as the expectedOutput
         assertEquals(expectedOutput,output);
+    }
+
+    @Test
+    public void getArticleInfoFromCorrectConferenceURLTest(){
+        //GIVEN: The IEEEArticleScrapper
+        IEEEArticleScrapper ieeeArticleScrapper = new IEEEArticleScrapper(journalPrefixList);
+        //AND: A correct url from IEEE (article publicised in a conference)
+        String correctIEEE = "https://doi.org/10.1109/ISCC50000.2020.9219712";
+        //AND: The expected output conference acronym
+        String expectedOutput = "ISCC";
+
+        //WHEN: The getArticleInfoFromDOI is called with the correct IEEE url
+        ArticleInfo output = ieeeArticleScrapper.getArticleInfoFromDOI(correctIEEE);
+
+        //THEN: The output must not null
+        assertNotNull(output);
+        //AND: The output conference acronym must be the same as the expectedOutput
+        assertEquals(expectedOutput,output.getConferenceAcronym());
     }
 
 }

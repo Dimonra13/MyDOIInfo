@@ -57,7 +57,10 @@ public class ACMArticleScrapper extends JSOUPArticleScrapper {
                     volumeInfo = elemVolume.text();
                 Element elemPages = document.select("span.epub-section__pagerange").first();
                 if(elemPages != null)
-                    volumeInfo = volumeInfo + ", " + elemPages.text();
+                    if (volumeInfo != null)
+                        volumeInfo = volumeInfo + ", " + elemPages.text();
+                    else
+                        volumeInfo = elemPages.text();
             }
 
             Element dateElement = document.select("span.CitationCoverDate").first();
@@ -78,7 +81,12 @@ public class ACMArticleScrapper extends JSOUPArticleScrapper {
                 }
             }
 
-            return new ArticleInfo(title,DOI,authorList,journal,volumeInfo,date,dateString);
+            Element acronymElement = document.select("nav.article__breadcrumbs > a[href^=\"/conference/\"]").first();
+            String acronym = null;
+            if (acronymElement != null){
+                acronym = acronymElement.text();
+            }
+            return new ArticleInfo(title,DOI,authorList,journal,volumeInfo,date,dateString,acronym);
         } else {
             System.err.println("ERROR: Status code is " + httpStatusCode + " scrapping DOI " + DOI);
             return null;

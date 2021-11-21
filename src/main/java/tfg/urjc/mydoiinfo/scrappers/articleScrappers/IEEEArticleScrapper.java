@@ -71,6 +71,13 @@ public class IEEEArticleScrapper extends PhantomArticleScrapper {
                 System.err.println(exception.getMessage());
             }
 
+            String conferenceAcronym = null;
+            if (journal!=null){
+                String[] splitedJournal = journal.split("\\(");
+                if (splitedJournal.length>=2){
+                    conferenceAcronym=splitedJournal[splitedJournal.length-1].replace(")","");
+                }
+            }
             WebElement dateElement;
             Date date = null;
             String dateString = null;
@@ -115,7 +122,7 @@ public class IEEEArticleScrapper extends PhantomArticleScrapper {
 
             driver.quit();
 
-            return new ArticleInfo(title, DOI, authorList, journal, volumeInfo, date, dateString);
+            return new ArticleInfo(title, DOI, authorList, journal, volumeInfo, date, dateString,conferenceAcronym);
         } else {
             System.err.println("ERROR: Status code is " + httpStatusCode + " scrapping DOI " + DOI);
             return null;

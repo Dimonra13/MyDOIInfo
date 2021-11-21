@@ -26,6 +26,9 @@ public class ArticleService {
     @Autowired
     CitationsScrapperService citationsScrapperService;
 
+    @Autowired
+    ConferenceService conferenceService;
+
     public Article updateCitationsForArticle(Article article){
         if(article==null)
             return null;
@@ -53,10 +56,10 @@ public class ArticleService {
         Article article = articleRepository.findFirstByDOI(doi);
         /*
         Scrap the article if it is not in the database (new article) or if it is in the database but its JCRResgistry
-        is null (it may be that the JCR data for the corresponding year was not available at the time it was stored in
-        the database but may be available now).
+        and conference are null (it may be that the JCR data for the corresponding year or the conference data was not
+        available at the time it was stored in the database but may be available now).
          */
-        if(article==null || article.getJcrRegistry() == null){
+        if(article==null || (article.getJcrRegistry() == null && article.getConference() == null)){
             ArticleInfo articleInfo = articleScrapperService.getArticleInfoFromDOI(doi);
             if(articleInfo == null){
                 if(article!=null){
@@ -81,6 +84,8 @@ public class ArticleService {
                 Integer year = (articleInfo.getPublicationYear() != null) ? articleInfo.getPublicationYear() : articleInfo.getPublicationDateYear();
                 JCRRegistry jcrRegistry = jcrRegistryRepository.findFirstByYearAndJournalTitleIgnoreCase(year,articleInfo.getJournal());
                 article.setJcrRegistry(jcrRegistry);
+                if(article.getJcrRegistry()==null)
+                    article.setConference(conferenceService.findConference(article.getConferenceAcronym(),article.getJournalTitle()));
                 //Save the article
                 article = articleRepository.save(article);
             }
