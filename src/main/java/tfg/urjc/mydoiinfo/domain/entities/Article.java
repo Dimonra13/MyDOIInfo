@@ -27,12 +27,15 @@ public class Article {
     private Long citations;
     private Date publicationDate;
     private String publicationDateText;
+    private String conferenceAcronym;
+    @ManyToOne
+    private Conference conference;
 
     public Article() {
         authors = new ArrayList<>();
     }
 
-    public Article(String title, String DOI, List<String> authors, JCRRegistry jcrRegistry, String volumeInfo, Date publicationDate, String publicationDateText) {
+    public Article(String title, String DOI, List<String> authors, JCRRegistry jcrRegistry, String volumeInfo, Date publicationDate, String publicationDateText, String conferenceAcronym) {
         this.title = title;
         this.DOI = DOI;
         this.authors = (authors != null) ? authors : new ArrayList<>();
@@ -40,6 +43,7 @@ public class Article {
         this.volumeInfo = volumeInfo;
         this.publicationDate = publicationDate;
         this.publicationDateText = publicationDateText;
+        this.conferenceAcronym = conferenceAcronym;
     }
 
     public Article(ArticleInfo articleInfo) {

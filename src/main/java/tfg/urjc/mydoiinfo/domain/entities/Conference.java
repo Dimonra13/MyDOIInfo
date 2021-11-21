@@ -13,6 +13,7 @@ public class Conference {
     @GeneratedValue
     private Long id;
     private String title;
+    private String acronym;
     private Integer ggsClass;
     private String ggsRating;
     private String coreClass;
@@ -21,8 +22,9 @@ public class Conference {
     public Conference() {
     }
 
-    public Conference(String title, Integer ggsClass, String ggsRating, String coreClass, Date updatedDate) {
+    public Conference(String title, String acronym,Integer ggsClass, String ggsRating, String coreClass, Date updatedDate) {
         this.title = title;
+        this.acronym = acronym;
         this.ggsClass = ggsClass;
         this.ggsRating = ggsRating;
         this.coreClass = coreClass;
@@ -43,6 +45,14 @@ public class Conference {
 
     public void setTitle(String title) {
         this.title = title;
+    }
+
+    public String getAcronym() {
+        return acronym;
+    }
+
+    public void setAcronym(String acronym) {
+        this.acronym = acronym;
     }
 
     public Integer getGgsClass() {
@@ -82,11 +92,11 @@ public class Conference {
         if (this == o) return true;
         if (!(o instanceof Conference)) return false;
         Conference that = (Conference) o;
-        return Objects.equals(getTitle(), that.getTitle()) && Objects.equals(getGgsClass(), that.getGgsClass()) && Objects.equals(getGgsRating(), that.getGgsRating()) && Objects.equals(getCoreClass(), that.getCoreClass()) && Objects.equals(getUpdatedDate(), that.getUpdatedDate());
+        return Objects.equals(getTitle(), that.getTitle()) && Objects.equals(getAcronym(), that.getAcronym()) && Objects.equals(getGgsClass(), that.getGgsClass()) && Objects.equals(getGgsRating(), that.getGgsRating()) && Objects.equals(getCoreClass(), that.getCoreClass()) && Objects.equals(getUpdatedDate(), that.getUpdatedDate());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(getTitle(), getGgsClass(), getGgsRating(), getCoreClass(), getUpdatedDate());
+        return Objects.hash(getTitle(), getAcronym(), getGgsClass(), getGgsRating(), getCoreClass(), getUpdatedDate());
     }
 }

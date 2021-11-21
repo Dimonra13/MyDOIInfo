@@ -79,6 +79,10 @@ public class ConferenceDataReaderService {
             //If the title is null, empty or Work in Progress skip this row
             if (title==null || title.equals("") || title.equals("Work in Progress"))
                 continue;
+            //Read the Conference Acronym
+            String acronym = null;
+            if(currentRow.getCell(2)!=null && currentRow.getCell(2).getCellType().name().equals("STRING"))
+                acronym=currentRow.getCell(2).getStringCellValue();
             //Read the Conference GGSClass
             Integer gssClass = null;
             if(currentRow.getCell(3)!=null && currentRow.getCell(3).getCellType().name().equals("NUMERIC")){
@@ -97,12 +101,13 @@ public class ConferenceDataReaderService {
             Conference conference = conferenceRepository.findFirstByTitleIgnoreCase(title);
             //If the conference already exists update the data, else create a new conference
             if(conference!=null){
+                conference.setAcronym(acronym);
                 conference.setGgsClass(gssClass);
                 conference.setGgsRating(gssRating);
                 conference.setCoreClass(coreClass);
                 conference.setUpdatedDate(updateDate);
             } else {
-                conference = new Conference(title,gssClass,gssRating,coreClass,updateDate);
+                conference = new Conference(title,acronym,gssClass,gssRating,coreClass,updateDate);
             }
             //Save the new/updated conference
             conferenceRepository.save(conference);

@@ -10,6 +10,7 @@ import java.util.Date;
 public interface ConferenceRepository extends JpaRepository<Conference, Long> {
 
     public Conference findFirstByTitleIgnoreCase(String title);
+    public Conference findFirstByAcronymIgnoreCase(String acronym);
     public Conference findFirstByUpdatedDate(Date updateDate);
     public Conference findFirstByUpdatedDateAfter(Date updateDate);
 }

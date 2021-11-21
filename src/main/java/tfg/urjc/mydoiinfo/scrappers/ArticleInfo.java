@@ -11,7 +11,8 @@ public class ArticleInfo {
     private String volumeInfo;
     private Date publicationDate;
     private String publicationDateText;
-    Integer publicationYear;
+    private Integer publicationYear;
+    private String conferenceAcronym;
 
     public ArticleInfo() {
 
@@ -30,6 +31,23 @@ public class ArticleInfo {
         }catch (Exception e){
             System.err.println(e.getMessage());
         }
+        this.conferenceAcronym = null;
+    }
+
+    public ArticleInfo(String title, String DOI, List<String> authors, String journal, String volumeInfo, Date publicationDate, String publicationDateText, String conferenceAcronym) {
+        this.title = title;
+        this.DOI = DOI;
+        this.authors = authors;
+        this.journal = journal;
+        this.volumeInfo = volumeInfo;
+        this.publicationDate = publicationDate;
+        this.publicationDateText = publicationDateText;
+        try{
+            this.publicationYear = Integer.parseInt(publicationDateText.substring(publicationDateText.length()-4));
+        }catch (Exception e){
+            System.err.println(e.getMessage());
+        }
+        this.conferenceAcronym = conferenceAcronym;
     }
 
     public String getTitle() {
@@ -76,6 +94,14 @@ public class ArticleInfo {
         return calendar.get(Calendar.YEAR);
     }
 
+    public String getConferenceAcronym() {
+        return conferenceAcronym;
+    }
+
+    public void setConferenceAcronym(String conferenceAcronym) {
+        this.conferenceAcronym = conferenceAcronym;
+    }
+
     @Override
     public String toString() {
         String out = "ArticleInfo{";
@@ -93,6 +119,8 @@ public class ArticleInfo {
             out = out + ", publicationDate=" + publicationDateText;
         if (publicationYear != null)
             out = out + ", publicationYear=" + publicationYear;
+        if (conferenceAcronym != null)
+            out = out + ", conferenceAcronym='" + conferenceAcronym + '\'';
         return out + '}';
     }
 
@@ -102,11 +130,11 @@ public class ArticleInfo {
         if (this == o) return true;
         if (!(o instanceof ArticleInfo)) return false;
         ArticleInfo that = (ArticleInfo) o;
-        return Objects.equals(getTitle(), that.getTitle()) && Objects.equals(getDOI(), that.getDOI()) && Objects.equals(getJournal(), that.getJournal()) && Objects.equals(getVolumeInfo(), that.getVolumeInfo()) && Objects.equals(getPublicationDate(), that.getPublicationDate()) && Objects.equals(getPublicationDateText(), that.getPublicationDateText()) && Objects.equals(getPublicationYear(), that.getPublicationYear());
+        return Objects.equals(getTitle(), that.getTitle()) && Objects.equals(getDOI(), that.getDOI()) && Objects.equals(getJournal(), that.getJournal()) && Objects.equals(getVolumeInfo(), that.getVolumeInfo()) && Objects.equals(getPublicationDate(), that.getPublicationDate()) && Objects.equals(getPublicationDateText(), that.getPublicationDateText()) && Objects.equals(getPublicationYear(), that.getPublicationYear()) && Objects.equals(getConferenceAcronym(), that.getConferenceAcronym());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(getTitle(), getDOI(), getJournal(), getVolumeInfo(), getPublicationDate(), getPublicationDateText(), getPublicationYear());
+        return Objects.hash(getTitle(), getDOI(), getJournal(), getVolumeInfo(), getPublicationDate(), getPublicationDateText(), getPublicationYear(), getConferenceAcronym());
     }
 }
