@@ -5,9 +5,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import tfg.urjc.mydoiinfo.domain.entities.Article;
-import tfg.urjc.mydoiinfo.scrappers.ArticleInfo;
-import tfg.urjc.mydoiinfo.scrappers.citationsScrappers.CitationsScrapper;
-import tfg.urjc.mydoiinfo.scrappers.citationsScrappers.CrossRefApiCitationsScrapper;
 import tfg.urjc.mydoiinfo.services.ArticleScrapperService;
 import tfg.urjc.mydoiinfo.services.ArticleService;
 

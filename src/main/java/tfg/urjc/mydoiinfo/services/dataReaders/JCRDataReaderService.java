@@ -1,11 +1,8 @@
-package tfg.urjc.mydoiinfo.controllers;
-
+package tfg.urjc.mydoiinfo.services.dataReaders;
 
 import org.apache.commons.io.FileUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.CommandLineRunner;
-import org.springframework.core.env.Environment;
-import org.springframework.stereotype.Controller;
+import org.springframework.stereotype.Service;
 import tfg.urjc.mydoiinfo.domain.entities.CategoryRanking;
 import tfg.urjc.mydoiinfo.domain.entities.JCRRegistry;
 import tfg.urjc.mydoiinfo.domain.entities.Journal;
@@ -19,11 +16,8 @@ import java.text.NumberFormat;
 import java.util.Arrays;
 import java.util.Locale;
 
-@Controller
-public class JCRDataReader implements CommandLineRunner {
-
-    @Autowired
-    private Environment environment;
+@Service
+public class JCRDataReaderService {
 
     @Autowired
     JournalRepository journalRepository;
@@ -33,31 +27,6 @@ public class JCRDataReader implements CommandLineRunner {
 
     @Autowired
     CategoryRankingRepository categoryRankingRepository;
-
-    @Override
-    public void run(String... args) {
-        if(!Arrays.stream(environment.getActiveProfiles()).anyMatch(elem -> elem.equals("test"))){
-            File dataFolder = new File("./JCRData");
-            if(dataFolder.isDirectory()){
-                for(File dataFile: dataFolder.listFiles()){
-                    if(!dataFile.isDirectory()){
-                        String[] splitedName = dataFile.getName().split("_");
-                        if (splitedName.length<2)
-                            continue;
-                        Integer year;
-                        try {
-                            year = Integer.parseInt(splitedName[1].replace(".txt",""));
-                        }catch (Exception e){
-                            e.printStackTrace();
-                            continue;
-                        }
-                        readJCRInfo(year, splitedName[0]);
-                    }
-                }
-            }
-        }
-    }
-
     public void readJCRInfo(int year, String field) {
 
         File file = new File("./JCRData/" + field + "_" + year + ".txt");
