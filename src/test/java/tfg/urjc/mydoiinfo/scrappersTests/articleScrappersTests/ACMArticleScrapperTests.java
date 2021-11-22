@@ -1,4 +1,4 @@
-package tfg.urjc.mydoiinfo.scrappersTests;
+package tfg.urjc.mydoiinfo.scrappersTests.articleScrappersTests;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;

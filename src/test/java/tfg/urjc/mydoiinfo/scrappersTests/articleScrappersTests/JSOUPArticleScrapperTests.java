@@ -1,4 +1,4 @@
-package tfg.urjc.mydoiinfo.scrappersTests;
+package tfg.urjc.mydoiinfo.scrappersTests.articleScrappersTests;
 
 import org.jsoup.nodes.Document;
 import org.junit.jupiter.api.Test;
@@ -55,6 +55,22 @@ public class JSOUPArticleScrapperTests {
                 return super.getHtmlDocument(url);
             }
         }.getHtmlDocument(wrongUrl);
+
+        //THEN: The html must be null
+        assertNull(document);
+    }
+
+    @Test
+    public void getHtmlDocumentTestNullUrl(){
+        //GIVEN: A null url
+        String nullUrl = null;
+
+        //WHEN: The getHtmlDocument is called (using a subclass to access the protected method)
+        Document document = new ACMArticleScrapper(journalPrefixList){
+            public Document getHtmlDocument(String url){
+                return super.getHtmlDocument(url);
+            }
+        }.getHtmlDocument(nullUrl);
 
         //THEN: The html must be null
         assertNull(document);

@@ -58,6 +58,10 @@ public class ArticleInfo {
         return DOI;
     }
 
+    public void setDOI(String DOI){
+        this.DOI=DOI;
+    }
+
     public List<String> getAuthors() {
         return authors;
     }

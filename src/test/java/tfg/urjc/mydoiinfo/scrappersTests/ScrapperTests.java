@@ -55,4 +55,20 @@ public class ScrapperTests {
         //THEN: The statusCode must be 400
         assertEquals(400,statusCode);
     }
+
+    @Test
+    public void getHTTPStatusCodeTestNullUrl(){
+        //GIVEN: A null url
+        String nullUrl = null;
+
+        //WHEN: The getHTTPStatusCode is called (using a subclass to access the protected method)
+        int statusCode = new ACMArticleScrapper(new String[]{"10.1145"}){
+            public int getHTTPStatusCode(String url){
+                return super.getHTTPStatusCode(url);
+            }
+        }.getHTTPStatusCode(nullUrl);
+
+        //THEN: The statusCode must be 400
+        assertEquals(400,statusCode);
+    }
 }

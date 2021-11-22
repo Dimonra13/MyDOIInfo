@@ -24,8 +24,6 @@ public class ConferenceService {
         //If the conference has not been found it is searched using the title (if it is not null)
         if (title!=null){
             conference = conferenceRepository.findFirstByTitleIgnoreCase(title);
-            if (conference==null)
-                conference = conferenceRepository.findFirstByTitleContainingIgnoreCase(title);
         }
         return conference;
     }
