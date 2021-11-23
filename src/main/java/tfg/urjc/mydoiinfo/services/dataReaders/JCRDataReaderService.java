@@ -27,6 +27,7 @@ public class JCRDataReaderService {
 
     @Autowired
     CategoryRankingRepository categoryRankingRepository;
+
     public void readJCRInfo(int year, String field) {
 
         File file = new File("./JCRData/" + field + "_" + year + ".txt");

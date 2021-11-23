@@ -10,13 +10,13 @@ import javax.ws.rs.core.Response;
 
 public class CrossRefApiCitationsScrapper extends ApiCitationsScrapper{
 
-    private final String crossRefBaseUrl="http://api.crossref.org/works/";
+    private final static String CROSSREF_BASE_URL ="http://api.crossref.org/works/";
 
     @Override
     public Long getCitationsFromArticle(Article article) {
         if(article==null || article.getDOI()==null)
             return null;
-        Response response = getResponseFromURL(crossRefBaseUrl+article.getDOI());
+        Response response = getResponseFromURL(CROSSREF_BASE_URL + article.getDOI());
         if(response == null)
             return null;
         Integer statusCode = response.getStatus();

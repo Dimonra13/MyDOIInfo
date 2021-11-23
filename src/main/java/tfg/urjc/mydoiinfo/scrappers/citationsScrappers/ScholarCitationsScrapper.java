@@ -15,7 +15,7 @@ public class ScholarCitationsScrapper extends JSOUPCitationsScrapper{
     the banning of the IP address. It is kept in the code as an example and model for the development of possible new
     JSOUPCitationScrappers.
      */
-    private final String scholarBaseUrl="https://scholar.google.com/scholar?hl=es&q=";
+    private final String SCHOLAR_BASE_URL ="https://scholar.google.com/scholar?hl=es&q=";
 
     private String forgeEncodedUrl(Article article) {
         if(article.getTitle()==null)
@@ -32,7 +32,7 @@ public class ScholarCitationsScrapper extends JSOUPCitationsScrapper{
             e.printStackTrace();
             return null;
         }
-        return scholarBaseUrl + encodedUrl;
+        return SCHOLAR_BASE_URL + encodedUrl;
     }
 
     @Override
