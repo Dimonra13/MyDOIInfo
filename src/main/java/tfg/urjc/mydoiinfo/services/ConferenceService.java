@@ -11,7 +11,7 @@ public class ConferenceService {
     @Autowired
     ConferenceRepository conferenceRepository;
 
-    public Conference findConference(String acronym, String title){
+    public Conference getConference(String acronym, String title){
         Conference conference = null;
         //The conference is searched by the acronym (only if it is not null) and if the conference is found
         //it is returned
@@ -21,9 +21,9 @@ public class ConferenceService {
         if (conference!=null)
             return conference;
 
-        //If the conference has not been found it is searched using the title (if it is not null)
+        //If the conference has not been found, it is searched using the title (if it is not null)
         if (title!=null){
-            conference = conferenceRepository.findFirstByTitleIgnoreCase(title);
+            conference = conferenceRepository.findFirstWhereConferenceTitleIsContainedIn(title);
         }
         return conference;
     }

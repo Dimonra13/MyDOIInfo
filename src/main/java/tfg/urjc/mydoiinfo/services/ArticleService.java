@@ -85,7 +85,7 @@ public class ArticleService {
                 JCRRegistry jcrRegistry = jcrRegistryRepository.findFirstByYearAndJournalTitleIgnoreCase(year,articleInfo.getJournal());
                 article.setJcrRegistry(jcrRegistry);
                 if(article.getJcrRegistry()==null)
-                    article.setConference(conferenceService.findConference(article.getConferenceAcronym(),article.getJournalTitle()));
+                    article.setConference(conferenceService.getConference(article.getConferenceAcronym(),article.getJournalTitle()));
                 //Save the article
                 article = articleRepository.save(article);
             }

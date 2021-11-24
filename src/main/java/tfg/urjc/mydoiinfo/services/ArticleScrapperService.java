@@ -4,6 +4,8 @@ import org.springframework.stereotype.Service;
 import tfg.urjc.mydoiinfo.scrappers.ArticleInfo;
 import tfg.urjc.mydoiinfo.scrappers.articleScrappers.*;
 
+import java.util.Arrays;
+
 @Service
 public class ArticleScrapperService {
 
@@ -36,5 +38,9 @@ public class ArticleScrapperService {
             }
         }
         return null;
+    }
+
+    public boolean existsArticleScrapperForDOI(String DOI) {
+        return Arrays.stream(articleScrapperList).anyMatch(articleScrapper -> articleScrapper.isCorrectJournalScrapper(DOI));
     }
 }
