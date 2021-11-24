@@ -21,7 +21,7 @@ public class ArticleService {
     ArticleScrapperService articleScrapperService;
 
     @Autowired
-    JCRRegistryRepository jcrRegistryRepository;
+    JCRRegistryService jcrRegistryService;
 
     @Autowired
     CitationsScrapperService citationsScrapperService;
@@ -81,9 +81,7 @@ public class ArticleService {
                     citations=article.getCitations();
                 article.setCitations(citations);
                 //Find the JCRRegistry for the article
-                Integer year = (articleInfo.getPublicationYear() != null) ? articleInfo.getPublicationYear() : articleInfo.getPublicationDateYear();
-                JCRRegistry jcrRegistry = jcrRegistryRepository.findFirstByYearAndJournalTitleIgnoreCase(year,articleInfo.getJournal());
-                article.setJcrRegistry(jcrRegistry);
+                article = jcrRegistryService.setJCRRegistry(article,articleInfo);
                 if(article.getJcrRegistry()==null)
                     article.setConference(conferenceService.getConference(article.getConferenceAcronym(),article.getJournalTitle()));
                 //Save the article

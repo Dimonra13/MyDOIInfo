@@ -26,6 +26,9 @@ public class ORCIDService {
     @Autowired
     ArticleScrapperService articleScrapperService;
 
+    @Autowired
+    JCRRegistryService jcrRegistryService;
+
     //API DOCUMENTATION: https://pub.orcid.org/v3.0/#/
     private static final String BASE_ORCID_URL="https://pub.orcid.org/v3.0/";
     //https://pub.orcid.org/v3.0/0000-0002-9563-0691/works
@@ -121,6 +124,8 @@ public class ORCIDService {
                     if(article!=null)
                         output.add(article);
                 } else {
+                    //If the doi is null or there is no scrapper capable of gathering the information, the data from ORCID
+                    //is use to create the best posible article object without scrapping
                     String articleTitle;
                     try {
                         articleTitle = (String) ((JSONObject) ((JSONObject) summary.get("title")).get("title")).get("value");
@@ -142,6 +147,9 @@ public class ORCIDService {
                         System.err.println("Error parsing journal title from an article of the person with ORCID id: "+id);
                         journalTitle = null;
                     }
+                    //TODO: FINSIH THE DATA GATHERING
+                    //TODO: Create the article object but don't save it in the database
+
                 }
             }
         });
