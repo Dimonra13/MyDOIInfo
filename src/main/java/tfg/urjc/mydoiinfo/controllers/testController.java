@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import tfg.urjc.mydoiinfo.domain.entities.Article;
 import tfg.urjc.mydoiinfo.services.ArticleScrapperService;
 import tfg.urjc.mydoiinfo.services.ArticleService;
+import tfg.urjc.mydoiinfo.services.ORCIDService;
 
 import java.util.Arrays;
 import java.util.List;
@@ -19,6 +20,9 @@ public class testController {
 
     @Autowired
     ArticleScrapperService articleScrapperService;
+
+    @Autowired
+    ORCIDService orcidService;
 
     public static final String[] DOIList = {
             //Springer, Elsevier, Science, IEEE, ACM, Conferences
@@ -34,8 +38,9 @@ public class testController {
 
     @RequestMapping("/test")
     public String test(Model model) {
-        List<Article> articleList = articleService.getArticlesFromDOIList(Arrays.asList(DOIList));
-        model.addAttribute("articleList",articleList);
+        orcidService.getArticlesFromORCIDid("0000-0002-9563-0691");
+        /*List<Article> articleList = articleService.getArticlesFromDOIList(Arrays.asList(DOIList));
+        model.addAttribute("articleList",articleList);*/
         return "table";
     }
 }

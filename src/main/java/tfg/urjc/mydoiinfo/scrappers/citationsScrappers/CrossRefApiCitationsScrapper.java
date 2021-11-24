@@ -23,16 +23,16 @@ public class CrossRefApiCitationsScrapper extends ApiCitationsScrapper{
         if(statusCode == 200){
             String stringToParse = response.readEntity(String.class);
             JSONParser parser = new JSONParser();
-            JSONObject json;
+            JSONObject jsonResponse;
             try {
-                json = (JSONObject) parser.parse(stringToParse);
+                jsonResponse = (JSONObject) parser.parse(stringToParse);
             } catch (ParseException e) {
                 e.printStackTrace();
                 return null;
             }
             Long citations;
             try{
-                citations = (Long) ((JSONObject) json.get("message")).get("is-referenced-by-count");
+                citations = (Long) ((JSONObject) jsonResponse.get("message")).get("is-referenced-by-count");
             }catch (Exception e){
                 e.printStackTrace();
                 return null;

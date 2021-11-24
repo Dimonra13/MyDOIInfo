@@ -13,9 +13,12 @@ public abstract class ApiCitationsScrapper extends CitationsScrapper{
     protected Response getResponseFromURL(String url){
         if (url == null)
             return null;
+        //Create the client
         Client client = ClientBuilder.newClient();
+        //Set the target URL and response type (JSON)
         WebTarget webTarget = client.target(url);
         Invocation.Builder invocationBuilder = webTarget.request(MediaType.APPLICATION_JSON);
+        //Perform the request and get the response
         Response response;
         try {
             response = invocationBuilder.get();
