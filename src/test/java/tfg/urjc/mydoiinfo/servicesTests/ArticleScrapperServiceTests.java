@@ -7,8 +7,7 @@ import tfg.urjc.mydoiinfo.scrappers.ArticleInfo;
 import tfg.urjc.mydoiinfo.scrappers.articleScrappers.*;
 import tfg.urjc.mydoiinfo.services.ArticleScrapperService;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
 public class ArticleScrapperServiceTests {
@@ -64,7 +63,7 @@ public class ArticleScrapperServiceTests {
     }
 
     @Test
-    public void getArticleInfoFromACMDOI(){
+    public void getArticleInfoFromACMDOITest(){
         //GIVEN: An ACMArticleScrapper
         ACMArticleScrapper acmArticleScrapper = new ACMArticleScrapper(new String[]{"10.1145"});
         //AND: A correct doi from ACM
@@ -77,7 +76,7 @@ public class ArticleScrapperServiceTests {
     }
 
     @Test
-    public void getArticleInfoFromElsevierDOI(){
+    public void getArticleInfoFromElsevierDOITest(){
         //GIVEN: An ElsevierArticleScrapper
         ElsevierArticleScrapper elsevierArticleScrapper = new ElsevierArticleScrapper(new String[]{"10.1016"});
         //AND: A correct doi from Elsevier
@@ -90,7 +89,7 @@ public class ArticleScrapperServiceTests {
     }
 
     @Test
-    public void getArticleInfoFromIEEEDOI(){
+    public void getArticleInfoFromIEEEDOITest(){
         //GIVEN: An IEEEArticleScrapper
         IEEEArticleScrapper ieeeArticleScrapper = new IEEEArticleScrapper(new String[]{"10.1109"});
         //AND: A correct doi from IEEE
@@ -103,7 +102,7 @@ public class ArticleScrapperServiceTests {
     }
 
     @Test
-    public void getArticleInfoFromScienceDOI(){
+    public void getArticleInfoFromScienceDOITest(){
         //GIVEN: An ScienceArticleScrapper
         ScienceArticleScrapper scienceArticleScrapper = new ScienceArticleScrapper(new String[]{"10.1126"});
         //AND: A correct doi from Science
@@ -116,7 +115,7 @@ public class ArticleScrapperServiceTests {
     }
 
     @Test
-    public void getArticleInfoFromSpringerDOI(){
+    public void getArticleInfoFromSpringerDOITest(){
         //GIVEN: An SpringerArticleScrapper
         SpringerArticleScrapper springerArticleScrapper = new SpringerArticleScrapper(new String[]{"10.1134"});
         //AND: A correct doi from Springer
@@ -126,5 +125,65 @@ public class ArticleScrapperServiceTests {
         //THEN: The output must be the same as the return value of the getArticleInfoFromDOI method of the
         //SpringerArticleScrapper when it is called with the correct doi from Springer
         assertEquals(springerArticleScrapper.getArticleInfoFromDOI(correctSpringerDOI),output);
+    }
+
+    @Test
+    public void existsArticleScrapperForDOITestNullDoi(){
+        //GIVEN: A null DOI
+        String doi = null;
+
+        //WHEN: The existsArticleScrapperForDOI is called with the DOI
+        boolean output = articleScrapperService.existsArticleScrapperForDOI(doi);
+
+        //THEN: The output must be false
+        assertFalse(output);
+    }
+
+    @Test
+    public void existsArticleScrapperForDOITestMalformedDoi(){
+        //GIVEN: A malformed DOI
+        String doi = "ukvbiliibukvb10.1145uykgkiwldba997876";
+
+        //WHEN: The existsArticleScrapperForDOI is called with the DOI
+        boolean output = articleScrapperService.existsArticleScrapperForDOI(doi);
+
+        //THEN: The output must be false
+        assertFalse(output);
+    }
+
+    @Test
+    public void existsArticleScrapperForDOITestNotScrapperForDoi(){
+        //GIVEN: A DOI of a publisher its scrapper it's not created
+        String doi = "https://doi.org/8.234521423542546/10.1126.10.1145/";
+
+        //WHEN: The existsArticleScrapperForDOI is called with the DOI
+        boolean output = articleScrapperService.existsArticleScrapperForDOI(doi);
+
+        //THEN: The output must be false
+        assertFalse(output);
+    }
+
+    @Test
+    public void existsArticleScrapperForDOITestExistsScrapperForDoi(){
+        //GIVEN: A DOI of a publisher its scrapper it's created
+        String doi = "https://doi.org/10.1126/science.abb3420";
+
+        //WHEN: The existsArticleScrapperForDOI is called with the DOI
+        boolean output = articleScrapperService.existsArticleScrapperForDOI(doi);
+
+        //THEN: The output must be true
+        assertTrue(output);
+    }
+
+    @Test
+    public void existsArticleScrapperForDOITestExistsScrapperForDoiNotURLFormat(){
+        //GIVEN: A DOI of a publisher its scrapper it's created (Not url format)
+        String doi = "10.1126/science.abb3420";
+
+        //WHEN: The existsArticleScrapperForDOI is called with the DOI
+        boolean output = articleScrapperService.existsArticleScrapperForDOI(doi);
+
+        //THEN: The output must be true
+        assertTrue(output);
     }
 }

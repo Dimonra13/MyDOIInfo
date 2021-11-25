@@ -41,6 +41,8 @@ public class ArticleScrapperService {
     }
 
     public boolean existsArticleScrapperForDOI(String DOI) {
+        if(DOI==null)
+            return false;
         return Arrays.stream(articleScrapperList).anyMatch(articleScrapper -> articleScrapper.isCorrectJournalScrapper(DOI));
     }
 }

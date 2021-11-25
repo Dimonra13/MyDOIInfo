@@ -5,7 +5,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import tfg.urjc.mydoiinfo.scrappers.articleScrappers.ACMArticleScrapper;
 import tfg.urjc.mydoiinfo.scrappers.articleScrappers.ArticleScrapper;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
 public class ArticleScrapperTests {
@@ -23,7 +23,7 @@ public class ArticleScrapperTests {
         boolean output = articleScrapper.isCorrectJournalScrapper(url);
 
         //THEN: The output must be true
-        assertEquals(true,output);
+        assertTrue(output);
     }
 
     @Test
@@ -39,7 +39,7 @@ public class ArticleScrapperTests {
         boolean output = articleScrapper.isCorrectJournalScrapper(url);
 
         //THEN: The output must be false
-        assertEquals(false,output);
+        assertFalse(output);
     }
 
     @Test
@@ -55,6 +55,22 @@ public class ArticleScrapperTests {
         boolean output = articleScrapper.isCorrectJournalScrapper(url);
 
         //THEN: The output must be false
-        assertEquals(false,output);
+        assertFalse(output);
+    }
+
+    @Test
+    public void isNullJournalURLTest(){
+        //GIVEN: A specific journalPrefix (ACM)
+        String[] journalPrefixList = new String[]{"10.1145"};
+        //AND: An article Scrapper with that prefix
+        ArticleScrapper articleScrapper = new ACMArticleScrapper(journalPrefixList);
+        //AND: A null url
+        String url = null;
+
+        //WHEN: The isCorrectJournalMethod is called
+        boolean output = articleScrapper.isCorrectJournalScrapper(url);
+
+        //THEN: The output must be false
+        assertFalse(output);
     }
 }

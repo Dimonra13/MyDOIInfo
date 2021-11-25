@@ -14,8 +14,10 @@ public class JCRRegistryService {
     JCRRegistryRepository jcrRegistryRepository;
 
     public Article setJCRRegistry(Article article, ArticleInfo articleInfo){
-        if (article == null || articleInfo == null)
+        if (article == null)
             return null;
+        if(articleInfo == null)
+            return article;
         Integer year = (articleInfo.getPublicationYear() != null) ? articleInfo.getPublicationYear() : articleInfo.getPublicationDateYear();
         JCRRegistry jcrRegistry = jcrRegistryRepository.findFirstByYearAndJournalTitleIgnoreCase(year,articleInfo.getJournal());
         article.setJcrRegistry(jcrRegistry);

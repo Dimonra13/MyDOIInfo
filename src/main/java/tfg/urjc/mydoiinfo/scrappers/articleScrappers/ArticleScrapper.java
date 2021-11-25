@@ -14,6 +14,8 @@ public abstract class ArticleScrapper extends Scrapper {
     }
 
     public boolean isCorrectJournalScrapper(String DOI) {
+        if(DOI==null)
+            return false;
         return Arrays.stream(journalPrefixList).anyMatch(journalPrefix -> (DOI.contains("/"+journalPrefix+"/") || DOI.startsWith(journalPrefix+"/")));
     }
 
