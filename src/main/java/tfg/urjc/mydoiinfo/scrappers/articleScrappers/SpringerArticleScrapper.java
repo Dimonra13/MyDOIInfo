@@ -35,6 +35,13 @@ public class SpringerArticleScrapper extends JSOUPArticleScrapper {
             if(titleElement != null)
                 title = titleElement.text();
 
+            //For conferences
+            if (title == null){
+                titleElement = document.select("h1.ChapterTitle").first();
+                if(titleElement != null)
+                    title = titleElement.text();
+            }
+
             Elements authors = document.select("a[data-test=\"author-name\"]");
             List<String> authorList = null;
             if(authors != null && authors.size()>0){
@@ -45,6 +52,20 @@ public class SpringerArticleScrapper extends JSOUPArticleScrapper {
                     authorList = authors.stream().map(elem->elem.text()).collect(Collectors.toList());
                 }
             }
+
+            //For conferences
+            if(authorList==null){
+                authors = document.select("a.authors__name");
+                if(authors != null && authors.size()>0){
+                    if(authors.size()==1){
+                        authorList = new ArrayList<>();
+                        authorList.add(authors.first().text());
+                    }else {
+                        authorList = authors.stream().map(elem->elem.text()).collect(Collectors.toList());
+                    }
+                }
+            }
+
 
 
             Element elemJournal = document.select("i[data-test=\"journal-title\"]").first();
@@ -65,6 +86,26 @@ public class SpringerArticleScrapper extends JSOUPArticleScrapper {
                         }
                     }
                 }
+            }
+
+            //For conferences
+            if (journal == null){
+                volumeInfo=null;
+                Element elemConference = document.select("a[data-test=\"ConfSeriesLink\"]").first();
+                if (elemConference!=null){
+                    journal = elemConference.text();
+                }else{
+                    elemConference = document.select("span.BookTitle").first();
+                    if (elemConference!=null){
+                        journal = elemConference.text();
+                    }
+                }
+                if(journal!=null){
+                    Element elemPages = document.select("span.page-numbers-info").first();
+                    if (elemPages!=null)
+                        volumeInfo = elemPages.text();
+                }
+
             }
 
             Element dateElement = document.select("time").first();

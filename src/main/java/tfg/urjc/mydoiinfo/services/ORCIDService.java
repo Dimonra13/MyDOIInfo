@@ -29,17 +29,23 @@ public class ORCIDService {
     @Autowired
     JCRRegistryService jcrRegistryService;
 
+    @Autowired
+    ConferenceService conferenceService;
+
+    @Autowired
+    CitationsScrapperService citationsScrapperService;
+
     //API DOCUMENTATION: https://pub.orcid.org/v3.0/#/
     private static final String BASE_ORCID_URL="https://pub.orcid.org/v3.0/";
     //https://pub.orcid.org/v3.0/0000-0002-9563-0691/works
 
-    private JSONObject getJSONObjectFromORCIDid(String id){
+    private JSONObject getJSONObjectFromORCIDid(String id,String endpoint){
         if (id == null)
             return null;
         //Create the client
         Client client = ClientBuilder.newClient();
         //Set the target URL and response type (JSON)
-        WebTarget webTarget = client.target(BASE_ORCID_URL+id+"/works");
+        WebTarget webTarget = client.target(BASE_ORCID_URL+id+"/"+endpoint);
         Invocation.Builder invocationBuilder = webTarget.request(MediaType.APPLICATION_JSON);
         //Perform the request and get the response
         Response response;
@@ -53,7 +59,7 @@ public class ORCIDService {
         if (response == null)
             return null;
         if(response.getStatus() != 200){
-            System.err.println("ERROR: Status code is " + response.getStatus() + " getting the list of articles of the person with ORCID id " + id);
+            System.err.println("ERROR: Status code is " + response.getStatus() + " in the request to " + BASE_ORCID_URL+id+"/"+endpoint);
             return null;
         }
         //Parse the response to a JSON Object
@@ -68,16 +74,62 @@ public class ORCIDService {
         return jsonResponse;
     }
 
+    public String getAuthorNameFromORCIDId(String id){
+        String authorName = null;
+        JSONObject jsonResponsePerson = getJSONObjectFromORCIDid(id,"person");
+        if(jsonResponsePerson == null || jsonResponsePerson.isEmpty()){
+            return null;
+        } else {
+            JSONObject nameInfo;
+            try {
+                nameInfo = (JSONObject) jsonResponsePerson.get("name");
+            } catch (Exception exception){
+                System.err.println("Error parsing name for author with ORCID id "+id);
+                return null;
+            }
+            if (nameInfo == null || nameInfo.isEmpty())
+                return null;
+
+            //If the author has a credit name, return this name
+            String creditName;
+            try {
+                    creditName = (String) ((JSONObject) nameInfo.get("credit-name")).get("value");
+            }catch (Exception e){
+                    creditName = null;
+            }
+            if (creditName!=null && !creditName.equals("")){
+                return creditName;
+            }
+
+            //If the author doesn't have a credit name, use the given-name and family-name
+            String givenName;
+            try {
+                givenName = (String) ((JSONObject) nameInfo.get("given-names")).get("value");
+            }catch (Exception e){
+                givenName = null;
+            }
+            String familyName;
+            try {
+                familyName = (String) ((JSONObject) nameInfo.get("family-name")).get("value");
+            }catch (Exception e){
+                familyName = null;
+            }
+            return ((givenName != null) ? ((familyName!=null) ? givenName+" "+familyName : givenName) : ((familyName!=null) ? familyName : null));
+        }
+    }
+
     public List<Article> getArticlesFromORCIDid(String id){
+        //Get the author name
+        String authorName = getAuthorNameFromORCIDId(id);
         //Get the response as a JSON Object
-        JSONObject jsonResponse = getJSONObjectFromORCIDid(id);
-        if(jsonResponse == null || jsonResponse.isEmpty())
+        JSONObject jsonResponseWorks = getJSONObjectFromORCIDid(id,"works");
+        if(jsonResponseWorks == null || jsonResponseWorks.isEmpty())
             return null;
         List<Article> output = new ArrayList<>();
         //Get the array of JSON Objects which represents the different articles of the person with ORCID id $id
         JSONArray articleItemList;
         try {
-            articleItemList = (JSONArray) jsonResponse.get("group");
+            articleItemList = (JSONArray) jsonResponseWorks.get("group");
         } catch (Exception e){
             e.printStackTrace();
             return output;
@@ -125,7 +177,7 @@ public class ORCIDService {
                         output.add(article);
                 } else {
                     //If the doi is null or there is no scrapper capable of gathering the information, the data from ORCID
-                    //is use to create the best posible article object without scrapping
+                    //is used to create the best possible article object without scrapping
                     String articleTitle;
                     try {
                         articleTitle = (String) ((JSONObject) ((JSONObject) summary.get("title")).get("title")).get("value");
@@ -133,23 +185,58 @@ public class ORCIDService {
                         System.err.println("Error parsing article title from an article of the person with ORCID id: "+id);
                         articleTitle = null;
                     }
-                    String type;
-                    try {
-                        type = (String) summary.get("type");
-                    } catch (Exception exception){
-                        System.err.println("Error parsing type from an article of the person with ORCID id: "+id);
-                        type = null;
-                    }
-                    String journalTitle;
-                    try {
-                        journalTitle = (String) ((JSONObject) summary.get("journal-title")).get("value");
-                    } catch (Exception exception){
-                        System.err.println("Error parsing journal title from an article of the person with ORCID id: "+id);
-                        journalTitle = null;
-                    }
-                    //TODO: FINSIH THE DATA GATHERING
-                    //TODO: Create the article object but don't save it in the database
 
+                    if (articleTitle != null){
+                        String publicationDate;
+                        try{
+                            JSONObject year = (JSONObject) ((JSONObject) summary.get("publication-date")).get("year");
+                            publicationDate = (year != null) ? (String) year.get("value") : null;
+                        } catch (Exception exception){
+                            System.err.println("Error parsing article publication date from an article of the person with ORCID id: "+id);
+                            publicationDate = null;
+                        }
+                        List<String> authorList = new ArrayList<>();
+                        if (authorName!=null && !authorName.equals("")){
+                            authorList.add(authorName);
+                        }
+                        //Create the article object but don't save it in the database
+                        Article article = new Article(articleTitle,articleDOI,authorList,null,null,null,publicationDate,null);
+
+                        if(article.getDOI()!=null){
+                            article.setDOI("https://doi.org/"+article.getDOI());
+                            article.setCitations(citationsScrapperService.getCitationsFromArticle(article));
+                        }
+                        String journalTitle;
+                        try {
+                            journalTitle = (String) ((JSONObject) summary.get("journal-title")).get("value");
+                        } catch (Exception exception){
+                            System.err.println("Error parsing journal title from an article of the person with ORCID id: "+id);
+                            journalTitle = null;
+                        }
+                        if(journalTitle!=null)
+                            article.setJournalTitle(journalTitle);
+
+                        String type;
+                        try {
+                            type = (String) summary.get("type");
+                        } catch (Exception exception){
+                            System.err.println("Error parsing type from an article of the person with ORCID id: "+id);
+                            type = null;
+                        }
+
+                        if(type != null && type.equals("conference-paper")){
+                            article.setConference(conferenceService.getConference(null,journalTitle));
+                        } else if (type != null && type.equals("journal-article") && publicationDate != null){
+                            Integer year;
+                            try {
+                                year = Integer.parseInt(publicationDate);
+                            } catch (Exception exception){
+                                year = null;
+                            }
+                            article = jcrRegistryService.setJCRRegistry(article,journalTitle,year);
+                        }
+                        output.add(article);
+                    }
                 }
             }
         });

@@ -50,6 +50,33 @@ public class ArticleService {
 
     }
 
+    private Article updateArticleFromArticleInfo(Article article, ArticleInfo articleInfo){
+        if (article == null)
+            return null;
+        if (articleInfo == null)
+            return article;
+
+        if(articleInfo.getTitle()!=null)
+            article.setTitle(articleInfo.getTitle());
+        if(articleInfo.getDOI()!=null)
+            article.setDOI(articleInfo.getDOI());
+        if(articleInfo.getAuthors()!=null)
+            article.setAuthors(articleInfo.getAuthors());
+        if(articleInfo.getVolumeInfo()!=null)
+            article.setVolumeInfo(articleInfo.getVolumeInfo());
+        if(articleInfo.getPublicationDate()!=null)
+            article.setPublicationDate(articleInfo.getPublicationDate());
+        if(articleInfo.getPublicationDateText()!=null)
+            article.setPublicationDateText(articleInfo.getPublicationDateText());
+        if(articleInfo.getJournal()!=null)
+            article.setJournalTitle(articleInfo.getJournal());
+        if(articleInfo.getConferenceAcronym()!=null)
+            article.setConferenceAcronym(articleInfo.getConferenceAcronym());
+
+        return articleRepository.save(article);
+
+    }
+
     public Article getArticleFromDOI(String doi){
         if(doi==null)
             return null;
@@ -72,6 +99,8 @@ public class ArticleService {
                 //If the article is null, create a new one
                 if(article==null){
                     article = new Article(articleInfo);
+                } else {
+                    article = updateArticleFromArticleInfo(article,articleInfo);
                 }
                 //Scrap the citations for the article
                 Long citations = citationsScrapperService.getCitationsFromArticleInfo(articleInfo);

@@ -4,6 +4,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 import tfg.urjc.mydoiinfo.scrappers.ArticleInfo;
 import tfg.urjc.mydoiinfo.scrappers.articleScrappers.SpringerArticleScrapper;
+import tfg.urjc.mydoiinfo.scrappers.articleScrappers.SpringerArticleScrapper;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -12,13 +13,12 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Locale;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
 public class SpringerArticleScrapperTests {
 
-    private String[] journalPrefixList = new String[]{"10.1134","10.0007"};
+    private String[] journalPrefixList = new String[]{"10.1134","10.0007","10.1007"};
 
     @Test
     public void getArticleInfoFromNullURLTest(){
@@ -129,4 +129,25 @@ public class SpringerArticleScrapperTests {
         assertEquals(expectedOutput,output);
     }
 
+    @Test
+    public void getArticleInfoFromCorrectConferenceURLTest(){
+        //GIVEN: The SpringerArticleScrapper
+        SpringerArticleScrapper springerArticleScrapper = new SpringerArticleScrapper(journalPrefixList);
+        //AND: A correct url from Springer (article publicised in a conference)
+        String correctSpringer = "https://doi.org/10.1007/978-3-319-78759-6_14";
+        //AND: The expected output title
+        String expectedTitle = "On the Use of Decision Trees Based on Diagnosis and Drug Codes for Analyzing Chronic Patients";
+        //AND: The expected output conference title
+        String expectedConferenceTitle= "International Conference on Bioinformatics and Biomedical Engineering";
+
+        //WHEN: The getArticleInfoFromDOI is called with the correct Springer url
+        ArticleInfo output = springerArticleScrapper.getArticleInfoFromDOI(correctSpringer);
+
+        //THEN: The output must not null
+        assertNotNull(output);
+        //AND: The output title must be the same as the expectedTitle
+        assertEquals(expectedTitle,output.getTitle());
+        //AND: The output conference title must be the same as the expectedConferenceTitle
+        assertEquals(expectedConferenceTitle,output.getJournal());
+    }
 }

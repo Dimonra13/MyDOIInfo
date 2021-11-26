@@ -13,6 +13,9 @@ public class ConferenceService {
 
     public Conference getConference(String acronym, String title){
         Conference conference = null;
+        //If the title contains journal or magazine it is not a conference
+        if (title!=null && (title.toUpperCase().contains("JOURNAL") || title.toUpperCase().contains("MAGAZINE")))
+            return null;
         //The conference is searched by the acronym (only if it is not null) and if the conference is found
         //it is returned
         if(acronym!=null){
