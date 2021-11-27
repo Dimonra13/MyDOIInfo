@@ -2,6 +2,7 @@ package tfg.urjc.mydoiinfo.services;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import tfg.urjc.mydoiinfo.domain.entities.Article;
 import tfg.urjc.mydoiinfo.domain.entities.JCRRegistry;
 import tfg.urjc.mydoiinfo.domain.repositories.ArticleRepository;
@@ -29,6 +30,7 @@ public class ArticleService {
     @Autowired
     ConferenceService conferenceService;
 
+    @Transactional
     public Article updateCitationsForArticle(Article article){
         if(article==null)
             return null;
@@ -49,6 +51,7 @@ public class ArticleService {
         }
 
     }
+
 
     private Article updateArticleFromArticleInfo(Article article, ArticleInfo articleInfo){
         if (article == null)
@@ -77,6 +80,7 @@ public class ArticleService {
 
     }
 
+    @Transactional
     public Article getArticleFromDOI(String doi){
         if(doi==null)
             return null;

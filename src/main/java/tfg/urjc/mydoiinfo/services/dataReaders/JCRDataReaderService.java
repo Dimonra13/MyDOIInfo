@@ -67,83 +67,87 @@ public class JCRDataReaderService {
                 .map(elem -> elem.replaceAll("</td>", "").replace("<tr class=\"odd\">", "").replace("<tr class=\"even\">", "").replaceAll("&amp;", "&"))
                 .forEach(cleanedElement ->
                 {
-                    //Title-short,cat-short,cat,title,impact_factor,quartile,impact_factor_five_year,cat_ranking
-                    String[] splitedJCR = cleanedElement.split("<td class=\"\">");
-                    //If the length of splitedJCR is less than 8 it means there is an error and should not be stored in the database
-                    if (splitedJCR.length>=8){
-                        //Create the CategoryRanking object
-                        CategoryRanking categoryRanking = null;
-                        if (!splitedJCR[2].equals("") && !splitedJCR[2].equals("N/D") && !splitedJCR[2].equals(" "))
-                            categoryRanking = new CategoryRanking(splitedJCR[2], splitedJCR[7],journalField);
-                        //Check if the corresponding JCRRegistry already exists
-                        JCRRegistry jcrRegistry = jcrRegistryRepository.findFirstByYearAndJournalTitleIgnoreCase(year, splitedJCR[3]);
-                        if (jcrRegistry != null) {
-                            //Continue only if the categoryRanking exists
-                            if(categoryRanking != null){
-                                //Check if a ranking has already been added for the current category in the existing JCRRegistry (Prevents duplicates in case of data errors)
-                                CategoryRanking finalCategoryRanking = categoryRanking;
-                                boolean alreadyAdded = jcrRegistry.getCategoryRankingList().stream()
-                                        .filter(catRanking -> catRanking.getName().equals(finalCategoryRanking.getName()) && catRanking.getJournalField().equals(finalCategoryRanking.getJournalField()))
-                                        .count() > 0;
-                                if(!alreadyAdded){
-                                    //Save the new categoryRanking
-                                    categoryRanking = categoryRankingRepository.save(categoryRanking);
-                                    //Add the created categoryRanking to the JCRRegistry
-                                    jcrRegistry.getCategoryRankingList().add(categoryRanking);
-                                    jcrRegistryRepository.save(jcrRegistry);
-                                } else {
-                                    System.err.println("Duplicated CategoryRanking: " + categoryRanking.toString());
-                                }
-                            } else {
-                                System.err.println("Null Category, the category field value is : " + splitedJCR[2]);
-                            }
-                        } else { //Create the JCRRegistry if it doesn't exist
-                            //Check if the corresponding journal already exists
-                            Journal journal = journalRepository.findFirstByTitleIgnoreCase(splitedJCR[3]);
-                            //Create the journal if it doesn't exist
-                            if (journal == null) {
-                                journal = new Journal(splitedJCR[3], splitedJCR[0].replace("<td class=\" sorting_1\">",""));
-                                journal = journalRepository.save(journal);
-                            }
-                            Locale spanish = new Locale("es", "ES");
-                            NumberFormat numberFormat = NumberFormat.getInstance(spanish);
-
-                            Float impactFactor = null;
-                            if(!splitedJCR[4].equals("N/D")){
-                                try {
-                                    impactFactor = numberFormat.parse(splitedJCR[4]).floatValue();
-                                } catch (Exception exception) {
-                                    System.err.println(exception.getMessage());
-                                }
-                            }
-                            Float impactFactorFiveYear = null;
-                            if(!splitedJCR[6].equals("N/D")){
-                                try {
-                                    impactFactorFiveYear = numberFormat.parse(splitedJCR[6]).floatValue();
-                                } catch (Exception exception) {
-                                    System.err.println(exception.getMessage());
-                                }
-                            }
-
-                            jcrRegistry = new JCRRegistry(year, journal, impactFactor, impactFactorFiveYear, splitedJCR[5]);
-                            //Add the new categoryRanking to the new JCRRegistry only if said categoryRanking is not null
-                            if(categoryRanking != null){
-                                //Save the new categoryRanking
-                                categoryRanking = categoryRankingRepository.save(categoryRanking);
-                                //Add the created categoryRanking to the JCRRegistry
-                                jcrRegistry.getCategoryRankingList().add(categoryRanking);
-                            } else {
-                                System.err.println("Null Category, the category field value is : " + splitedJCR[2]);
-                            }
-                            jcrRegistry = jcrRegistryRepository.save(jcrRegistry);
-                            //Add the created JCRRegistry to the journal
-                            journal.getJcrRegistries().add(jcrRegistry);
-                            journalRepository.save(journal);
-                        }
-                    } else {
-                        System.err.println("Error reading line: "+cleanedElement);
-                    }
+                    saveReadJCRElement(year, journalField, cleanedElement);
                 });
         System.out.println("Finish reading the file "+file.getName()+".");
+    }
+
+    private void saveReadJCRElement(int year, String journalField, String jcrElement) {
+        //Title-short,cat-short,cat,title,impact_factor,quartile,impact_factor_five_year,cat_ranking
+        String[] splitedJCR = jcrElement.split("<td class=\"\">");
+        //If the length of splitedJCR is less than 8 it means there is an error and should not be stored in the database
+        if (splitedJCR.length>=8){
+            //Create the CategoryRanking object
+            CategoryRanking categoryRanking = null;
+            if (!splitedJCR[2].equals("") && !splitedJCR[2].equals("N/D") && !splitedJCR[2].equals(" "))
+                categoryRanking = new CategoryRanking(splitedJCR[2], splitedJCR[7], journalField);
+            //Check if the corresponding JCRRegistry already exists
+            JCRRegistry jcrRegistry = jcrRegistryRepository.findFirstByYearAndJournalTitleIgnoreCase(year, splitedJCR[3]);
+            if (jcrRegistry != null) {
+                //Continue only if the categoryRanking exists
+                if(categoryRanking != null){
+                    //Check if a ranking has already been added for the current category in the existing JCRRegistry (Prevents duplicates in case of data errors)
+                    CategoryRanking finalCategoryRanking = categoryRanking;
+                    boolean alreadyAdded = jcrRegistry.getCategoryRankingList().stream()
+                            .filter(catRanking -> catRanking.getName().equals(finalCategoryRanking.getName()) && catRanking.getJournalField().equals(finalCategoryRanking.getJournalField()))
+                            .count() > 0;
+                    if(!alreadyAdded){
+                        //Save the new categoryRanking
+                        categoryRanking = categoryRankingRepository.save(categoryRanking);
+                        //Add the created categoryRanking to the JCRRegistry
+                        jcrRegistry.getCategoryRankingList().add(categoryRanking);
+                        jcrRegistryRepository.save(jcrRegistry);
+                    } else {
+                        System.err.println("Duplicated CategoryRanking: " + categoryRanking.toString());
+                    }
+                } else {
+                    System.err.println("Null Category, the category field value is : " + splitedJCR[2]);
+                }
+            } else { //Create the JCRRegistry if it doesn't exist
+                //Check if the corresponding journal already exists
+                Journal journal = journalRepository.findFirstByTitleIgnoreCase(splitedJCR[3]);
+                //Create the journal if it doesn't exist
+                if (journal == null) {
+                    journal = new Journal(splitedJCR[3], splitedJCR[0].replace("<td class=\" sorting_1\">",""));
+                    journal = journalRepository.save(journal);
+                }
+                Locale spanish = new Locale("es", "ES");
+                NumberFormat numberFormat = NumberFormat.getInstance(spanish);
+
+                Float impactFactor = null;
+                if(!splitedJCR[4].equals("N/D")){
+                    try {
+                        impactFactor = numberFormat.parse(splitedJCR[4]).floatValue();
+                    } catch (Exception exception) {
+                        System.err.println(exception.getMessage());
+                    }
+                }
+                Float impactFactorFiveYear = null;
+                if(!splitedJCR[6].equals("N/D")){
+                    try {
+                        impactFactorFiveYear = numberFormat.parse(splitedJCR[6]).floatValue();
+                    } catch (Exception exception) {
+                        System.err.println(exception.getMessage());
+                    }
+                }
+
+                jcrRegistry = new JCRRegistry(year, journal, impactFactor, impactFactorFiveYear, splitedJCR[5]);
+                //Add the new categoryRanking to the new JCRRegistry only if said categoryRanking is not null
+                if(categoryRanking != null){
+                    //Save the new categoryRanking
+                    categoryRanking = categoryRankingRepository.save(categoryRanking);
+                    //Add the created categoryRanking to the JCRRegistry
+                    jcrRegistry.getCategoryRankingList().add(categoryRanking);
+                } else {
+                    System.err.println("Null Category, the category field value is : " + splitedJCR[2]);
+                }
+                jcrRegistry = jcrRegistryRepository.save(jcrRegistry);
+                //Add the created JCRRegistry to the journal
+                journal.getJcrRegistries().add(jcrRegistry);
+                journalRepository.save(journal);
+            }
+        } else {
+            System.err.println("Error reading line: "+ jcrElement);
+        }
     }
 }
