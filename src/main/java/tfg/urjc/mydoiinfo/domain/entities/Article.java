@@ -16,7 +16,7 @@ public class Article {
     @GeneratedValue
     private Long id;
     private String title;
-    @Column(nullable = false)
+    @Column(nullable = false,unique = true)
     private String DOI;
     @ElementCollection(targetClass=String.class)
     private List<String> authors;
