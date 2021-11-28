@@ -91,7 +91,7 @@ public class IEEEArticleScrapperTests {
         }
         List<String> authors = Arrays.asList(new String[]{"Yongjoo Jang", "Sejin Kim", "Daehoon Kim", "Sungjin Lee", "Jaeha Kung"});
         ArticleInfo expectedOutput = new ArticleInfo("Deep Partitioned Training From Near-Storage Computing to DNN Accelerators","https://doi.org/10.1109/LCA.2021.3081752",
-                authors,"IEEE Computer Architecture Letters","Volume: 20, Issue: 1, pp 70 - 73",date,"19 May 2021");
+                authors,"IEEE Computer Architecture Letters","Volume: 20, Issue: 1, pp 70 - 73",date,"19 May 2021","LCA");
 
         //WHEN: The getArticleInfoFromDOI is called with the correct IEEE url
         ArticleInfo output = ieeeArticleScrapper.getArticleInfoFromDOI(correctIEEE);
