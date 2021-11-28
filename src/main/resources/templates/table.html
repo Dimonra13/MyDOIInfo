@@ -11,12 +11,12 @@
             <th>DOI</th>
             <th>Authors</th>
             <th>Citations</th>
-            <th>Journal</th>
+            <th>Journal/Conference</th>
             <th>Volume</th>
             <th>Publication Date</th>
-            <th>Impact Factor</th>
+            <th>Impact Factor/GGS Class</th>
             <th>Impact Factor Five Years</th>
-            <th>Quartile</th>
+            <th>Quartile/GGS Rating/CORE</th>
             <th>Category Ranking List</th>
         </tr>
     </thead>
@@ -29,9 +29,13 @@
             <td th:text="${article?.jcrRegistry != null} ? ${article?.jcrRegistry?.journal?.title} : ${article?.journalTitle}"/>
             <td th:text="${article?.volumeInfo}"/>
             <td th:text="${article?.publicationDateText}"/>
-            <td th:text="${article?.jcrRegistry?.impactFactor}"/>
+            <td th:text="${article?.jcrRegistry != null} ? ${article?.jcrRegistry?.impactFactor} : ${article?.conference?.ggsClass}"/>
             <td th:text="${article?.jcrRegistry?.impactFactorFiveYear}"/>
-            <td th:text="${article?.jcrRegistry?.quartile}"/>
+            <td th:text="${article?.jcrRegistry != null} ? ${article?.jcrRegistry?.quartile} :
+            (${article?.conference?.ggsRating != null} ? ${'GGSRating: ' + article?.conference?.ggsRating} :
+             (${article?.conference?.coreClass != null} ? ${'CORE: ' + article?.conference?.coreClass} :
+                ${article?.jcrRegistry?.quartile})
+             )"/>
             <td>
                 <p th:each="categoryRanking: ${article?.jcrRegistry?.categoryRankingList}">
                     <span th:text="${'Category: ' + categoryRanking?.name + ','}"></span>

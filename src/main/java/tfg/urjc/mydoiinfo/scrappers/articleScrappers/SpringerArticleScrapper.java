@@ -55,7 +55,7 @@ public class SpringerArticleScrapper extends JSOUPArticleScrapper {
 
             //For conferences
             if(authorList==null){
-                authors = document.select("a.authors__name");
+                authors = document.select("span.authors__name");
                 if(authors != null && authors.size()>0){
                     if(authors.size()==1){
                         authorList = new ArrayList<>();

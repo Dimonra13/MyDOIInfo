@@ -11,8 +11,10 @@ import java.util.Date;
 public interface ConferenceRepository extends JpaRepository<Conference, Long> {
 
     public Conference findFirstByTitleIgnoreCase(String title);
+    //ORDER BY and LIMIT 1 are used to select the conference with the longest title contained in the param in case there
+    //are multiple conferences witch title is contained in the param.
     @Query(
-            value = "SELECT * FROM conference c WHERE ?1 LIKE CONCAT('%',c.title,'%') LIMIT 1",
+            value = "SELECT * FROM conference c WHERE ?1 LIKE CONCAT('%',c.title) ORDER BY CHAR_LENGTH(c.title) DESC LIMIT 1",
             nativeQuery = true
     )
     public Conference findFirstWhereConferenceTitleIsContainedIn(String title);

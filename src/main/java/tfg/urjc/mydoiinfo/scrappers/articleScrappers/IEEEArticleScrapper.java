@@ -78,6 +78,15 @@ public class IEEEArticleScrapper extends PhantomArticleScrapper {
                     conferenceAcronym=splitedJournal[splitedJournal.length-1].replace(")","");
                 }
             }
+            if(conferenceAcronym==null){
+                String[] splitedDOI = DOI.replace("https://doi.org/","").split("/");
+                if (splitedDOI.length>=2){
+                    String[] splitedSuffix = splitedDOI[splitedDOI.length-1].split("\\.");
+                    if (splitedSuffix.length>=1){
+                        conferenceAcronym=splitedSuffix[0];
+                    }
+                }
+            }
             WebElement dateElement;
             Date date = null;
             String dateString = null;
@@ -107,7 +116,7 @@ public class IEEEArticleScrapper extends PhantomArticleScrapper {
             List<WebElement> authors;
             List<String> authorList = null;
             try {
-                authors = driver.findElements(By.cssSelector(".author-card > div > div > div > a"));
+                authors = driver.findElements(By.cssSelector(".author-card > div > div > div > a, .author-card > div > div > div > xpl-modal > a"));
                 if (authors != null && authors.size() > 0) {
                     if (authors.size() == 1) {
                         authorList = new ArrayList<>();
