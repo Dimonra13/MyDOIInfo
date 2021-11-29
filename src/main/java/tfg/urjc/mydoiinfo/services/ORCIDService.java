@@ -37,7 +37,6 @@ public class ORCIDService {
 
     //API DOCUMENTATION: https://pub.orcid.org/v3.0/#/
     private static final String BASE_ORCID_URL="https://pub.orcid.org/v3.0/";
-    //https://pub.orcid.org/v3.0/0000-0002-9563-0691/works
 
     private JSONObject getJSONObjectFromORCIDid(String id,String endpoint){
         if (id == null)
@@ -76,10 +75,12 @@ public class ORCIDService {
 
     public String getAuthorNameFromORCIDId(String id){
         String authorName = null;
+        //Get the response body as a JSONObject
         JSONObject jsonResponsePerson = getJSONObjectFromORCIDid(id,"person");
         if(jsonResponsePerson == null || jsonResponsePerson.isEmpty()){
             return null;
         } else {
+            //Get the name information from the response
             JSONObject nameInfo;
             try {
                 nameInfo = (JSONObject) jsonResponsePerson.get("name");
@@ -87,6 +88,7 @@ public class ORCIDService {
                 System.err.println("Error parsing name for author with ORCID id "+id);
                 return null;
             }
+            //If nameInfo is null it means that there is no information about the name of the author so the process terminates
             if (nameInfo == null || nameInfo.isEmpty())
                 return null;
 
@@ -101,7 +103,7 @@ public class ORCIDService {
                 return creditName;
             }
 
-            //If the author doesn't have a credit name, use the given-name and family-name
+            //If the author doesn't have a credit name, return the given-name and family-name
             String givenName;
             try {
                 givenName = (String) ((JSONObject) nameInfo.get("given-names")).get("value");
@@ -145,6 +147,7 @@ public class ORCIDService {
                 System.err.println("Error parsing summary from an article of the person with ORCID id: "+id);
                 summary = null;
             }
+            //If summary is not null the article information can be process
             if (summary != null){
                 //Get the extenalId object that contains the doi info
                 JSONObject externalId = null;
@@ -178,6 +181,7 @@ public class ORCIDService {
                 } else {
                     //If the doi is null or there is no scrapper capable of gathering the information, the data from ORCID
                     //is used to create the best possible article object without scrapping
+                    //Get the article title
                     String articleTitle;
                     try {
                         articleTitle = (String) ((JSONObject) ((JSONObject) summary.get("title")).get("title")).get("value");
@@ -185,8 +189,9 @@ public class ORCIDService {
                         System.err.println("Error parsing article title from an article of the person with ORCID id: "+id);
                         articleTitle = null;
                     }
-
+                    //If the article title cannot be read the item is skipped
                     if (articleTitle != null){
+                        //Get the publication Year
                         String publicationDate;
                         try{
                             JSONObject year = (JSONObject) ((JSONObject) summary.get("publication-date")).get("year");
@@ -195,6 +200,7 @@ public class ORCIDService {
                             System.err.println("Error parsing article publication date from an article of the person with ORCID id: "+id);
                             publicationDate = null;
                         }
+                        //If the authorName was read correctly it is used to create article object
                         List<String> authorList = new ArrayList<>();
                         if (authorName!=null && !authorName.equals("")){
                             authorList.add(authorName);
@@ -202,10 +208,12 @@ public class ORCIDService {
                         //Create the article object but don't save it in the database
                         Article article = new Article(articleTitle,articleDOI,authorList,null,null,null,publicationDate,null);
 
+                        //If the article has a DOI, try to get the article's citations
                         if(article.getDOI()!=null){
                             article.setDOI("https://doi.org/"+article.getDOI());
                             article.setCitations(citationsScrapperService.getCitationsFromArticle(article));
                         }
+                        //Get the journal title
                         String journalTitle;
                         try {
                             journalTitle = (String) ((JSONObject) summary.get("journal-title")).get("value");
@@ -216,6 +224,7 @@ public class ORCIDService {
                         if(journalTitle!=null)
                             article.setJournalTitle(journalTitle);
 
+                        //Get the publication type (journal, conference, magazine, ...)
                         String type;
                         try {
                             type = (String) summary.get("type");
@@ -223,9 +232,10 @@ public class ORCIDService {
                             System.err.println("Error parsing type from an article of the person with ORCID id: "+id);
                             type = null;
                         }
-
+                        //If type is conference-paper try to find the conference in the database
                         if(type != null && type.equals("conference-paper")){
                             article.setConference(conferenceService.getConference(null,journalTitle));
+                            //If the type is journal-article and the publication year is not null try to get the JCRRegistry
                         } else if (type != null && type.equals("journal-article") && publicationDate != null){
                             Integer year;
                             try {
@@ -235,6 +245,7 @@ public class ORCIDService {
                             }
                             article = jcrRegistryService.setJCRRegistry(article,journalTitle,year);
                         }
+                        //Add the article object created to the output list
                         output.add(article);
                     }
                 }

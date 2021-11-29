@@ -19,7 +19,7 @@ import java.util.Date;
 import java.util.Locale;
 
 @Controller
-public class DataReaderController implements CommandLineRunner {
+public class InitDataReaderController implements CommandLineRunner {
 
     @Autowired
     private Environment environment;
