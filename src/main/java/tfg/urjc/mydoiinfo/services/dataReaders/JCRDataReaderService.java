@@ -28,7 +28,7 @@ public class JCRDataReaderService {
     @Autowired
     CategoryRankingRepository categoryRankingRepository;
 
-    public void readJCRInfo(int year, String field) {
+    public Integer readJCRInfo(int year, String field) {
 
         File file = new File("./JCRData/" + field + "_" + year + ".txt");
         String data = null;
@@ -36,13 +36,13 @@ public class JCRDataReaderService {
             data = FileUtils.readFileToString(file, "UTF-8");
         } catch (IOException e) {
             e.printStackTrace();
-            return;
+            return 500;
         }
 
         //Check if the file is empty
         if (data.equals("")){
             System.err.println("File"+"./JCRData/" + field + "_" + year + ".txt"+" is empty.");
-            return;
+            return 400;
         }
 
         String journalField = (field.equals("science")) ? "Sciences" : ((field.equals("social")) ? "Social Sciences" : null);
@@ -58,7 +58,7 @@ public class JCRDataReaderService {
                 )
         ){
             System.out.println("File"+"./JCRData/" + field + "_" + year + ".txt"+" data has already been read.");
-            return;
+            return 400;
         }
 
         //If the file exists, is not empty and hasn't been already read the program proceeds to read the file
@@ -70,6 +70,7 @@ public class JCRDataReaderService {
                     saveReadJCRElement(year, journalField, cleanedElement);
                 });
         System.out.println("Finish reading the file "+file.getName()+".");
+        return 200;
     }
 
     private void saveReadJCRElement(int year, String journalField, String jcrElement) {
