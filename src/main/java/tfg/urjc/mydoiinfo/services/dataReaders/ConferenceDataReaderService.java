@@ -21,16 +21,16 @@ public class ConferenceDataReaderService {
     @Autowired
     ConferenceRepository conferenceRepository;
 
-    public void readConferneceInfo(String fileName){
+    public Integer readConferneceInfo(String fileName){
         if(!fileName.startsWith("GII-GRIN-SCIE-Conference-Rating-")){
             System.err.println("Error: File name must follow the format GII-GRIN-SCIE-Conference-Rating-dd-MMM-yyyy-version-Output.xlsx");
-            return;
+            return 400;
         }
         //Date on which data were updated
         Date updateDate = getConferenceUpdateDate(fileName);
         if(updateDate==null){
             System.err.println("Error: File name must follow the format GII-GRIN-SCIE-Conference-Rating-dd-MMM-yyyy-version-Output.xlsx");
-            return;
+            return 400;
         }
         /*
         If the data stored is more modern than the data read or with the same update date, the process is cancelled
@@ -38,7 +38,7 @@ public class ConferenceDataReaderService {
          */
         if(conferenceRepository.findFirstByUpdatedDateAfter(updateDate) != null || conferenceRepository.findFirstByUpdatedDate(updateDate) != null){
             System.err.println("The file "+fileName+" data is not updated, canceling the reading");
-            return;
+            return 409;
         }
         System.out.println("Starting to read the file "+fileName);
         //Read the xlsx file using Apache POI and create a workbook with all the data
@@ -48,23 +48,23 @@ public class ConferenceDataReaderService {
             inputStream = new FileInputStream(file);
         } catch (FileNotFoundException e) {
             e.printStackTrace();
-            return;
+            return 500;
         }
         Workbook workbook = null;
         try {
             workbook = WorkbookFactory.create(inputStream);
         } catch (IOException e) {
             e.printStackTrace();
-            return;
+            return 500;
         }
         if (workbook==null)
-            return;
+            return 500;
         //Get the first sheet of the xlsx (All the data is in the first sheet)
         Sheet sheet = workbook.getSheetAt(0);
         //If the sheet doesn't exit or if it is empty finish the process
         if(sheet==null || sheet.getLastRowNum()<2){
             System.err.println("The file "+fileName+" is empty");
-            return;
+            return 400;
         }
         //Read all the rows of the sheet starting from the first row with data
         for(int rowIndex=2;rowIndex<=sheet.getLastRowNum();rowIndex++){
@@ -113,9 +113,10 @@ public class ConferenceDataReaderService {
             conferenceRepository.save(conference);
         }
         System.out.println("Finishing reading the file "+fileName);
+        return 200;
     }
 
-    private Date getConferenceUpdateDate(String fileName) {
+    public Date getConferenceUpdateDate(String fileName) {
         if (fileName==null)
             return null;
         String[] splitedFileName = fileName.replace("GII-GRIN-SCIE-Conference-Rating-","").split("-");
