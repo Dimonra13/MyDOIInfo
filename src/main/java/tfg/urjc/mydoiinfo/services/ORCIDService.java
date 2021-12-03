@@ -149,35 +149,65 @@ public class ORCIDService {
             }
             //If summary is not null the article information can be process
             if (summary != null){
-                //Get the extenalId object that contains the doi info
-                JSONObject externalId = null;
+                //Get the extenalIdList that contains the doi info
+                JSONArray externalIdList = null;
                 try {
-                    JSONArray externalIdList = (JSONArray) ((JSONObject) summary.get("external-ids")).get("external-id");
-                    if(externalIdList!=null && !externalIdList.isEmpty())
-                        externalId = (JSONObject) externalIdList.get(0);
+                    externalIdList = (JSONArray) ((JSONObject) summary.get("external-ids")).get("external-id");
                 }catch (Exception exception){
                     System.err.println("Error parsing article externalId from an article of the person with ORCID id: "+id);
-                    externalId = null;
+                    externalIdList = null;
                 }
+                //Get the article DOI
                 String articleDOI = null;
-                if(externalId != null){
-                    //Get the DOI info if the external-id-type is really doi
-                    try {
-                        String type = (String) externalId.get("external-id-type");
-                        if (type.equals("doi")){
-                            articleDOI = (String) ((JSONObject) externalId.get("external-id-normalized")).get("value");
+                if(externalIdList!=null && !externalIdList.isEmpty()){
+                    //The items in the list are checked until the doi is found or there are no more items
+                    for(Object externalId : externalIdList){
+                        if(externalId != null){
+                            //Get the DOI info if the external-id-type is really doi
+                            try {
+                                String type = (String) ((JSONObject) externalId).get("external-id-type");
+                                if (type.equals("doi")){
+                                    articleDOI = (String) ((JSONObject) ((JSONObject) externalId).get("external-id-normalized")).get("value");
+                                }
+                            } catch (Exception e){
+                                System.err.println("Error parsing article doi from an article of the person with ORCID id: "+id);
+                                articleDOI = null;
+                            }
+                            if (articleDOI!=null)
+                                break;
                         }
-                    } catch (Exception e){
-                        System.err.println("Error parsing article doi from an article of the person with ORCID id: "+id);
-                        articleDOI = null;
                     }
+                }
+                //Get the publication Date
+                String publicationDate;
+                try{
+                    JSONObject year = (JSONObject) ((JSONObject) summary.get("publication-date")).get("year");
+                    publicationDate = (year != null) ? (String) year.get("value") : null;
+                } catch (Exception exception){
+                    System.err.println("Error parsing article publication date from an article of the person with ORCID id: "+id);
+                    publicationDate = null;
+                }
+                //Parse the publication date to get the publication year
+                Integer year;
+                try {
+                    year = Integer.parseInt(publicationDate);
+                } catch (Exception exception){
+                    year = null;
                 }
                 //If the doi is not null and there is a scrapper capable of obtaining the article information
                 //the ArticleService is call to create and save the article object
                 if(articleDOI!=null && articleScrapperService.existsArticleScrapperForDOI(articleDOI)){
                     Article article = articleService.getArticleFromDOI("https://doi.org/"+articleDOI);
-                    if(article!=null)
+                    if(article!=null){
+                        //If the JCRRegistry is null try to find it using the information from the ORCID sources
+                        if(article.getJcrRegistry()==null){
+                            article = advanceOrcidJcrRegistrySearch((JSONObject) articleItem, article, year);
+                            if(article.getJcrRegistry()!=null){
+                                article=articleService.saveArticle(article);
+                            }
+                        }
                         output.add(article);
+                    }
                 } else {
                     //If the doi is null or there is no scrapper capable of gathering the information, the data from ORCID
                     //is used to create the best possible article object without scrapping
@@ -191,15 +221,6 @@ public class ORCIDService {
                     }
                     //If the article title cannot be read the item is skipped
                     if (articleTitle != null){
-                        //Get the publication Year
-                        String publicationDate;
-                        try{
-                            JSONObject year = (JSONObject) ((JSONObject) summary.get("publication-date")).get("year");
-                            publicationDate = (year != null) ? (String) year.get("value") : null;
-                        } catch (Exception exception){
-                            System.err.println("Error parsing article publication date from an article of the person with ORCID id: "+id);
-                            publicationDate = null;
-                        }
                         //If the authorName was read correctly it is used to create article object
                         List<String> authorList = new ArrayList<>();
                         if (authorName!=null && !authorName.equals("")){
@@ -237,13 +258,9 @@ public class ORCIDService {
                             article.setConference(conferenceService.getConference(null,journalTitle));
                             //If the type is journal-article and the publication year is not null try to get the JCRRegistry
                         } else if (type != null && type.equals("journal-article") && publicationDate != null){
-                            Integer year;
-                            try {
-                                year = Integer.parseInt(publicationDate);
-                            } catch (Exception exception){
-                                year = null;
-                            }
                             article = jcrRegistryService.setJCRRegistry(article,journalTitle,year);
+                            //If the JCRRegistry is null try to find it using the information from the ORCID sources
+                            article = advanceOrcidJcrRegistrySearch((JSONObject) articleItem, article, year);
                         }
                         //Add the article object created to the output list
                         output.add(article);
@@ -252,5 +269,34 @@ public class ORCIDService {
             }
         });
         return output;
+    }
+
+    private Article advanceOrcidJcrRegistrySearch(JSONObject articleItem, Article article, Integer year) {
+        //If the JCRRegistry couldn't be found check all the possible sources
+        if(article!=null && article.getJcrRegistry()==null){
+            JSONArray sources;
+            try {
+                sources = (JSONArray) articleItem.get("work-summary");
+            } catch (Exception exception){
+                sources = null;
+            }
+            if (sources!=null && !sources.isEmpty()){
+                for (Object source : sources){
+                    String sourceJournalTitle;
+                    try {
+                        sourceJournalTitle = (String) ((JSONObject) ((JSONObject) source).get("journal-title")).get("value");
+                    } catch (Exception exception){
+                        sourceJournalTitle = null;
+                    }
+                    if (sourceJournalTitle!=null){
+                        article = jcrRegistryService.setJCRRegistry(article,sourceJournalTitle, year);
+                        if(article.getJcrRegistry()!=null){
+                            break;
+                        }
+                    }
+                }
+            }
+        }
+        return article;
     }
 }

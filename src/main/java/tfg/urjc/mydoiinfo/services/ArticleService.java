@@ -10,6 +10,7 @@ import tfg.urjc.mydoiinfo.domain.repositories.JCRRegistryRepository;
 import tfg.urjc.mydoiinfo.scrappers.ArticleInfo;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 @Service
@@ -50,6 +51,14 @@ public class ArticleService {
             }
         }
 
+    }
+
+    @Transactional
+    public Article saveArticle(Article article){
+        if (article==null || article.getDOI()==null || article.getDOI().equals("")){
+            return article;
+        }
+        return articleRepository.save(article);
     }
 
 
@@ -123,6 +132,11 @@ public class ArticleService {
         } else {
             //Even if the article is already in the database, it is necessary to scrap the number of citations to keep it up to date
             article = updateCitationsForArticle(article);
+            //An attempt is made to update the JCRRegistry if the previous year's JCRRegistry was used
+            if(article.getJcrRegistry()!=null && article.getPublicationDateYear()>article.getJcrRegistry().getYear()){
+                article = jcrRegistryService.setJCRRegistry(article,article.getJcrRegistry().getJournal().getTitle(),article.getPublicationDateYear());
+                article = articleRepository.save(article);
+            }
         }
         return article;
     }

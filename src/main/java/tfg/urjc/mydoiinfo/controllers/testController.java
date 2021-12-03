@@ -40,8 +40,8 @@ public class testController {
     @RequestMapping("/test")
     public String test(Model model) {
         //"0000-0002-5382-6805","0000-0001-5727-2427","0000-0001-7405-5504"
-        //List<Article> articleList = orcidService.getArticlesFromORCIDid("0000-0002-5382-6805");
-        List<Article> articleList = articleService.getArticlesFromDOIList(Arrays.asList(DOIList));
+        List<Article> articleList = orcidService.getArticlesFromORCIDid("0000-0002-5382-6805");
+        //List<Article> articleList = articleService.getArticlesFromDOIList(Arrays.asList(DOIList));
         model.addAttribute("articleList",articleList);
         return "table";
     }

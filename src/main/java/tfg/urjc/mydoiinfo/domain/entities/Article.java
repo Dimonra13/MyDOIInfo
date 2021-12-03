@@ -4,10 +4,7 @@ package tfg.urjc.mydoiinfo.domain.entities;
 import tfg.urjc.mydoiinfo.scrappers.ArticleInfo;
 
 import javax.persistence.*;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 
 @Entity
 public class Article {
@@ -119,6 +116,23 @@ public class Article {
 
     public void setPublicationDate(Date publicationDate) {
         this.publicationDate = publicationDate;
+    }
+
+    public Integer getPublicationDateYear() {
+        if(publicationDate==null){
+            if (publicationDateText==null || publicationDateText.equals(""))
+                return null;
+            Integer publicationYear;
+            try{
+                publicationYear = Integer.parseInt(publicationDateText.substring(publicationDateText.length()-4));
+            }catch (Exception e){
+                return null;
+            }
+            return publicationYear;
+        }
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(this.publicationDate);
+        return calendar.get(Calendar.YEAR);
     }
 
     public String getPublicationDateText() {

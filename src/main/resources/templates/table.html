@@ -10,10 +10,11 @@
             <th>Title</th>
             <th>DOI</th>
             <th>Authors</th>
-            <th>Citations</th>
+            <th>Citations (CrossRef)</th>
             <th>Journal/Conference</th>
             <th>Volume</th>
             <th>Publication Date</th>
+            <th>JCR Date</th>
             <th>Impact Factor/GGS Class</th>
             <th>Impact Factor Five Years</th>
             <th>Quartile/GGS Rating/CORE</th>
@@ -29,6 +30,7 @@
             <td th:text="${article?.jcrRegistry != null} ? ${article?.jcrRegistry?.journal?.title} : ${article?.journalTitle}"/>
             <td th:text="${article?.volumeInfo}"/>
             <td th:text="${article?.publicationDateText}"/>
+            <td th:text="${article?.jcrRegistry != null && article?.jcrRegistry?.year>0} ? ${article?.jcrRegistry?.year} : ''"/>
             <td th:text="${article?.jcrRegistry != null} ? ${article?.jcrRegistry?.impactFactor} : ${article?.conference?.ggsClass}"/>
             <td th:text="${article?.jcrRegistry?.impactFactorFiveYear}"/>
             <td th:text="${article?.jcrRegistry != null} ? ${article?.jcrRegistry?.quartile} :
