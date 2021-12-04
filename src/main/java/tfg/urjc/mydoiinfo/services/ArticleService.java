@@ -133,7 +133,10 @@ public class ArticleService {
             //Even if the article is already in the database, it is necessary to scrap the number of citations to keep it up to date
             article = updateCitationsForArticle(article);
             //An attempt is made to update the JCRRegistry if the previous year's JCRRegistry was used
-            if(article.getJcrRegistry()!=null && article.getPublicationDateYear()>article.getJcrRegistry().getYear()){
+            if(article.getJcrRegistry()!=null &&
+                    article.getPublicationDateYear()!= null && article.getJcrRegistry().getYear()!=null &&
+                    article.getPublicationDateYear()>article.getJcrRegistry().getYear() &&
+                    article.getJcrRegistry().getJournal()!=null){
                 article = jcrRegistryService.setJCRRegistry(article,article.getJcrRegistry().getJournal().getTitle(),article.getPublicationDateYear());
                 article = articleRepository.save(article);
             }

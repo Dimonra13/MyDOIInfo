@@ -116,6 +116,21 @@ public class JCRRegistryServiceTests {
     }
 
     @Test
+    public void setJCRRegistryFromArticleInfoCorrectNextYearDateTest(){
+        //GIVEN: An article
+        Article article = new Article();
+        article.setDOI("https://doi.org/10.1126/science.abb3420");
+        //AND: An ArticleInfo with a correct journal and a correct date (the jcr for the year doesn't exist yet, but the one for the previous year does)
+        ArticleInfo articleInfo = new ArticleInfo(null,null,null,"Science",null,null,"2021");
+
+        //WHEN: The setJCRRegistry method is called with the Article and ArticleInfo
+        Article output = jcrRegistryService.setJCRRegistry(article,articleInfo);
+
+        //THEN: The output's JCRRegistry must be the one stored in the database with the same journal and publicationDate
+        assertEquals(jcrRegistryRepository.findFirstByYearAndJournalTitleIgnoreCase(2020,"Science"),output.getJcrRegistry());
+    }
+
+    @Test
     public void setJCRRegistryFromYearAndPublicationNullArticleTest(){
         //GIVEN: A null article
         Article article = null;
@@ -189,6 +204,23 @@ public class JCRRegistryServiceTests {
         article.setDOI("https://doi.org/10.1126/science.abb3420");
         //AND: A correct year
         Integer year = 2020;
+        //AND: A correct journal title
+        String journalTitle = "Science";
+
+        //WHEN: The setJCRRegistry method is called with the Article, journal and year
+        Article output = jcrRegistryService.setJCRRegistry(article,journalTitle,year);
+
+        //THEN: The output's JCRRegistry must be the one stored in the database with the same journal and publicationDate
+        assertEquals(jcrRegistryRepository.findFirstByYearAndJournalTitleIgnoreCase(2020,"Science"),output.getJcrRegistry());
+    }
+
+    @Test
+    public void setJCRRegistryFromYearAndPublicationCorrectNextYearDateTest(){
+        //GIVEN: An article
+        Article article = new Article();
+        article.setDOI("https://doi.org/10.1126/science.abb3420");
+        //AND: A correct year (the jcr for the year doesn't exist yet, but the one for the previous year does)
+        Integer year = 2021;
         //AND: A correct journal title
         String journalTitle = "Science";
 

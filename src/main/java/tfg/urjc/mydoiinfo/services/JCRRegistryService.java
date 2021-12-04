@@ -20,7 +20,7 @@ public class JCRRegistryService {
             return article;
         Integer year = (articleInfo.getPublicationYear() != null) ? articleInfo.getPublicationYear() : articleInfo.getPublicationDateYear();
         JCRRegistry jcrRegistry = jcrRegistryRepository.findFirstByYearAndJournalTitleIgnoreCase(year,articleInfo.getJournal());
-        //If the JCRRegistry is null, the previous year's JCRRegistry is searched (the current year's data are not available until the following year, so last year's data are used).
+        //If the JCRRegistry is null, the previous year's JCRRegistry is searched (the current year's data are not available until the following year, so last year's data are used instead).
         if (jcrRegistry==null && year!=null){
             jcrRegistry = jcrRegistryRepository.findFirstByYearAndJournalTitleIgnoreCase((year-1),articleInfo.getJournal());
         }
@@ -32,7 +32,7 @@ public class JCRRegistryService {
         if (article == null)
             return null;
         JCRRegistry jcrRegistry = jcrRegistryRepository.findFirstByYearAndJournalTitleIgnoreCase(year,journalTitle);
-        //If the JCRRegistry is null, the previous year's JCRRegistry is searched (the current year's data are not available until the following year, so last year's data are used)
+        //If the JCRRegistry is null, the previous year's JCRRegistry is searched (the current year's data are not available until the following year, so last year's data are used instead)
         if (jcrRegistry==null && year!=null){
             jcrRegistry = jcrRegistryRepository.findFirstByYearAndJournalTitleIgnoreCase((year-1),journalTitle);
         }

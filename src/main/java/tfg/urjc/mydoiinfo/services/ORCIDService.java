@@ -154,7 +154,7 @@ public class ORCIDService {
                 try {
                     externalIdList = (JSONArray) ((JSONObject) summary.get("external-ids")).get("external-id");
                 }catch (Exception exception){
-                    System.err.println("Error parsing article externalId from an article of the person with ORCID id: "+id);
+                    System.err.println("Error parsing article externalId list from an article of the person with ORCID id: "+id);
                     externalIdList = null;
                 }
                 //Get the article DOI
@@ -173,7 +173,7 @@ public class ORCIDService {
                                 System.err.println("Error parsing article doi from an article of the person with ORCID id: "+id);
                                 articleDOI = null;
                             }
-                            if (articleDOI!=null)
+                            if (articleDOI!=null && !articleDOI.equals(""))
                                 break;
                         }
                     }
@@ -260,7 +260,8 @@ public class ORCIDService {
                         } else if (type != null && type.equals("journal-article") && publicationDate != null){
                             article = jcrRegistryService.setJCRRegistry(article,journalTitle,year);
                             //If the JCRRegistry is null try to find it using the information from the ORCID sources
-                            article = advanceOrcidJcrRegistrySearch((JSONObject) articleItem, article, year);
+                            if(article!=null && article.getJcrRegistry()==null)
+                                article = advanceOrcidJcrRegistrySearch((JSONObject) articleItem, article, year);
                         }
                         //Add the article object created to the output list
                         output.add(article);
@@ -273,7 +274,7 @@ public class ORCIDService {
 
     private Article advanceOrcidJcrRegistrySearch(JSONObject articleItem, Article article, Integer year) {
         //If the JCRRegistry couldn't be found check all the possible sources
-        if(article!=null && article.getJcrRegistry()==null){
+        if(article!=null){
             JSONArray sources;
             try {
                 sources = (JSONArray) articleItem.get("work-summary");
