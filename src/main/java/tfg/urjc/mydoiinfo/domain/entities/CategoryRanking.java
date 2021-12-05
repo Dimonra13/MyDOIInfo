@@ -1,16 +1,25 @@
 package tfg.urjc.mydoiinfo.domain.entities;
 
+import com.fasterxml.jackson.annotation.JsonView;
+
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 
 @Entity
 public class CategoryRanking {
+
+    public interface CategoryRankingData {};
+
     @Id
     @GeneratedValue
+    @JsonView(CategoryRankingData.class)
     private Long id;
+    @JsonView(CategoryRankingData.class)
     private String name;
+    @JsonView(CategoryRankingData.class)
     private String ranking;
+    @JsonView(CategoryRankingData.class)
     private String journalField;
 
     public CategoryRanking(){

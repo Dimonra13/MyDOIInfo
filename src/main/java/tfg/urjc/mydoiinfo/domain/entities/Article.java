@@ -1,6 +1,7 @@
 package tfg.urjc.mydoiinfo.domain.entities;
 
 
+import com.fasterxml.jackson.annotation.JsonView;
 import tfg.urjc.mydoiinfo.scrappers.ArticleInfo;
 
 import javax.persistence.*;
@@ -9,23 +10,37 @@ import java.util.*;
 @Entity
 public class Article {
 
+    public interface ArticleBasicData {};
+    public interface ArticleRelatedData {};
+
+
     @Id
     @GeneratedValue
+    @JsonView(ArticleBasicData.class)
     private Long id;
+    @JsonView(ArticleBasicData.class)
     private String title;
     @Column(nullable = false)
+    @JsonView(ArticleBasicData.class)
     private String DOI;
     @ElementCollection(targetClass=String.class)
+    @JsonView(ArticleRelatedData.class)
     private List<String> authors;
     @ManyToOne
+    @JsonView(ArticleRelatedData.class)
     private JCRRegistry jcrRegistry;
+    @JsonView(ArticleBasicData.class)
     private String journalTitle;
+    @JsonView(ArticleBasicData.class)
     private String volumeInfo;
+    @JsonView(ArticleBasicData.class)
     private Long citations;
     private Date publicationDate;
+    @JsonView(ArticleBasicData.class)
     private String publicationDateText;
     private String conferenceAcronym;
     @ManyToOne
+    @JsonView(ArticleRelatedData.class)
     private Conference conference;
 
     public Article() {

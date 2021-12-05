@@ -93,7 +93,7 @@ public class ArticleScrapperServiceTests {
         //GIVEN: An IEEEArticleScrapper
         IEEEArticleScrapper ieeeArticleScrapper = new IEEEArticleScrapper(new String[]{"10.1109"});
         //AND: A correct doi from IEEE
-        String correctIEEEDOI = "https://doi.org/10.1109/LCA.2021.3081752";
+        String correctIEEEDOI = "https://doi.org/10.1109/101.8118";
         //WHEN: The getArticleInfoFromDOI method of the ArticleScrapperService is called with the correct doi from IEEE
         ArticleInfo output = articleScrapperService.getArticleInfoFromDOI(correctIEEEDOI);
         //THEN: The output must be the same as the return value of the getArticleInfoFromDOI method of the

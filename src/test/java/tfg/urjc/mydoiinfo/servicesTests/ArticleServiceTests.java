@@ -121,6 +121,70 @@ public class ArticleServiceTests {
     }
 
     @Test
+    public void getArticleFromUserInputNullDOITest(){
+        //GIVEN: A null doi
+        String nullDOI = null;
+
+        //WHEN: The getArticleFromUserInputDOI is called with the null doi
+        Article output = articleService.getArticleFromUserInputDOI(nullDOI);
+
+        //THEN: The output must be null
+        assertNull(output);
+    }
+
+    @Test
+    public void getArticleFromUserInputMalformedDOITest(){
+        //GIVEN: A fake doi
+        String malformedDOI = "malformed";
+
+        //WHEN: The getArticleFromUserInputDOI is called with the malformed doi
+        Article output = articleService.getArticleFromUserInputDOI(malformedDOI);
+
+        //THEN: The output must be null
+        assertNull(output);
+    }
+
+    @Test
+    public void getArticleFromUserInputErroneousDOITest(){
+        //GIVEN: A erroneous doi
+        String erroneousDOI = "http://www.erroneousDOI.com";
+
+        //WHEN: The getArticleFromUserInputDOI is called with the erroneous doi
+        Article output = articleService.getArticleFromUserInputDOI(erroneousDOI);
+
+        //THEN: The output must be null
+        assertNull(output);
+    }
+
+    @Test
+    public void getArticleFromUserInputCorrectDOIURLFormatTest(){
+        //GIVEN: A correct doi (URL Format)
+        String correctDOI = "https://doi.org/10.1126/science.370.6523.1384";
+
+        //WHEN: The getArticleFromUserInputDOI is called with the correct doi
+        Article output = articleService.getArticleFromUserInputDOI(correctDOI);
+
+        //THEN: The output must be distinct from null
+        assertNotNull(output);
+        //AND: The output must be the article with the correct doi stored in the database
+        assertEquals(articleRepository.findFirstByDOI(correctDOI),output);
+    }
+
+    @Test
+    public void getArticleFromUserInputCorrectDOIPrefixSuffixFormatTest(){
+        //GIVEN: A correct doi (Prefix/Suffix Format)
+        String correctDOI = "10.1126/science.370.6523.1384";
+
+        //WHEN: The getArticleFromUserInputDOI is called with the correct doi
+        Article output = articleService.getArticleFromUserInputDOI(correctDOI);
+
+        //THEN: The output must be distinct from null
+        assertNotNull(output);
+        //AND: The output must be the article with the correct doi stored in the database
+        assertEquals(articleRepository.findFirstByDOI("https://doi.org/"+correctDOI),output);
+    }
+
+    @Test
     public void getArticleFromCorrectDOIWithCorrectJournalTest(){
         //GIVEN: A correct doi
         String correctDOI = "https://doi.org/10.1126/science.370.6523.1384";
@@ -143,6 +207,8 @@ public class ArticleServiceTests {
         //AND: Output's Journal must be the Journal of the article with the correct doi stored in the database
         assertEquals(testJournal,output.getJcrRegistry().getJournal());
     }
+
+
 
     @Test
     public void getArticleFromNullDOIListTest(){

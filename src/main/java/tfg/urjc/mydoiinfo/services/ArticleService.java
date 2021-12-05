@@ -144,11 +144,44 @@ public class ArticleService {
         return article;
     }
 
+    /*
+    This method is responsible for parsing the doi entered by the user and adapting it to the standard format before
+    calling the getArticleFromDOI method. Its use is recommended instead of the getArticleFromDOI method whenever
+    working with user-entered information.
+     */
+    public Article getArticleFromUserInputDOI(String doi) {
+        if (doi==null || doi.equals(""))
+            return null;
+        Article output;
+        /*
+        It is very common that DOIs are supplied following the format /prefix/suffix or prefix/suffix, instead of using
+        the full URL https://doi.org/prefix/suffix. In this case it is necessary to add "https://doi.org" at the beginning
+        of the DOI.
+         */
+        if(!doi.toLowerCase().startsWith("https://doi.org/") && !doi.toLowerCase().startsWith("https://www.doi.org/") &&
+                !doi.toLowerCase().startsWith("http://doi.org/") && !doi.toLowerCase().startsWith("http://www.doi.org/")){
+            String formatedDoi = (doi.startsWith("/")) ? "https://doi.org"+ doi : "https://doi.org/"+ doi;
+            output = getArticleFromDOI(formatedDoi);
+            /*
+            It is possible that the DOI entered presents a format different from the standard but valid, for example
+            "https://dl.acm.org/doi/10.1145/3470005". In these cases, adding "https://doi.org/" at the beginning will
+            not work correctly. To try to make the system work correctly in these situations, if the ArticleService
+            returns null when called with the formattedDoi, the original doi is tried.
+             */
+            if(output==null)
+                output = getArticleFromDOI(doi);
+        } else {
+            //If the doi presents the standard format the ArticleService is called directly
+            output = getArticleFromDOI(doi);
+        }
+        return output;
+    }
+
     public List<Article> getArticlesFromDOIList(List<String> doiList){
         List<Article> output = new ArrayList<>();
         if(doiList!=null){
             for(String doi: doiList){
-                Article article = getArticleFromDOI(doi);
+                Article article = getArticleFromUserInputDOI(doi);
                 if (article != null)
                     output.add(article);
             }

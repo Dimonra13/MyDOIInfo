@@ -1,5 +1,7 @@
 package tfg.urjc.mydoiinfo.domain.entities;
 
+import com.fasterxml.jackson.annotation.JsonView;
+
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -7,14 +9,24 @@ import java.util.Objects;
 
 @Entity
 public class JCRRegistry {
+
+    public interface JCRBasicData {};
+    public interface JCRRelatedData {};
+
     @Id
     @GeneratedValue
+    @JsonView(JCRBasicData.class)
     private Long id;
+    @JsonView(JCRBasicData.class)
     private Integer year;
     @ManyToOne
+    @JsonView(JCRRelatedData.class)
     private Journal journal;
+    @JsonView(JCRBasicData.class)
     private Float impactFactor;
+    @JsonView(JCRBasicData.class)
     private Float impactFactorFiveYear;
+    @JsonView(JCRBasicData.class)
     private String quartile;
     @OneToMany(fetch = FetchType.EAGER)
     @JoinTable(
@@ -23,6 +35,7 @@ public class JCRRegistry {
                     referencedColumnName = "ID"
             )
     )
+    @JsonView(JCRRelatedData.class)
     private List<CategoryRanking> categoryRankingList;
 
     public JCRRegistry() {

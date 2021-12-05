@@ -1,5 +1,7 @@
 package tfg.urjc.mydoiinfo.domain.entities;
 
+import com.fasterxml.jackson.annotation.JsonView;
+
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -8,12 +10,19 @@ import java.util.Objects;
 @Entity
 public class Journal {
 
+    public interface JournalBasicData {};
+    public interface JournalRelatedData {};
+
     @Id
     @GeneratedValue
+    @JsonView(JournalBasicData.class)
     private Long id;
+    @JsonView(JournalBasicData.class)
     private String title;
+    @JsonView(JournalBasicData.class)
     private String shortTitle;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "journal",fetch = FetchType.EAGER)
+    @JsonView(JournalRelatedData.class)
     private List<JCRRegistry> jcrRegistries;
 
     public Journal() {

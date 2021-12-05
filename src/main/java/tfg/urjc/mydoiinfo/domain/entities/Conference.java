@@ -1,5 +1,7 @@
 package tfg.urjc.mydoiinfo.domain.entities;
 
+import com.fasterxml.jackson.annotation.JsonView;
+
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
@@ -9,13 +11,21 @@ import java.util.Objects;
 @Entity
 public class Conference {
 
+    public interface ConferenceData {};
+
     @Id
     @GeneratedValue
+    @JsonView(ConferenceData.class)
     private Long id;
+    @JsonView(ConferenceData.class)
     private String title;
+    @JsonView(ConferenceData.class)
     private String acronym;
+    @JsonView(ConferenceData.class)
     private Integer ggsClass;
+    @JsonView(ConferenceData.class)
     private String ggsRating;
+    @JsonView(ConferenceData.class)
     private String coreClass;
     private Date updatedDate;
 

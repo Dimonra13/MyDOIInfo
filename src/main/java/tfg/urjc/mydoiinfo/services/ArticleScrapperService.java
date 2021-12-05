@@ -34,7 +34,11 @@ public class ArticleScrapperService {
             return null;
         for (ArticleScrapper scrapper : articleScrapperList) {
             if (scrapper.isCorrectJournalScrapper(DOI)) {
-                return scrapper.getArticleInfoFromDOI(DOI);
+                ArticleInfo articleInfo = scrapper.getArticleInfoFromDOI(DOI);
+                //If the title couldn't be read an error must have occurred, so null is returned
+                if(articleInfo == null || articleInfo.getTitle()==null || articleInfo.getTitle().equals(""))
+                    return null;
+                return articleInfo;
             }
         }
         return null;
