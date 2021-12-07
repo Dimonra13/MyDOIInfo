@@ -1,5 +1,6 @@
 package tfg.urjc.mydoiinfo.services;
 
+import org.jboss.resteasy.client.jaxrs.ResteasyClientBuilder;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
@@ -9,13 +10,13 @@ import org.springframework.stereotype.Service;
 import tfg.urjc.mydoiinfo.domain.entities.Article;
 
 import javax.ws.rs.client.Client;
-import javax.ws.rs.client.ClientBuilder;
 import javax.ws.rs.client.Invocation;
 import javax.ws.rs.client.WebTarget;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 @Service
 public class ORCIDService {
@@ -42,7 +43,10 @@ public class ORCIDService {
         if (id == null)
             return null;
         //Create the client
-        Client client = ClientBuilder.newClient();
+        Client client = new ResteasyClientBuilder()
+                .establishConnectionTimeout(3, TimeUnit.SECONDS)
+                .socketTimeout(3, TimeUnit.SECONDS)
+                .build();
         //Set the target URL and response type (JSON)
         WebTarget webTarget = client.target(BASE_ORCID_URL+id+"/"+endpoint);
         Invocation.Builder invocationBuilder = webTarget.request(MediaType.APPLICATION_JSON);

@@ -208,8 +208,6 @@ public class ArticleServiceTests {
         assertEquals(testJournal,output.getJcrRegistry().getJournal());
     }
 
-
-
     @Test
     public void getArticleFromNullDOIListTest(){
         //GIVEN: A null list
