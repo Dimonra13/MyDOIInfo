@@ -25,7 +25,7 @@ public class DataReaderController {
     @Autowired
     ConferenceDataReaderService conferenceDataReaderService;
 
-    @PostMapping("/JCR")
+    @PostMapping("/jcr")
     public ResponseEntity<String> updatedJCRInfo(@RequestPart("file") MultipartFile dataFile,
                                                  @RequestParam("journal-field") String journalField,
                                                  @RequestParam("year") Integer year){
@@ -58,7 +58,7 @@ public class DataReaderController {
         }
     }
 
-    @PostMapping("/Conference")
+    @PostMapping("/conference")
     public ResponseEntity<String> updatedConferenceInfo(@RequestPart("file") MultipartFile dataFile){
         //If the file is null or has no name, error 400 is returned
         if(dataFile==null || dataFile.getOriginalFilename()==null)

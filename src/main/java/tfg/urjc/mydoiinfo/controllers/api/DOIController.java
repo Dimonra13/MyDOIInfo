@@ -62,6 +62,11 @@ public class DOIController {
         return responseEntity;
     }
 
+    /*
+    To avoid possible attacks it is not allowed to have // in the url, therefore to use this endpoint it is necessary
+    to put the doi with the prefix/suffix format. The above endpoint does allow processing DOIs in url format as it is
+    passed as a parameter instead of being part of the url itself.
+     */
     @GetMapping("/**")
     @JsonView(CompleteArticle.class)
     public ResponseEntity<Article> getArticleFromDOI (HttpServletRequest request){
