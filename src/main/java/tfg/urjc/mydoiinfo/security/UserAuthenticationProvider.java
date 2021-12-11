@@ -36,10 +36,10 @@ public class UserAuthenticationProvider implements AuthenticationProvider {
             throw new BadCredentialsException("Incorrect password");
         }
 
-        List<GrantedAuthority> roles = (user.getRoles() == null) ? new ArrayList<>() :
-                user.getRoles().stream().map(role -> new SimpleGrantedAuthority(role)).collect(Collectors.toList());
+        List<GrantedAuthority> authorities = (user.getAuthorities() == null) ? new ArrayList<>() :
+                user.getAuthorities().stream().map(authority -> new SimpleGrantedAuthority(authority)).collect(Collectors.toList());
 
-        return new UsernamePasswordAuthenticationToken(user.getUsername(), password, roles);
+        return new UsernamePasswordAuthenticationToken(user.getUsername(), password, authorities);
     }
 
     @Override

@@ -3,7 +3,6 @@ package tfg.urjc.mydoiinfo.domain.entities;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import javax.persistence.*;
-import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -16,15 +15,15 @@ public class User {
     private String username;
     private String password;
     @ElementCollection(fetch = FetchType.EAGER)
-    private Set<String> roles = new HashSet<>();
+    private Set<String> authorities = new HashSet<>();
 
     public User() {
     }
 
-    public User(String username, String password, String... roles) {
+    public User(String username, String password, Set<String> authorities) {
         this.username = username;
         this.password = new BCryptPasswordEncoder().encode(password);
-        this.roles = (roles==null) ? new HashSet<>() : new HashSet<>(Arrays.asList(roles));
+        this.authorities = (authorities ==null) ? new HashSet<>() : authorities;
     }
 
     public void setId(Long id) {
@@ -51,11 +50,11 @@ public class User {
         this.password = password;
     }
 
-    public Set<String> getRoles() {
-        return roles;
+    public Set<String> getAuthorities() {
+        return authorities;
     }
 
-    public void setRoles(Set<String> roles) {
-        this.roles = (roles==null) ? new HashSet<>() : roles;
+    public void setAuthorities(Set<String> authorities) {
+        this.authorities = (authorities==null) ? new HashSet<>() : authorities;
     }
 }

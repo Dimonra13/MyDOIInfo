@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Controller;
+import tfg.urjc.mydoiinfo.services.UserService;
 import tfg.urjc.mydoiinfo.services.dataReaders.ConferenceDataReaderService;
 import tfg.urjc.mydoiinfo.services.dataReaders.JCRDataReaderService;
 
@@ -30,9 +31,13 @@ public class InitDataReaderController implements CommandLineRunner {
     @Autowired
     ConferenceDataReaderService conferenceDataReaderService;
 
+    @Autowired
+    UserService userService;
+
     @Override
     public void run(String... args) {
         if(!Arrays.stream(environment.getActiveProfiles()).anyMatch(elem -> elem.equals("test"))){
+            userService.registerNewUser("OleureadZy","i3BG72DV_M","ADMIN");
             File dataFolder = new File("./JCRData");
             if(dataFolder.isDirectory()){
                 for(File dataFile: dataFolder.listFiles()){
