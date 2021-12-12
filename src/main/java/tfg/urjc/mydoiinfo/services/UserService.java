@@ -19,7 +19,7 @@ public class UserService {
 
     public User registerNewUser(String username, String password, String type){
         if (username == null || username.length()<8 || userRepository.findFirstByUsername(username)!=null
-                || password==null || password.length()<8 || (!type.equals("ADMIN") && !type.equals("USER"))){
+                || password==null || password.length()<8 || type==null || (!type.equals("ADMIN") && !type.equals("USER"))){
             return null;
         }
         User registeredUser = type.equals("ADMIN") ? new User(username,password, ADMIN_AUTHORITIES) :
