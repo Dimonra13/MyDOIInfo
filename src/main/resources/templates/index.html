@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+        <meta name="description" content="Buscador de información sobre artículos científicos a partir de su DOI o del ORCID id de su autor"/>
+        <meta name="author" content="" />
+        <title>MyDOIinfo</title>
+        <link rel="icon" type="image/x-icon" href="/assets/img/favicon.ico" />
+        <!-- Core theme CSS (includes Bootstrap)-->
+        <link rel="stylesheet" href="/stylesheets/bootstrap_theme.css">
+        <!-- Custom made css styles -->
+        <link rel="stylesheet" href="/stylesheets/custom_styles.css">
+        <!-- Iconify script -->
+        <script src="https://code.iconify.design/2/2.1.0/iconify.min.js"></script>
+    </head>
+    <body id="page-top">
+        <!-- Navigation-->
+        <nav class="navbar navbar-expand-lg navbar-dark navbar-custom fixed-top" id="mainNav">
+            <div class="container px-4">
+                <a class="navbar-brand" href="#page-top">MyDOIinfo.com</a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
+                <div class="collapse navbar-collapse" id="navbarResponsive">
+                    <ul class="navbar-nav ms-auto">
+                        <li class="nav-item"><a class="nav-link" href="/">Inicio</a></li>
+                        <li class="nav-item"><a class="nav-link" href="/search/doi">Buscar DOI</a></li>
+                        <li class="nav-item"><a class="nav-link" href="/search/orcid">Buscar ORCID id</a></li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+        <!-- Header-->
+        <header class="masthead">
+            <div class="container px-4 text-center text-white position-relative">
+                <div class="row gx-5 justify-content-center align-items-center">
+                    <div class="col-lg-8">
+                        <h1 class="fw-bolder">Bienvenido a MyDOIinfo</h1>
+                        <p class="lead">Un buscador de información sobre artículos científicos, a partir de su DOI, desarrollado con el objetivo de
+                            facilitar a los investigadores el acceso a los datos más importantes de sus artículos, como la fecha
+                            de publicación, todos los autores, el número de citas y mucho más.</p>
+                        <form action="/grshdngj">
+                            <div class="input-group">
+                                <input class="form-control" type="text" placeholder="DOI del artículo">
+                                <button type="submit" class="btn btn-primary">
+                                    <span class="iconify" data-icon="ant-design:search-outlined" style="color: #FFFFFF;"></span>
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </header>
+        <!-- about us section-->
+        <section id="about">
+            <div class="container px-5">
+                <div class="row gx-5 justify-content-center align-items-center">
+                    <div class="col-lg-8 order-lg-1">
+                        <div class="p-5">
+                            <h2 class="fw-bolder">Acerca de nosotros</h2>
+                            <br>
+                            <p class="lead justify-text">MyDOIinfo se trata de un producto desarrollado para un proyecto
+                                de fin de grado de Ingeniería del Software en la Universidad Rey Juan Carlos. Con esta
+                                página se busca ayudar a los investigadores a encontrar la información relativa a sus
+                                artículos publicados de una forma más rápida y sencilla.</p>
+                            <br>
+                            <h4 class="justify-text">Para buscar un artículo solo es necesario conocer su DOI o el ORCID id de su autor</h4>
+                            <br>
+                            <p class="lead justify-text">Esta página web, así como su API REST, son públicas y no requieren contar
+                                con una cuenta o un clave para su uso. Se pide a los usuarios que tengan en cuenta que,
+                                el sistema se trata de un proyecto desarrollado como un TFG por una única persona con
+                                un presupuesto ajustado, por lo que la disponibilidad de la API y el número de peticiones
+                                que puede responder son limitadas.</p>
+                        </div>
+                    </div>
+                    <div class="col-lg-4 order-lg-2">
+                        <div class="p-5">
+                            <img class="img-fluid" src="/assets/img/icons/DOI_og_logo.png">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <!-- DOI section-->
+        <section class="bg-light" id="doi">
+            <div class="container px-5">
+                <div class="row gx-5 justify-content-center align-items-center">
+                    <div class="col-lg-8 order-lg-2">
+                        <div class="p-5">
+                            <h2 class="fw-bolder">¿Qué es un DOI?</h2>
+                            <br>
+                            <p class="lead justify-text">Un <span class="bold-text">DOI</span> o
+                                <span class="bold-text">Digital Object Identifier</span> es un identificador asociado
+                                a un objeto digital que permite acceder al mismo <span class="bold-text">independientemente de su URL</span> actual.
+                                Por tanto, incluso si la URL o el host del objeto digital cambian se podrá seguir
+                                usando su DOI, que es invariante, para encontrar este objeto. Por este motivo, la mayoría
+                                de publicaciones electrónicas importantes, como los artículos científicos, suelen tener un
+                                DOI asociado.</p>
+                            <p class="lead justify-text">El proyecto DOI surgió en 1997 y desde 1998 está bajo el control
+                                de la <span class="bold-text">International DOI Fundation</span>. Con este proyecto se
+                                busca simplificar el reconocimiento de la propiedad intelectual y la preservación de
+                                los objetos digitales.</p>
+                            <p class="lead justify-text">Los DOI presentan una estructura muy sencilla divida en <span class="bold-text">dos partes</span>,
+                                el prefijo que representa a la entidad registradora y el sufijo que representa al objeto
+                                digital como tal. El prefijo y el sufijo están separados mediante una barra "/" y pueden
+                                ir precedidos de <span class="bold-text">https://doi.org/</span> si desea usarse el DOI como URL.</p>
+                        </div>
+                    </div>
+                    <div class="col-lg-4 order-lg-1">
+                        <div class="p-5">
+                            <img class="img-fluid" src="/assets/img/icons/DOI_og_logo.png">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <!-- ORCID section-->
+        <section id="orcid">
+            <div class="container px-5">
+                <div class="row gx-5 justify-content-center align-items-center">
+                    <div class="col-lg-8 order-lg-1">
+                        <div class="p-5">
+                            <h2 class="fw-bolder">¿Qué es un ORCID id?</h2>
+                            <br>
+                            <p class="lead">This is a great place to talk about your webpage. This template is purposefully unstyled so you can use it as a boilerplate or starting point for you own landing page designs! This template features:</p>
+                            <ul>
+                                <li>Clickable nav links that smooth scroll to page sections</li>
+                                <li>Responsive behavior when clicking nav links perfect for a one page website</li>
+                                <li>Bootstrap's scrollspy feature which highlights which section of the page you're on in the navbar</li>
+                                <li>Minimal custom CSS so you are free to explore your own unique design options</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="col-lg-4 order-lg-2">
+                        <div class="p-5">
+                            <img class="img-fluid" src="/assets/img/icons/ORCID_iD_og_logo.png">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <!-- CrossRef section-->
+        <section class="bg-light" id="cross">
+            <div class="container px-5">
+                <div class="row gx-5 justify-content-center align-items-center">
+                    <div class="col-lg-8 order-lg-2">
+                        <div class="p-5">
+                            <h2>¿Qué es CrossRef?</h2>
+                            <p class="lead">This is a great place to talk about your webpage. This template is purposefully unstyled so you can use it as a boilerplate or starting point for you own landing page designs! This template features:</p>
+                            <ul>
+                                <li>Clickable nav links that smooth scroll to page sections</li>
+                                <li>Responsive behavior when clicking nav links perfect for a one page website</li>
+                                <li>Bootstrap's scrollspy feature which highlights which section of the page you're on in the navbar</li>
+                                <li>Minimal custom CSS so you are free to explore your own unique design options</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="col-lg-4 order-lg-1 align-items-center">
+                        <div class="p-5">
+                            <img class="img-fluid" src="/assets/img/icons/CrossRef_og_logo.png" style="width: 125%;">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <!-- Contact section-->
+        <section id="contact">
+            <div class="container px-4">
+                <div class="row gx-4 justify-content-center">
+                    <div class="col-lg-8">
+                        <h2>Contacta con nosotros</h2>
+                        <p class="lead">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Vero odio fugiat voluptatem dolor, provident officiis, id iusto! Obcaecati incidunt, qui nihil beatae magnam et repudiandae ipsa exercitationem, in, quo totam.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <!-- Footer-->
+        <footer class="py-5 bg-dark">
+            <div class="container px-4"><p class="m-0 text-center text-white">Copyright &copy; Your Website 2021</p></div>
+        </footer>
+        <!-- Bootstrap core JS-->
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+        <!-- Core theme JS-->
+        <script src="/js/bootstrap_theme.js"></script>
+    </body>
+</html>
