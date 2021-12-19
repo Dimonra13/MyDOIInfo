@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://thymeleaf.org">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+    <meta name="description" content="Buscador de información sobre artículos científicos a partir de su DOI o del ORCID id de su autor"/>
+    <meta name="author" content="" />
+    <title>MyDOIinfo</title>
+    <link rel="icon" type="image/x-icon" href="/assets/img/favicon.ico" />
+    <!-- Core theme CSS (includes Bootstrap)-->
+    <link rel="stylesheet" href="/stylesheets/bootstrap_theme.css">
+    <!-- Custom made css styles -->
+    <link rel="stylesheet" href="/stylesheets/custom_styles.css">
+    <!-- Iconify script -->
+    <script src="https://code.iconify.design/2/2.1.0/iconify.min.js"></script>
+</head>
+<body id="page-top">
+<!-- Navigation-->
+<nav class="navbar navbar-expand-lg navbar-dark navbar-custom fixed-top" id="mainNav">
+    <div class="container px-4">
+        <a class="navbar-brand" href="/">MyDOIinfo.com</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
+        <div class="collapse navbar-collapse" id="navbarResponsive">
+            <ul class="navbar-nav ms-auto">
+                <li class="nav-item"><a class="nav-link" href="/">Inicio</a></li>
+                <li class="nav-item"><a class="nav-link" href="/search/doi">Buscar DOI</a></li>
+                <li class="nav-item"><a class="nav-link" href="/search/orcid">Buscar ORCID id</a></li>
+            </ul>
+        </div>
+    </div>
+</nav>
+<!-- Header-->
+<header class="bg-light">
+    <div class="container px-4 text-center text-dark position-relative">
+        <div class="row gx-5 justify-content-center align-items-center">
+            <div class="col-lg-8">
+                <h1 class="fw-bolder">Buscador por DOI</h1>
+                <br>
+                <p class="lead">En esta página puede buscar la información relativa a uno o más artículos científicos
+                    a partir de su DOI. Tenga en cuenta que si desea buscar varios DOIs, estos deberán estar separados por comas
+                    y que el tiempo de procesamiento aumentará en función del número de DOIs introducidos.</p>
+                <br>
+                <div>
+                    <div class="input-group">
+                        <input class="form-control" type="text" placeholder="DOI del artículo" th:value="${inputDOI}" id="input-doi" name="inputDOI">
+                        <button class="btn btn-primary" id="search-button">
+                            <span class="iconify" data-icon="ant-design:search-outlined" style="color: #FFFFFF;"></span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+<!-- article info list section-->
+<section id="article-info-list">
+    <div class="container px-5">
+        <div class="row gx-5 justify-content-center align-items-center">
+
+        </div>
+        <br>
+    </div>
+</section>
+<!-- Footer-->
+<footer class="py-5 bg-dark">
+    <div class="container px-4"><p class="m-0 text-center text-white">Copyright &copy; Your Website 2021</p></div>
+</footer>
+<!-- Bootstrap core JS-->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+<!-- Core theme JS-->
+<script src="/js/bootstrap_theme.js"></script>
+</body>
+</html>
