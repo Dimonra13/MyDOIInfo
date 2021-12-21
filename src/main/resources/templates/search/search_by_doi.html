@@ -71,12 +71,34 @@
                 <p class="request-result">test</p>
             </div>
             <!-- ERROR -->
-            <div class="request-error-container" id="request-error-not-found">
-                <p>Not Found</p>
+            <div class="col-lg-8 request-error-container" id="request-error-bad-request">
+                <h2 class="fw-bolder" style="color: darkorange;">Error, demasiados DOIs</h2>
+                <h4 class="fw-bolder">El número de DOIs introducidos excede el máximo que el sistema es capaz de
+                    procesar en una petición.</h4>
+                <div class="p-5">
+                    <img class="img-fluid" src="/assets/img/errors/400.jpg" style="width: 100%">
+                </div>
+                <p class="lead">Tenga en cuenta que este límite en el número de DOIs se ha establecido con el objetivo
+                    de proteger el sistema frente a posibles ataques y de evitar tiempos de respuesta excesivos. Sentimos
+                    las molestias que pueda ocasionar.</p>
             </div>
-            <div class="request-error-container" id="request-error-general">
-                <p>Error</p>
+            <div class="col-lg-8 request-error-container" id="request-error-not-found">
+                <h2 class="fw-bolder" style="color: darkorange;">No se ha encontrado la información solicitada</h2>
+                <h4 class="fw-bolder">Es posible que los DOIs introducidos presenten errores o que el sistema no
+                    haya podido acceder a las páginas web de los artículos asociados a estos DOIs.</h4>
+                <div class="p-5">
+                    <img class="img-fluid" src="/assets/img/errors/404.jpg" style="width: 100%">
+                </div>
+                <p class="lead">Tenga en cuenta que actualmente el sistema solo es capaz de obtener la información de
+                    los artículos científicos publicados por ACM, IEEE, Elsevier, Springer y la revista Science.</p>
             </div>
+            <div class="col-lg-8 request-error-container" id="request-error-general">
+                <h2 class="fw-bolder" style="color: darkorange;">Se ha producido un error durante la busqueda</h2>
+                <div class="p-5">
+                    <img class="img-fluid" src="/assets/img/errors/error.jpg" style="width: 100%">
+                </div>
+                <h4 class="fw-bolder">Por favor, recargue la página y vuelva a realizar la búsqueda. Si el error persiste puede
+                    ponerse en contacto con nosotros enviando un correo electrónico a mydoiinfo@gmail.com.</h4>
             </div>
         </div>
         <br>

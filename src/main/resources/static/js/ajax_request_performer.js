@@ -11,7 +11,7 @@ function performRequest(url){
     $(".request-error-container").hide();
     //Show the waiting for response message while the request is being performed
     $("#wait-response").show();
-
+    //Scroll to the wait-response section
     document.getElementById("wait-response").scrollIntoView({behavior: 'smooth'});
     //perform request
     $.getJSON(BASE_URL+url+$("#input-doi").val(),function (data){
@@ -23,6 +23,7 @@ function performRequest(url){
         } else {
             //Show the result container
             $("#request-result-container").show();
+            //Scroll to the request container
             document.getElementById("request-result-container").scrollIntoView({behavior: 'smooth'});
             //Generate the html code for the request result
             generateHTML(data);
@@ -30,9 +31,9 @@ function performRequest(url){
         //Re-activate the search button
         $("#search-button").prop('disabled', false);
     }).fail(function(response){
-        showErrorHTML(response.status)
         //Hide the waiting for response message
         $("#wait-response").hide();
+        showErrorHTML(response.status)
         //Re-activate the search button
         $("#search-button").prop('disabled', false);
     });
@@ -48,10 +49,17 @@ function showErrorHTML(statusCode){
     if(statusCode==404){
         //Show the 404 error html
         $("#request-error-not-found").show();
+        //Scroll to the not-found section
         document.getElementById("request-error-not-found").scrollIntoView({behavior: 'smooth'});
+    }else if(statusCode==400){
+        //Show the 400 error html
+        $("#request-error-bad-request").show();
+        //Scroll to the bad-request section
+        document.getElementById("request-error-bad-request").scrollIntoView({behavior: 'smooth'});
     }else{
         //Show generic error html
         $("#request-error-general").show();
+        //Scroll to the error section
         document.getElementById("request-error-general").scrollIntoView({behavior: 'smooth'});
     }
 }
