@@ -181,7 +181,8 @@ public class ArticleService {
         List<Article> output = new ArrayList<>();
         if(doiList!=null){
             for(String doi: doiList){
-                Article article = getArticleFromUserInputDOI(doi);
+                //It is important to remove the leading and trailing spaces, so trim() is used
+                Article article = getArticleFromUserInputDOI(doi.trim());
                 if (article != null)
                     output.add(article);
             }
