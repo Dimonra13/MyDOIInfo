@@ -72,6 +72,8 @@ public class DOIController {
     public ResponseEntity<Article> getArticleFromDOI (HttpServletRequest request){
         //The DOI included in the request URL is obtained
         String doi = request.getRequestURL().toString().split("/api/")[1].replace("doi/","");
+        if (doi==null || doi.equals(""))
+            return new ResponseEntity<>(null,HttpStatus.NOT_FOUND);
         //It is important to remove the leading and trailing spaces, so trim() is used
         Article output = articleService.getArticleFromUserInputDOI(doi.trim());
         if (output==null)

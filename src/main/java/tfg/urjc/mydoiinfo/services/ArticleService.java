@@ -181,10 +181,12 @@ public class ArticleService {
         List<Article> output = new ArrayList<>();
         if(doiList!=null){
             for(String doi: doiList){
-                //It is important to remove the leading and trailing spaces, so trim() is used
-                Article article = getArticleFromUserInputDOI(doi.trim());
-                if (article != null)
-                    output.add(article);
+                if(doi!=null && !doi.equals("")){
+                    //It is important to remove the leading and trailing spaces, so trim() is used
+                    Article article = getArticleFromUserInputDOI(doi.trim());
+                    if (article != null)
+                        output.add(article);
+                }
             }
         }
         return output;
