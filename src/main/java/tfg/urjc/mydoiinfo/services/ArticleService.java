@@ -149,9 +149,11 @@ public class ArticleService {
     calling the getArticleFromDOI method. Its use is recommended instead of the getArticleFromDOI method whenever
     working with user-entered information.
      */
-    public Article getArticleFromUserInputDOI(String doi) {
-        if (doi==null || doi.equals(""))
+    public Article getArticleFromUserInputDOI(String inputDoi) {
+        if (inputDoi==null || inputDoi.equals(""))
             return null;
+        //It is important to remove the leading and trailing spaces, so trim() is used
+        String doi = inputDoi.trim();
         Article output;
         /*
         It is very common that DOIs are supplied following the format /prefix/suffix or prefix/suffix, instead of using
@@ -181,12 +183,9 @@ public class ArticleService {
         List<Article> output = new ArrayList<>();
         if(doiList!=null){
             for(String doi: doiList){
-                if(doi!=null && !doi.equals("")){
-                    //It is important to remove the leading and trailing spaces, so trim() is used
-                    Article article = getArticleFromUserInputDOI(doi.trim());
-                    if (article != null)
-                        output.add(article);
-                }
+                Article article = getArticleFromUserInputDOI(doi);
+                if (article != null)
+                    output.add(article);
             }
         }
         return output;
