@@ -4027,10 +4027,9 @@ textarea.form-control-lg {
   display: block;
 }
 .navbar-custom {
-  padding-top: 1.5rem;
-  padding-bottom: 1.5rem;
   background-color: rgba(0, 0, 0, 0.8);
 }
+
 .navbar-custom .navbar-brand {
   font-size: 1.5rem;
   letter-spacing: 0.1rem;
@@ -4048,8 +4047,8 @@ textarea.form-control-lg {
   flex-wrap: wrap;
   align-items: center;
   justify-content: space-between;
-  padding-top: 0.5rem;
-  padding-bottom: 0.5rem;
+  padding-top: 0.8rem;
+  padding-bottom: 0.8rem;
 }
 .navbar > .container,
 .navbar > .container-fluid,

@@ -126,7 +126,17 @@ function init(){
     $(".request-result").remove();
     //Hide the result error container
     $(".request-error-container").hide();
-    //TODO: Call perform request if the search bar is not empty
+}
+
+/*
+This method calls performRequest if the search bar is not empty in order to perform the initial request. It must be
+called from the HTML with the correct url when the document is ready.
+ */
+function performInitialRequest(url){
+    let inputDoi = $("#input-doi").val();
+    if(inputDoi!=undefined && inputDoi!="" && inputDoi!=" "){
+        performRequest(url)
+    }
 }
 
 $(document).ready(function(){
