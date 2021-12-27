@@ -2,11 +2,54 @@ let BASE_URL = "http://localhost:8080/api/";
 let PAGE_SIZE = 12;
 
 function generateHTMLForArticle(article,page){
+    if(article===undefined || article.title===undefined || article.title==="")
+        return undefined;
     let articleCardTemplate = [
         '<div class="card request-result paginated page-'+page+'">',
-        '<p>Título: ',
-        article.title,
-        '</p>',
+        '<div class="card-header">',
+        '<h3 style="color: darkorange;">'+ article.title+'</h3>',
+        (article.DOI != undefined && article.DOI!="" && article.DOI!=" ") ?
+            '<a href="'+ article.DOI +'">' + article.DOI +'</a>' : '',
+        '</div>',
+        '<div class="card-body">',
+        '<ul class="response-list">',
+        '<li class="lead text-md-start">',
+        '<span class="fw-bolder">Autores: </span>',
+        (article.authors!=undefined && Array.isArray(article.authors) && article.authors.length>0) ?
+            article.authors.join(", ") : 'Desconocidos',
+        '</li>',
+        '<li class="lead text-md-start">',
+        '<span class="fw-bolder">Publicado en: </span>',
+        (article.journalTitle!=undefined && article.journalTitle!="") ?
+            (article.journalTitle + ((article.volumeInfo!=undefined && article.volumeInfo!="") ? ', ' + article.volumeInfo : ''))
+            : 'Desconocido',
+        '</li>',
+        '<li class="lead text-md-start">',
+        '<span class="fw-bolder">Fecha de publicación: </span>',
+        (article.publicationDateText!=undefined && article.publicationDateText!="") ?
+            article.publicationDateText : 'Desconocida',
+        '</li>',
+        '<li class="lead text-md-start">',
+        '<span class="fw-bolder">Número de citas (CrossRef): </span>',
+        (article.citations!=undefined) ? article.citations : 'Desconocido',
+        '</li>',
+        '</ul>',
+        '</div>',
+        //TODO: COMPLETE THIS PART
+        ((article.jcrRegistry!=undefined) ?
+                (
+                    '<div class="card-footer">'+
+                    'jcrregistry'+
+                    '</div>'
+                )
+            : ((article.conference!=undefined) ?
+                    ('<div class="card-footer">'+
+                    'conference'+
+                    '</div>')
+                :
+                    ''
+              )
+        ),
         '</div>',
         '<br class="request-result paginated page-'+page+'">'
     ];
@@ -19,11 +62,13 @@ function changePage(page){
     $("#pagination-button-"+page).prop('disabled', true);
     $(".paginated").hide();
     $(".page-"+page).show();
+    //Scroll to the request container
+    document.getElementById("request-result-container").scrollIntoView({behavior: 'smooth'});
 }
 
 function generatePaginationButtonHTML(pageIndex){
     let paginationButtonTemplate = [
-        '<button class="request-result pagination-button" id="pagination-button-'+pageIndex+'" onclick="changePage('+pageIndex+')">',
+        '<button class="request-result pagination-button btn btn-primary" id="pagination-button-'+pageIndex+'" onclick="changePage('+pageIndex+')" style="margin-right: 0.3rem;">',
         pageIndex+1,
         '</button>'
     ];
@@ -50,7 +95,6 @@ function generateHTML(data){
 }
 
 function showErrorHTML(statusCode){
-    console.log(statusCode);
     if(statusCode==404){
         //Show the 404 error html
         $("#request-error-not-found").show();
@@ -88,7 +132,6 @@ function performRequest(url){
     $.getJSON(BASE_URL+url+$("#input-doi").val(),function (data){
         //Hide the waiting for response message when the response is received
         $("#wait-response").hide();
-        console.log(data)
         if(data===undefined || !Array.isArray(data) || data.length===0){
             showErrorHTML(404);
         } else {

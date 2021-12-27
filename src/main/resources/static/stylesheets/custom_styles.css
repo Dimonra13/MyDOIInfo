@@ -5,3 +5,7 @@
 .bold-text {
     font-weight: bold;
 }
+
+ul.response-list li {
+    padding-bottom: 0.3rem;
+}
