@@ -11,6 +11,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
+import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
 public class IEEEArticleScrapper extends PhantomArticleScrapper {
@@ -28,7 +29,17 @@ public class IEEEArticleScrapper extends PhantomArticleScrapper {
 
             PhantomJSDriver driver = getPhantomDriver();
 
-            driver.get(DOI);
+            driver.manage().timeouts()
+                    .pageLoadTimeout(10, TimeUnit.SECONDS)
+                    .implicitlyWait(5, TimeUnit.SECONDS);
+            try {
+                driver.get(DOI);
+            } catch (org.openqa.selenium.TimeoutException e) {
+                System.err.println("Page load error");
+                driver.quit();
+                return null;
+            }
+
             System.out.println("Page correctly load");
 
             WebElement titleElement;
