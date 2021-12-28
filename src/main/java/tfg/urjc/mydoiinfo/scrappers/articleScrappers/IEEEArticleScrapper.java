@@ -29,6 +29,7 @@ public class IEEEArticleScrapper extends PhantomArticleScrapper {
             PhantomJSDriver driver = getPhantomDriver();
 
             driver.get(DOI);
+            System.out.println("Page correctly load");
 
             WebElement titleElement;
             String title = null;
@@ -129,6 +130,7 @@ public class IEEEArticleScrapper extends PhantomArticleScrapper {
                 System.err.println(exception.getMessage());
             }
 
+            driver.close();
             driver.quit();
 
             return new ArticleInfo(title, DOI, authorList, journal, volumeInfo, date, dateString,conferenceAcronym);

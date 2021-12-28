@@ -13,7 +13,6 @@ public abstract class PhantomArticleScrapper extends ArticleScrapper {
     protected PhantomJSDriver getPhantomDriver(){
         DesiredCapabilities caps = new DesiredCapabilities();
         caps.setJavascriptEnabled(true);
-        caps.setCapability("phantomjs.page.settings.resourceTimeout", 10000);
         caps.setCapability(PhantomJSDriverService.PHANTOMJS_EXECUTABLE_PATH_PROPERTY, "./phantomjs-2.1.1-linux/phantomjs");
         return new PhantomJSDriver(caps);
     }
