@@ -7,7 +7,7 @@ function generateHTMLForArticle(article,page){
     let articleCardTemplate = [
         '<div class="card request-result paginated page-'+page+'">',
         '<div class="card-header">',
-        '<h3 style="color: darkorange;">'+ article.title+'</h3>',
+        '<h3 class="fw-bolder" style="color: darkorange;">'+ article.title+'</h3>',
         (article.DOI != undefined && article.DOI!="" && article.DOI!=" ") ?
             '<a href="'+ article.DOI +'">' + article.DOI +'</a>' : '',
         '</div>',
@@ -35,16 +35,45 @@ function generateHTMLForArticle(article,page){
         '</li>',
         '</ul>',
         '</div>',
-        //TODO: COMPLETE THIS PART
         ((article.jcrRegistry!=undefined) ?
                 (
                     '<div class="card-footer">'+
-                    'jcrregistry'+
+                        '<h4 class="fw-bolder" style="color: darkorange;">Información sobre el JCR</h4>'+
+                        ((article.jcrRegistry.year) ? '<p class="lead">Año '+article.jcrRegistry.year+'</p>': '<br>') +
+                        '<div class="row">'+
+                            '<div class="col-4">'+
+                                '<h5 class="fw-bolder">Factor de impacto:</h5>'+
+                                '<p class="lead">'+ ((article.jcrRegistry.impactFactor!=undefined) ? article.jcrRegistry.impactFactor : 'N/D')+'</p>'+
+                            '</div>'+
+                            '<div class="col-4">'+
+                                '<h5 class="fw-bolder">Factor de impacto a cinco años:</h5>'+
+                                '<p class="lead">'+ ((article.jcrRegistry.impactFactorFiveYear!=undefined) ? article.jcrRegistry.impactFactorFiveYear: 'N/D')+'</p>'+
+                            '</div>'+
+                            '<div class="col-4">'+
+                                '<h5 class="fw-bolder">Cuartil:</h5>'+
+                                '<p class="lead">'+ ((article.jcrRegistry.quartile!=undefined) ? article.jcrRegistry.quartile : 'N/D')+'</p>'+
+                            '</div>'+
+                        '</div>'+
                     '</div>'
                 )
-            : ((article.conference!=undefined) ?
+            : ((article.conference!=undefined && (article.conference.coreClass!=undefined || article.conference.ggsClass!=undefined)) ?
                     ('<div class="card-footer">'+
-                    'conference'+
+                        '<h4 class="fw-bolder" style="color: darkorange;">Información sobre la conferencia</h4>'+
+                        '<br>'+
+                        '<div class="row">'+
+                            '<div class="col-4">'+
+                                '<h5 class="fw-bolder">Clase GGS:</h5>'+
+                                '<p class="lead">'+ ((article.conference.ggsClass!=undefined) ? article.conference.ggsClass : 'N/D')+'</p>'+
+                            '</div>'+
+                            '<div class="col-4">'+
+                                '<h5 class="fw-bolder">Clasificación GGS:</h5>'+
+                                '<p class="lead">'+ ((article.conference.ggsRating!=undefined) ? article.conference.ggsRating : 'N/D')+'</p>'+
+                            '</div>'+
+                            '<div class="col-4">'+
+                                '<h5 class="fw-bolder">Clase CORE:</h5>'+
+                                '<p class="lead">'+ ((article.conference.coreClass!=undefined) ? article.conference.coreClass : 'N/D')+'</p>'+
+                            '</div>'+
+                        '</div>'+
                     '</div>')
                 :
                     ''
