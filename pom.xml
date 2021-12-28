@@ -81,11 +81,11 @@
             <version>3.11.0</version>
         </dependency>
         <!-- PhantomJS -->
-        <!--  https://mvnrepository.com/artifact/com.github.detro.ghostdriver/phantomjsdriver  -->
+        <!-- https://mvnrepository.com/artifact/com.codeborne/phantomjsdriver -->
         <dependency>
             <groupId>com.codeborne</groupId>
             <artifactId>phantomjsdriver</artifactId>
-            <version>1.2.1</version>
+            <version>1.4.4</version>
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
