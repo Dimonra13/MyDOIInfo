@@ -34,15 +34,15 @@
     <div class="container px-4 text-center text-dark position-relative">
         <div class="row gx-5 justify-content-center align-items-center">
             <div class="col-lg-8">
-                <h1 class="fw-bolder" style="color: darkorange;">Buscador por DOI</h1>
+                <h1 class="fw-bolder" style="color: darkorange;">Buscador por ORCID id</h1>
                 <br>
-                <p class="lead">En esta página puede buscar la información relativa a uno o más artículos científicos
-                    a partir de su DOI. Tenga en cuenta que si desea buscar varios DOIs, estos deberán estar separados por comas
-                    y que el tiempo de procesamiento aumentará en función del número de DOIs introducidos.</p>
+                <p class="lead">En esta página puede buscar la información relativa a los artículos científicos de un
+                    investigador a partir del ORCID de este. Tenga en cuenta que el tiempo de procesamiento aumentará en
+                    función del número de artículos asociados al investigador buscado.</p>
                 <br>
-                <form id="search-form" onsubmit="performRequest('doi/?dois=')">
+                <form id="search-form" onsubmit="performRequest('orcid/')">
                     <div class="input-group">
-                        <input class="form-control" type="text" placeholder="DOI del artículo" th:value="${inputDOI}" id="search-input" name="inputDOI">
+                        <input class="form-control" type="text" placeholder="ORCID id del autor" th:value="${inputORCID}" id="search-input" name="inputORCID">
                         <button type="submit" class="btn btn-primary" id="search-button">
                             <span class="iconify" data-icon="ant-design:search-outlined" style="color: #FFFFFF;"></span>
                         </button>
@@ -75,25 +75,23 @@
             </div>
             <!-- ERROR -->
             <div class="col-lg-8 request-error-container" id="request-error-bad-request">
-                <h2 class="fw-bolder" style="color: darkorange;">Error, demasiados DOIs</h2>
-                <h4 class="fw-bolder">El número de DOIs introducidos excede el máximo que el sistema es capaz de
-                    procesar en una petición.</h4>
+                <h2 class="fw-bolder" style="color: darkorange;">Error, ORICID incorrecto</h2>
+                <h4 class="fw-bolder">El ORCID id introducido no sigue el formato propio de estos identificadores.</h4>
                 <div class="p-5">
                     <img class="img-fluid" src="/assets/img/errors/400.jpg" style="width: 100%">
                 </div>
-                <p class="lead">Tenga en cuenta que este límite en el número de DOIs se ha establecido con el objetivo
-                    de proteger el sistema frente a posibles ataques y de evitar tiempos de respuesta excesivos. Sentimos
-                    las molestias que pueda ocasionar.</p>
+                <p class="lead">Tenga en cuenta que un ORCID id esta formado por <span class="bold-text">16 números</span>
+                    que se dividen en 4 grupos de 4 dígitos separados por guiones (xxxx-xxxx-xxxx-xxxx).</p>
             </div>
             <div class="col-lg-8 request-error-container" id="request-error-not-found">
                 <h2 class="fw-bolder" style="color: darkorange;">No se ha encontrado la información solicitada</h2>
-                <h4 class="fw-bolder">Es posible que los DOIs introducidos presenten errores o que el sistema no
-                    haya podido acceder a las páginas web de los artículos asociados a estos DOIs.</h4>
+                <h4 class="fw-bolder">Es posible que el ORCID id introducido no exista o que el investigador no haya
+                    publicado ningún artículo.</h4>
                 <div class="p-5">
                     <img class="img-fluid" src="/assets/img/errors/404.jpg" style="width: 100%">
                 </div>
-                <p class="lead">Tenga en cuenta que actualmente el sistema solo es capaz de obtener la información de
-                    los artículos científicos publicados por ACM, IEEE, Elsevier, Springer y la revista Science.</p>
+                <p class="lead">Por favor, compruebe que ha introducido el identificador ORCID correctamente y que
+                    realmente existe un investigador con este id.</p>
             </div>
             <div class="col-lg-8 request-error-container" id="request-error-general">
                 <h2 class="fw-bolder" style="color: darkorange;">Se ha producido un error durante la busqueda</h2>
@@ -119,7 +117,7 @@
 <script src="/js/ajax_request_performer.js"></script>
 <script>
     $(document).ready(function(){
-        performInitialRequest('doi/?dois=');
+        performInitialRequest('orcid/');
     });
 </script>
 </body>

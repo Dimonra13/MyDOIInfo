@@ -14,4 +14,10 @@ public class SearchController {
         model.addAttribute("inputDOI",inputDOI);
         return "search/search_by_doi";
     }
+
+    @RequestMapping("/orcid")
+    public String getSearchORCIDPage(Model model, @RequestParam(value = "inputORCID", required = false) String inputORCID) {
+        model.addAttribute("inputORCID",inputORCID);
+        return "search/search_by_orcid";
+    }
 }

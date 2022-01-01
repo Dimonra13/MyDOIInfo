@@ -158,7 +158,7 @@ function performRequest(url){
     //Scroll to the wait-response section
     document.getElementById("wait-response").scrollIntoView({behavior: 'smooth'});
     //perform request
-    $.getJSON(BASE_URL+url+$("#input-doi").val(),function (data){
+    $.getJSON(BASE_URL+url+$("#search-input").val(),function (data){
         //Hide the waiting for response message when the response is received
         $("#wait-response").hide();
         if(data===undefined || !Array.isArray(data) || data.length===0){
@@ -205,8 +205,8 @@ This method calls performRequest if the search bar is not empty in order to perf
 called from the HTML with the correct url when the document is ready.
  */
 function performInitialRequest(url){
-    let inputDoi = $("#input-doi").val();
-    if(inputDoi!=undefined && inputDoi!="" && inputDoi!=" "){
+    let input = $("#search-input").val();
+    if(input!=undefined && input!="" && input!=" "){
         performRequest(url)
     }
 }

@@ -26,10 +26,14 @@ public class ORCIDController {
     @GetMapping("/{id}")
     @JsonView(CompleteArticle.class)
     public ResponseEntity<Set<Article>> getArticleFromORCIDid(@PathVariable String id){
+        if(id==null)
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        //It is necessary to remove any blanks at the beginning and at the end of the id introduced by the user.
+        String orcid = id.trim();
         //Check if the id really is a valid ORCID id with the correct format
-        if(id.matches("\\d{4}-\\d{4}-\\d{4}-\\d{4}")){
+        if(orcid.matches("\\d{4}-\\d{4}-\\d{4}-\\d{4}")){
             //Get the list of article belonging to the person with the specified ORCID id
-            List<Article> output = orcidService.getArticlesFromORCIDid(id);
+            List<Article> output = orcidService.getArticlesFromORCIDid(orcid);
             if (output==null) {
                 return new ResponseEntity<>(HttpStatus.NOT_FOUND);
             } else {
