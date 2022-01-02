@@ -1,0 +1,22 @@
+apiVersion: apps/v1 
+kind: Deployment
+metadata:
+  name: mydoiinfo-app
+spec:
+  selector:
+    matchLabels:
+      app: mydoiinfo-app
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app: mydoiinfo-app
+    spec:
+      containers:
+      - image: dimonra13/mydoiinfoappprod:v1
+        imagePullPolicy: Always
+        name: mydoiinfo-app
+        ports:
+        - containerPort: 80
+          name: mydoiinfo-app

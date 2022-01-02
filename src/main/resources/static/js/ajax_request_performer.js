@@ -1,4 +1,7 @@
+//For local development
 let BASE_URL = "http://localhost:8080/api/";
+//For production
+//let BASE_URL = "https://mydoiinfo.com/api/";
 let PAGE_SIZE = 12;
 
 function generateHTMLForArticle(article,page){

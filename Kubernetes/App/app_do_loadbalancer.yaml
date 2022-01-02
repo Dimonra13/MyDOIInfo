@@ -1,0 +1,16 @@
+kind: Service
+apiVersion: v1
+metadata:
+  name: app-loadbalancer-https
+  annotations:
+    service.beta.kubernetes.io/do-loadbalancer-protocol: "https"
+    service.beta.kubernetes.io/do-loadbalancer-certificate-id: #Certificate id here
+spec:
+  type: LoadBalancer
+  selector:
+    app: mydoiinfo-app
+  ports:
+    - name: https
+      protocol: TCP
+      port: 443
+      targetPort: 80
