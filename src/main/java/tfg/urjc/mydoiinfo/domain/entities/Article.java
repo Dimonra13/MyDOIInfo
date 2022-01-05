@@ -16,7 +16,6 @@ public class Article {
 
     @Id
     @GeneratedValue
-    @JsonView(ArticleBasicData.class)
     private Long id;
     @JsonView(ArticleBasicData.class)
     private String title;

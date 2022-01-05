@@ -15,7 +15,6 @@ public class Journal {
 
     @Id
     @GeneratedValue
-    @JsonView(JournalBasicData.class)
     private Long id;
     @JsonView(JournalBasicData.class)
     private String title;

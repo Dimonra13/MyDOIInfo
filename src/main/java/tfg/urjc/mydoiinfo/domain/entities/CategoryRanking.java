@@ -13,7 +13,6 @@ public class CategoryRanking {
 
     @Id
     @GeneratedValue
-    @JsonView(CategoryRankingData.class)
     private Long id;
     @JsonView(CategoryRankingData.class)
     private String name;

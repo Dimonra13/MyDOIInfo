@@ -15,7 +15,6 @@ public class Conference {
 
     @Id
     @GeneratedValue
-    @JsonView(ConferenceData.class)
     private Long id;
     @JsonView(ConferenceData.class)
     private String title;

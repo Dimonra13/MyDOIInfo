@@ -15,7 +15,6 @@ public class JCRRegistry {
 
     @Id
     @GeneratedValue
-    @JsonView(JCRBasicData.class)
     private Long id;
     @JsonView(JCRBasicData.class)
     private Integer year;
