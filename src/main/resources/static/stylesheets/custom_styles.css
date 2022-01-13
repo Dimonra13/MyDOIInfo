@@ -13,3 +13,9 @@ ul.response-list li {
 .card-footer {
     background-color: white;
 }
+
+@media (max-width: 576px){
+    .text-center-mb{
+        text-align: center !important;
+    }
+}

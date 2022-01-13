@@ -31,7 +31,7 @@ public class ORCIDController {
         //It is necessary to remove any blanks at the beginning and at the end of the id introduced by the user.
         String orcid = id.trim();
         //Check if the id really is a valid ORCID id with the correct format
-        if(orcid.matches("\\d{4}-\\d{4}-\\d{4}-\\d{4}")){
+        if(orcid.matches("\\d{4}-\\d{4}-\\d{4}-\\d{4}") || orcid.matches("\\d{4}-\\d{4}-\\d{4}-\\d{3}X")){
             //Get the list of article belonging to the person with the specified ORCID id
             List<Article> output = orcidService.getArticlesFromORCIDid(orcid);
             if (output==null) {
