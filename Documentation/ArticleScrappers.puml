@@ -1,0 +1,62 @@
+@startuml
+'https://plantuml.com/class-diagram
+package scrappers {
+
+abstract class Scrapper {
+    # int getHTTPStatusCode(String url)
+}
+
+package articleScrappers {
+
+    abstract class ArticleScrapper {
+        - journalPrefixList : String[]
+        + ArticleScrapper(String[] journalPrefixList)
+        + boolean isCorrectJournalScrapper(String DOI)
+        + {abstract} ArticleInfo getArticleInfoFromDOI(String DOI)
+    }
+
+    abstract class JSOUPArticleScrapper {
+        + JSOUPArticleScrapper(String[] journalPrefixList)
+        # Document getHtmlDocument(String url)
+    }
+    class ACMArticleScrapper {
+        + ACMArticleScrapper(String[] journalPrefixList)
+        + ArticleInfo getArticleInfoFromDOI(String DOI)
+    }
+    class ElsevierArticleScrapper {
+        + ElsevierArticleScrapper(String[] journalPrefixList)
+        - String forgeRedirectUrl(String DOI)
+        + ArticleInfo getArticleInfoFromDOI(String DOI)
+    }
+    class ScienceArticleScrapper {
+        + ScienceArticleScrapper(String[] journalPrefixList)
+        + ArticleInfo getArticleInfoFromDOI(String DOI)
+    }
+    class SpringerArticleScrapper {
+        + SpringerArticleScrapper(String[] journalPrefixList)
+        + ArticleInfo getArticleInfoFromDOI(String DOI)
+    }
+
+    abstract class PhantomArticleScrapper {
+        + PhantomArticleScrapper(String[] journalPrefixList)
+        # PhantomJSDriver getPhantomDriver()
+    }
+    class IEEEArticleScrapper {
+         + IEEEArticleScrapper(String[] journalPrefixList)
+         + ArticleInfo getArticleInfoFromDOI(String DOI)
+    }
+
+    ArticleScrapper <|- JSOUPArticleScrapper
+    JSOUPArticleScrapper <|- ACMArticleScrapper
+    JSOUPArticleScrapper <|-- ElsevierArticleScrapper
+    JSOUPArticleScrapper <|-- ScienceArticleScrapper
+    JSOUPArticleScrapper <|-- SpringerArticleScrapper
+    ArticleScrapper <|-- PhantomArticleScrapper
+    PhantomArticleScrapper <|-- IEEEArticleScrapper
+}
+
+Scrapper <|-- ArticleScrapper
+
+}
+
+@enduml

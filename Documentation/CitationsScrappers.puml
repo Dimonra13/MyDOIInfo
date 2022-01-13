@@ -1,0 +1,39 @@
+@startuml
+'https://plantuml.com/class-diagram
+package scrappers {
+
+abstract class Scrapper {
+    # int getHTTPStatusCode(String url)
+}
+
+package citationsScrappers {
+    abstract class CitationsScrapper {
+        + {abstract} Long getCitationsFromArticle(Article article)
+    }
+
+    abstract class ApiCitationsScrapper {
+        # Response getResponseFromURL(String url)
+    }
+    class CrossRefApiCitationsScrapper {
+        - {static} CROSSREF_BASE_URL : String  ="http://api.crossref.org/works/"
+        + Long getCitationsFromArticle(Article article)
+    }
+
+    abstract class JSOUPCitationsScrapper {
+        # Document getHtmlDocument(String url)
+    }
+    class ScholarCitationsScrapper {
+        - {static} SCHOLAR_BASE_URL : String ="https://scholar.google.com/scholar?hl=es&q="
+        + Long getCitationsFromArticle(Article article)
+    }
+
+    CitationsScrapper <|-- ApiCitationsScrapper
+    ApiCitationsScrapper <|-- CrossRefApiCitationsScrapper
+    CitationsScrapper <|-- JSOUPCitationsScrapper
+    JSOUPCitationsScrapper <|-- ScholarCitationsScrapper
+}
+
+Scrapper <|-- CitationsScrapper
+
+}
+@enduml
