@@ -1,0 +1,57 @@
+@startuml
+left to right direction
+
+' Kubernetes
+!define KubernetesPuml https://raw.githubusercontent.com/dcasati/kubernetes-PlantUML/master/dist
+
+!includeurl KubernetesPuml/kubernetes_Common.puml
+!includeurl KubernetesPuml/kubernetes_Context.puml
+!includeurl KubernetesPuml/kubernetes_Simplified.puml
+!includeurl KubernetesPuml/OSS/KubernetesSvc.puml
+!includeurl KubernetesPuml/OSS/KubernetesIng.puml
+!includeurl KubernetesPuml/OSS/KubernetesRs.puml
+!includeurl KubernetesPuml/OSS/KubernetesDeploy.puml
+!includeurl KubernetesPuml/OSS/KubernetesSecret.puml
+!includeurl KubernetesPuml/OSS/KubernetesPvc.puml
+!includeurl KubernetesPuml/OSS/KubernetesPv.puml
+
+' Azure
+!define AzurePuml https://raw.githubusercontent.com/RicardoNiepel/Azure-PlantUML/release/2-1/dist
+
+!includeurl AzurePuml/AzureCommon.puml
+!includeurl AzurePuml/AzureSimplified.puml
+!includeurl AzurePuml/Networking/AzureLoadBalancer.puml
+
+' Actor
+actor "User" as userAlias
+
+' Azure Components
+AzureLoadBalancer(aDOlb, "\nLoad\nBalancer\nwww.mydoiinfo.com", "")
+
+' Kubernetes Components
+Cluster_Boundary(cluster, "DigitalOcean\nKubernetes Cluster") {
+
+    Boundary(nsWeb, "MyDOIinfo App") {
+        KubernetesDeploy(deployWeb,"app_deployment","")
+    }
+
+    Boundary(nsDB, "Database") {
+            KubernetesDeploy(deployDB,"db_deployment","")
+            KubernetesSecret(secretDB,"db_secret","")
+            KubernetesSvc(serviceDB,"db_service","")
+            KubernetesPvc(pvcDB,"db_pvc","")
+            KubernetesPv(pvDB,"db_pv","")
+    }
+
+}
+
+Rel_U(userAlias, aDOlb, "HTTPS","443")
+Rel(aDOlb, deployWeb, "HTTP","80")
+
+Rel_U(deployWeb,serviceDB,"database connection")
+
+Rel(serviceDB,deployDB," ")
+Rel_U(secretDB,deployDB, " ")
+Rel_U(deployDB,pvcDB," ")
+Rel(pvcDB,pvDB," ")
+@enduml

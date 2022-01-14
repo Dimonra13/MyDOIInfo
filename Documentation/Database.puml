@@ -1,0 +1,61 @@
+@startuml
+'https://plantuml.com/class-diagram
+
+hide methods
+
+class User {
+    - id : Long
+    - username : String
+    - password : String
+    - authorities :  Set<String>
+}
+
+class Article {
+    - id : Long
+    - title : String
+    - DOI : String
+    - authors : List<String>
+    - journalTitle : String
+    - volumeInfo : String
+    - citations : Long
+    - publicationDate : Date
+    - publicationDateText : String
+    - conferenceAcronym : String
+}
+
+class Conference {
+    - id : Long
+    - title : String
+    - acronym : String
+    - ggsClass : Integer
+    - ggsRating : String
+    - coreClass : String
+    - updatedDate : Date
+}
+
+class JCRRegistry {
+    - id : Long
+    - year : Integer
+    - impactFactor : Float
+    - impactFactorFiveYear : Float
+    - quartile : String
+}
+
+class Journal {
+    - id : Long
+    - title : String
+    - shortTitle : String
+}
+
+class CategoryRanking {
+    - id : Long
+    - name : String
+    - ranking : String
+    - journalField : String
+}
+
+Conference "1" *-- "n" Article
+JCRRegistry "1" *-- "n" Article
+JCRRegistry "1" *-- "n" CategoryRanking
+Journal "1" *-- "n" JCRRegistry
+@enduml
