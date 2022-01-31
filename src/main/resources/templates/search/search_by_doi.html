@@ -69,10 +69,16 @@
             </div>
             <!-- RESPONSE INFO -->
             <div id="request-result-container" class="col-lg-8">
-                <div>
-                    <p class="lead text-center">También puede descargar los resultados de su consulta como un Microsoft Excel</p>
-                    <button id="export_button" class="btn btn-primary">Descargar Excel</button>
-                </div>
+                <form id="export-form" onsubmit="exportData()">
+                    <p class="lead text-center">También puede descargar los resultados de su consulta como un Csv</p>
+                    <div class="input-group">
+                        <input class="form-control" type="text" placeholder="Nombre del archivo"
+                               id="export_name" name="exportLabel" pattern="[A-Za-z0-9_-ñÑ]{1,30}"
+                               title="El nombre del documento debe tener entre 1 y 30 caracteres y solo puede contener letras sin tildes, números, _ o -"
+                               required>
+                        <button type="submit" id="export_button" class="btn btn-primary">Descargar Csv</button>
+                    </div>
+                </form>
                 <br>
             </div>
             <br>
@@ -121,7 +127,7 @@
 <!-- Bootstrap core JS-->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
 <!-- Ajax custom script-->
-<script src="/js/jquery.table2excel.js"></script>
+<script src="/js/tableToCsv.js"></script>
 <script src="/js/ajax_request_performer.js"></script>
 <script>
     $(document).ready(function(){

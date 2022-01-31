@@ -299,14 +299,16 @@ function performRequest(url){
 
 }
 
-//Requires the table2excel plugin
-$("#export_button").click(function(){
-    $("#excel-table").table2excel({
-        name: "1",
-        filename: "articles_data",
-        fileext: ".xls"
+//Requires the tableToCsv plugin
+function exportData(){
+    let exportname = $("#export_name").val();
+    if (exportname === undefined || exportname === "")
+        exportname = "articles_data";
+    $("#excel-table").tableToCsv({
+        filename: exportname+'.csv',
+        separator: ';',
     });
-});
+}
 
 function init(){
     //Activate the search button
@@ -338,6 +340,10 @@ $(document).ready(function(){
     init();
     //Disable the search-form standard behavior
     $("#search-form").submit(function(e) {
+        e.preventDefault();
+    });
+    //Disable the export-form standard behavior
+    $("#export-form").submit(function(e) {
         e.preventDefault();
     });
 });
