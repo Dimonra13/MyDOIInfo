@@ -69,6 +69,11 @@
             </div>
             <!-- RESPONSE INFO -->
             <div id="request-result-container" class="col-lg-8">
+                <div>
+                    <p class="lead text-center">También puede descargar los resultados de su consulta como un Microsoft Excel</p>
+                    <button id="export_button" class="btn btn-primary">Descargar Excel</button>
+                </div>
+                <br>
             </div>
             <br>
             <div  id="pagination" class="col-lg-8">
@@ -116,6 +121,7 @@
 <!-- Bootstrap core JS-->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
 <!-- Ajax custom script-->
+<script src="/js/jquery.table2excel.js"></script>
 <script src="/js/ajax_request_performer.js"></script>
 <script>
     $(document).ready(function(){

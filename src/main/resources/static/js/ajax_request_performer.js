@@ -5,7 +5,7 @@ let BASE_URL = "http://localhost:8080/api/";
 let PAGE_SIZE = 12;
 
 function generateHTMLForArticle(article,page){
-    if(article===undefined || article.title===undefined || article.title==="")
+    if(article===undefined || article.title===undefined || article.title==="" || article.title===" ")
         return undefined;
     let articleCardTemplate = [
         '<div class="card request-result paginated page-'+page+'">',
@@ -42,7 +42,7 @@ function generateHTMLForArticle(article,page){
                 (
                     '<div class="card-footer">'+
                         '<h4 class="fw-bolder" style="color: darkorange;">Información sobre el JCR</h4>'+
-                        ((article.jcrRegistry.year) ? '<p class="lead">Año '+article.jcrRegistry.year+'</p>': '<br>') +
+                        ((article.jcrRegistry.year!=undefined) ? '<p class="lead">Año '+article.jcrRegistry.year+'</p>': '<br>') +
                         '<div class="row">'+
                             '<div class="col-4">'+
                                 '<h5 class="fw-bolder">Factor de impacto:</h5>'+
@@ -108,16 +108,127 @@ function generatePaginationButtonHTML(pageIndex){
     return $(paginationButtonTemplate.join(''));
 }
 
+function generateTableEntry(article){
+    if(article===undefined || article.title===undefined || article.title==="" || article.title===" ")
+        return undefined;
+    let articleRowTemplate = [
+        '<tr>',
+            '<td>',
+                article.title,
+            '</td>',
+            '<td>',
+                (article.DOI != undefined && article.DOI!="" && article.DOI!=" ") ? article.DOI : 'N/D',
+            '</td>',
+            '<td>',
+                (article.authors!=undefined && Array.isArray(article.authors) && article.authors.length>0) ?
+                    article.authors.join(", ") : 'N/D',
+            '</td>',
+            '<td>',
+                (article.citations!=undefined) ? article.citations : 'N/D',
+            '</td>',
+            '<td>',
+                (article.journalTitle!=undefined && article.journalTitle!="") ? article.journalTitle : 'N/D',
+            '</td>',
+            '<td>',
+                (article.volumeInfo!=undefined && article.volumeInfo!="") ? article.volumeInfo : '',
+            '</td>',
+            '<td>',
+                (article.publicationDateText!=undefined && article.publicationDateText!="") ?
+                    article.publicationDateText : 'N/D',
+            '</td>',
+            '<td>',
+                (article.conference!=undefined && article.conference.ggsClass!=undefined) ?
+                    article.conference.ggsClass : '',
+            '</td>',
+            '<td>',
+                (article.conference!=undefined && article.conference.ggsRating!=undefined) ?
+                    article.conference.ggsRating : '',
+            '</td>',
+            '<td>',
+                (article.conference!=undefined && article.conference.coreClass!=undefined) ?
+                    article.conference.coreClass : '',
+            '</td>',
+            '<td>',
+                (article.jcrRegistry!=undefined && article.jcrRegistry.year!=undefined) ? article.jcrRegistry.year : '',
+            '</td>',
+            '<td>',
+                (article.jcrRegistry!=undefined && article.jcrRegistry.impactFactor!=undefined) ?
+                    article.jcrRegistry.impactFactor : '',
+            '</td>',
+            '<td>',
+                (article.jcrRegistry!=undefined && article.jcrRegistry.impactFactorFiveYear!=undefined) ?
+                    article.jcrRegistry.impactFactorFiveYear : '',
+            '</td>',
+            '<td>',
+                (article.jcrRegistry!=undefined && article.jcrRegistry.quartile!=undefined) ?
+                    article.jcrRegistry.quartile : '',
+            '</td>',
+            '<td>',
+                (article.jcrRegistry!=undefined && article.jcrRegistry.categoryRankingList!=undefined
+                    && Array.isArray(article.jcrRegistry.categoryRankingList) && article.jcrRegistry.categoryRankingList.length>0) ?
+                    "[" + article.jcrRegistry.categoryRankingList.map(function(category) {
+                            return ('Category:' + ((category!=undefined && category.name!==undefined) ? category.name : '') + ',' +
+                                    'Ranking:' + ((category!=undefined && category.ranking!==undefined) ? category.ranking : '') + ',' +
+                                    'Field:' + ((category!=undefined && category.journalField!==undefined) ? category.journalField : '')
+                                    );
+                        }).join("], [") + "]"
+                    : '',
+            '</td>',
+        '</tr>'
+    ];
+    //Create the jQuery node for the article row
+    return $(articleRowTemplate.join(''));
+}
+
+function generateTable(){
+    let exceltable = [
+        '<table id="excel-table" class="request-result" hidden>',
+            '<thead>',
+            '<tr>',
+                '<th>Title</th>',
+                '<th>DOI</th>',
+                '<th>Authors</th>',
+                '<th>Citations (CrossRef)</th>',
+                '<th>Journal/Conference</th>',
+                '<th>Volume</th>',
+                '<th>Publication Date</th>',
+                '<th>GGS Class</th>',
+                '<th>GGS Rating</th>',
+                '<th>CORE</th>',
+                '<th>JCR Date</th>',
+                '<th>Impact Factor</th>',
+                '<th>Impact Factor Five Years</th>',
+                '<th>JCR Quartile</th>',
+                '<th>Category Ranking List</th>',
+            '</tr>',
+            '</thead>',
+            '<tbody id="excel-table-body">',
+            '</tbody>',
+        '</table>'
+    ];
+    //Create the jQuery node for the excel table
+    return $(exceltable.join(''));
+}
+
 function generateHTML(data){
     let nPages = (data.length % PAGE_SIZE == 0) ? Math.trunc(data.length/PAGE_SIZE) : Math.trunc(data.length/PAGE_SIZE)+1;
+    //Generate the article list HTML
     let articleListHTML = $();
+    let excelTableHTMLBody = $();
     data.forEach(function(article, index) {
         let page = Math.trunc(index/PAGE_SIZE);
         let articleHTML = generateHTMLForArticle(article,page);
         if(articleHTML!=undefined)
             articleListHTML = articleListHTML.add(articleHTML);
+        let articleRow = generateTableEntry(article);
+        if(articleRow!=undefined)
+            excelTableHTMLBody = excelTableHTMLBody.add(articleRow);
     });
     $("#request-result-container").append(articleListHTML);
+    //Generate the article excel table HTML
+    $("#request-result-container").append(generateTable());
+    $("#excel-table-body").append(excelTableHTMLBody);
+    //Generate the pagination HTML
     let paginationButtonListHTML = $();
     for (let i = 0; i < nPages; i++) {
         paginationButtonListHTML = paginationButtonListHTML.add(generatePaginationButtonHTML(i));
@@ -187,6 +298,15 @@ function performRequest(url){
     });
 
 }
+
+//Requires the table2excel plugin
+$("#export_button").click(function(){
+    $("#excel-table").table2excel({
+        name: "1",
+        filename: "articles_data",
+        fileext: ".xls"
+    });
+});
 
 function init(){
     //Activate the search button
