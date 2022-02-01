@@ -70,16 +70,17 @@
             <!-- RESPONSE INFO -->
             <div id="request-result-container" class="col-lg-8">
                 <form id="export-form" onsubmit="exportData()">
-                    <p class="lead text-center">También puede descargar los resultados de su consulta como un Csv</p>
+                    <h3 class="fw-bolder">Puede descargar los resultados de su consulta como un Csv</h3>
                     <div class="input-group">
-                        <input class="form-control" type="text" placeholder="Nombre del archivo"
+                        <input class="form-control" type="text" placeholder="Nombre del archivo (sin extensión)"
                                id="export_name" name="exportLabel" pattern="[A-Za-z0-9_-ñÑ]{1,30}"
-                               title="El nombre del documento debe tener entre 1 y 30 caracteres y solo puede contener letras sin tildes, números, _ o -"
+                               title="El nombre del archivo debe tener entre 1 y 30 caracteres y solo puede contener letras sin tildes, números, _ o -"
                                required>
                         <button type="submit" id="export_button" class="btn btn-primary">Descargar Csv</button>
                     </div>
                 </form>
                 <br>
+                <h1 class="fw-bolder">Resultados de la búsqueda</h1>
             </div>
             <br>
             <div  id="pagination" class="col-lg-8">
