@@ -261,6 +261,8 @@ function performRequest(url){
     $("#search-button").prop('disabled', true);
     //Hide the result container
     $("#request-result-container").hide();
+    //Clear the export form input value
+    $("#export_name").val('');
     //Hide the result pagination
     $("#pagination").hide();
     //Remove the last request result
@@ -317,6 +319,8 @@ function init(){
     $("#wait-response").hide();
     //Hide the result container
     $("#request-result-container").hide();
+    //Clear the export form input value
+    $("#export_name").val('');
     //Hide the result pagination
     $("#pagination").hide();
     //Remove the last request result
