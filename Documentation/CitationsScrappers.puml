@@ -15,7 +15,7 @@ package citationsScrappers {
         # Response getResponseFromURL(String url)
     }
     class CrossRefApiCitationsScrapper {
-        - {static} CROSSREF_BASE_URL : String  ="http://api.crossref.org/works/"
+        - {static} CROSSREF_BASE_URL : String
         + Long getCitationsFromArticle(Article article)
     }
 
@@ -23,7 +23,7 @@ package citationsScrappers {
         # Document getHtmlDocument(String url)
     }
     class ScholarCitationsScrapper {
-        - {static} SCHOLAR_BASE_URL : String ="https://scholar.google.com/scholar?hl=es&q="
+        - {static} SCHOLAR_BASE_URL : String
         + Long getCitationsFromArticle(Article article)
     }
 

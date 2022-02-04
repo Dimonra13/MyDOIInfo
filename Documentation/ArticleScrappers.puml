@@ -1,5 +1,7 @@
 @startuml
 'https://plantuml.com/class-diagram
+left to right direction
+
 package scrappers {
 
 abstract class Scrapper {
@@ -46,13 +48,13 @@ package articleScrappers {
          + ArticleInfo getArticleInfoFromDOI(String DOI)
     }
 
-    ArticleScrapper <|- JSOUPArticleScrapper
-    JSOUPArticleScrapper <|- ACMArticleScrapper
+    ArticleScrapper <|-left- JSOUPArticleScrapper
+    JSOUPArticleScrapper <|-left- ACMArticleScrapper
     JSOUPArticleScrapper <|-- ElsevierArticleScrapper
     JSOUPArticleScrapper <|-- ScienceArticleScrapper
     JSOUPArticleScrapper <|-- SpringerArticleScrapper
-    ArticleScrapper <|-- PhantomArticleScrapper
-    PhantomArticleScrapper <|-- IEEEArticleScrapper
+    ArticleScrapper <|-right- PhantomArticleScrapper
+    PhantomArticleScrapper <|-right- IEEEArticleScrapper
 }
 
 Scrapper <|-- ArticleScrapper
