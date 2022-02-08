@@ -56,5 +56,5 @@ kubectl create -f app_deployment.yaml
 
 Los load balancer permiten que la aplicación sea accesible a través de internet y reparten el tráfico entre los diferentes nodos y pods de la aplicaciónen función de la tasa de uso que tenga cada uno. El load balancer que crearemos mediante el archivo yaml será detectado por DigitalOcean y se integrará con su propio servicio de load balancing.
 ```
-kubectl create -f app_do_loadBalancer.yaml
+kubectl create -f app_do_loadbalancer.yaml
 ```

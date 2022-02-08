@@ -4,7 +4,7 @@ metadata:
   name: app-loadbalancer-https
   annotations:
     service.beta.kubernetes.io/do-loadbalancer-protocol: "https"
-    service.beta.kubernetes.io/do-loadbalancer-certificate-id: "f437f5a9-608f-4d9b-af67-4a9e5d221afd"
+    service.beta.kubernetes.io/do-loadbalancer-certificate-id: "2772eba6-b984-4069-94fb-863cfbc2f190"
 spec:
   type: LoadBalancer
   selector:
