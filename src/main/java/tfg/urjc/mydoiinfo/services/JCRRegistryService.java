@@ -20,9 +20,15 @@ public class JCRRegistryService {
             return article;
         Integer year = (articleInfo.getPublicationYear() != null) ? articleInfo.getPublicationYear() : articleInfo.getPublicationDateYear();
         JCRRegistry jcrRegistry = jcrRegistryRepository.findFirstByYearAndJournalTitleIgnoreCase(year,articleInfo.getJournal());
+        //If the journal has " and " it is necessary to try replacing it with " & "
+        if(jcrRegistry==null && articleInfo.getJournal()!=null && articleInfo.getJournal().contains(" and "))
+            jcrRegistry = jcrRegistryRepository.findFirstByYearAndJournalTitleIgnoreCase(year,articleInfo.getJournal().replace(" and "," & "));
         //If the JCRRegistry is null, the previous year's JCRRegistry is searched (the current year's data are not available until the following year, so last year's data are used instead).
         if (jcrRegistry==null && year!=null){
             jcrRegistry = jcrRegistryRepository.findFirstByYearAndJournalTitleIgnoreCase((year-1),articleInfo.getJournal());
+            //If the journal has " and " it is necessary to try replacing it with " & "
+            if(jcrRegistry==null && articleInfo.getJournal()!=null && articleInfo.getJournal().contains(" and "))
+                jcrRegistry = jcrRegistryRepository.findFirstByYearAndJournalTitleIgnoreCase((year-1),articleInfo.getJournal().replace(" and "," & "));
         }
         article.setJcrRegistry(jcrRegistry);
         return article;
@@ -32,9 +38,15 @@ public class JCRRegistryService {
         if (article == null)
             return null;
         JCRRegistry jcrRegistry = jcrRegistryRepository.findFirstByYearAndJournalTitleIgnoreCase(year,journalTitle);
+        //If the journal has " and " it is necessary to try replacing it with " & "
+        if(jcrRegistry==null && journalTitle!=null && journalTitle.contains(" and "))
+            jcrRegistry = jcrRegistryRepository.findFirstByYearAndJournalTitleIgnoreCase(year,journalTitle.replace(" and "," & "));
         //If the JCRRegistry is null, the previous year's JCRRegistry is searched (the current year's data are not available until the following year, so last year's data are used instead)
         if (jcrRegistry==null && year!=null){
             jcrRegistry = jcrRegistryRepository.findFirstByYearAndJournalTitleIgnoreCase((year-1),journalTitle);
+            //If the journal has " and " it is necessary to try replacing it with " & "
+            if(jcrRegistry==null && journalTitle!=null && journalTitle.contains(" and "))
+                jcrRegistry = jcrRegistryRepository.findFirstByYearAndJournalTitleIgnoreCase((year-1),journalTitle.replace(" and "," & "));
         }
         article.setJcrRegistry(jcrRegistry);
         return article;

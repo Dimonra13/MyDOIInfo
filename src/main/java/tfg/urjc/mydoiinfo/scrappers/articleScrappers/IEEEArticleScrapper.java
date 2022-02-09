@@ -38,6 +38,10 @@ public class IEEEArticleScrapper extends PhantomArticleScrapper {
                 System.err.println("Page load error");
                 driver.quit();
                 return null;
+            } catch (Exception e){
+                System.err.println("Page load error: connection refused");
+                e.printStackTrace();
+                return null;
             }
 
             System.out.println("Page correctly load");
@@ -141,7 +145,13 @@ public class IEEEArticleScrapper extends PhantomArticleScrapper {
                 System.err.println(exception.getMessage());
             }
 
-            driver.close();
+            try {
+                driver.close();
+            }  catch (Exception e){
+                System.err.println("Page load error: connection refused");
+                e.printStackTrace();
+                return null;
+            }
             driver.quit();
 
             return new ArticleInfo(title, DOI, authorList, journal, volumeInfo, date, dateString,conferenceAcronym);
