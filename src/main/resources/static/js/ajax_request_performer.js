@@ -3,6 +3,17 @@ let BASE_URL = "http://localhost:8080/api/";
 //For production
 //let BASE_URL = "https://mydoiinfo.com/api/";
 let PAGE_SIZE = 12;
+//Agregated data for ORCID id request
+let totalcitations = 0;
+let totalJCR = 0;
+let totalConference = 0;
+let totalQ1 = 0;
+let totalQ2 = 0;
+let totalQ3 = 0;
+let totalQ4 = 0;
+let totalGGSClass1 = 0;
+let totalGGSClass2 = 0;
+let totalGGSClass3 = 0;
 
 function generateHTMLForArticle(article,page){
     if(article===undefined || article.title===undefined || article.title==="" || article.title===" ")
@@ -95,7 +106,7 @@ function changePage(page){
     $(".paginated").hide();
     $(".page-"+page).show();
     //Scroll to the request container
-    document.getElementById("request-result-container").scrollIntoView({behavior: 'smooth'});
+    document.getElementById("page-start").scrollIntoView({behavior: 'smooth'});
 }
 
 function generatePaginationButtonHTML(pageIndex){
@@ -210,7 +221,161 @@ function generateTable(){
     return $(exceltable.join(''));
 }
 
-function generateHTML(data){
+function updateAgregatedData(article){
+    if(article===undefined || article.title===undefined || article.title==="" || article.title===" ")
+        return undefined;
+    if(article.citations!=undefined)
+        totalcitations = totalcitations + article.citations;
+    if(article.jcrRegistry!=undefined){
+        totalJCR=totalJCR+1;
+        if(article.jcrRegistry.quartile!=undefined){
+            switch (article.jcrRegistry.quartile){
+                case 'Q1':
+                    totalQ1=totalQ1+1;
+                    break;
+                case 'Q2':
+                    totalQ2=totalQ2+1;
+                    break;
+                case 'Q3':
+                    totalQ3=totalQ3+1;
+                    break;
+                case 'Q4':
+                    totalQ4=totalQ4+1;
+                    break;
+            }
+        }
+    }
+    if(article.conference!=undefined){
+        totalConference = totalConference+1;
+        if(article.conference.ggsClass!=undefined){
+            switch (article.conference.ggsClass){
+                case 1:
+                    totalGGSClass1=totalGGSClass1+1;
+                    break;
+                case 2:
+                    totalGGSClass2=totalGGSClass2+1;
+                    break;
+                case 3:
+                    totalGGSClass3=totalGGSClass3+1;
+                    break;
+            }
+        }
+    }
+}
+
+function resetAgregatedData(){
+    totalcitations = 0;
+    totalJCR = 0;
+    totalConference = 0;
+    totalQ1 = 0;
+    totalQ2 = 0;
+    totalQ3 = 0;
+    totalQ4 = 0;
+    totalGGSClass1 = 0;
+    totalGGSClass2 = 0;
+    totalGGSClass3 = 0;
+
+}
+
+function generateAgregatedDataHTML(){
+    let agregatedData = [
+        '<div class="request-result">',
+            '<h3 class="fw-bolder">Información general de los resultados</h3>',
+            '<p class="lead text-center">El número total de citas de todos los artículos del investigador es <span class="bold-text">'+ totalcitations + '</span>.</p>',
+            '<div class="row gx-5 justify-content-center align-items-center">',
+                '<div class="col-lg-6 order-lg-1">',
+                    '<div class="card">',
+                        '<div class="card-header">',
+                            '<h4 class="fw-bolder" style="color: darkorange;">JCR</h4>',
+                        '</div>',
+                        '<div class="card-body">',
+                            '<p class="lead text-center">Se han publicado <span class="bold-text">' + totalJCR +'</span> artículos en revistas dentro del JCR</p>',
+                        '</div>',
+                        '<div class="card-footer">',
+                            ((totalQ1+totalQ2+totalQ3+totalQ4)>0) ? '<h5>Artículos publicados en revistas de cada cuartíl</h5><canvas id="jcrChart"></canvas>'
+                                : '<p>No se ha encontrado ningún artículo publicado en una revista dentro del JCR, por lo que no puede generarse un gráfico.</p>',
+                        '</div>',
+                    '</div>',
+                '</div>',
+                '<div class="col-lg-6 order-lg-2">',
+                    '<div class="card">',
+                        '<div class="card-header">',
+                            '<h4 class="fw-bolder" style="color: darkorange;">Conferencias</h4>',
+                        '</div>',
+                        '<div class="card-body">',
+                            '<p class="lead text-center">Se han publicado <span class="bold-text">' + totalConference + '</span> artículos en conferencias importantes</p>',
+                        '</div>',
+                        '<div class="card-footer">',
+                            ((totalGGSClass1+totalGGSClass2+totalGGSClass3)>0) ? '<h5>Artículos publicados en conferencias de cada clase GGS</h5><canvas id="conferenceChart"></canvas>'
+                                : '<p>No se ha encontrado ningún artículo publicado en una conferencia con una clase GSS asociada, por lo que no puede generarse un gráfico.</p>',
+                        '</div>',
+                    '</div>',
+                '</div>',
+            '</div>',
+        '</div>',
+        '</br class="request-result">',
+        '</br class="request-result">'
+    ]
+    //Create the jQuery node for the agregated data html
+    return $(agregatedData.join(''));
+}
+
+function generateCharts(){
+    const jcrData = {
+        labels: [
+            'Primer cuartil',
+            'Segundo cuartil',
+            'Tercer cuartil',
+            'Cuarto cuartil'
+        ],
+        datasets: [{
+            label: 'JCRDATA',
+            data: [totalQ1, totalQ2, totalQ3, totalQ4],
+            backgroundColor: [
+                'rgb(58,210,80)',
+                'rgb(54, 162, 235)',
+                'rgb(255, 205, 86)',
+                'rgb(255, 99, 132)'
+            ],
+            hoverOffset: 4
+        }]
+    };
+    const jcrConfig = {
+        type: 'pie',
+        data: jcrData,
+    };
+    const jcrChart = new Chart(
+        document.getElementById('jcrChart'),
+        jcrConfig
+    );
+    const conferenceData = {
+        labels: [
+            'Clase GGS 1',
+            'Clase GGS 2',
+            'Clase GGS 3',
+        ],
+        datasets: [{
+            label: 'CONFERENCEDATA',
+            data: [totalGGSClass1, totalGGSClass2, totalGGSClass3],
+            backgroundColor: [
+                'rgb(54, 162, 235)',
+                'rgb(255, 205, 86)',
+                'rgb(255, 99, 132)'
+            ],
+            hoverOffset: 4
+        }]
+    };
+    const conferenceConfig = {
+        type: 'pie',
+        data: conferenceData,
+    };
+    const conferenceChart = new Chart(
+        document.getElementById('conferenceChart'),
+        conferenceConfig
+    );
+}
+
+function generateHTML(data,endpointUrl){
     let nPages = (data.length % PAGE_SIZE == 0) ? Math.trunc(data.length/PAGE_SIZE) : Math.trunc(data.length/PAGE_SIZE)+1;
     //Generate the article list HTML
     let articleListHTML = $();
@@ -223,6 +388,9 @@ function generateHTML(data){
         let articleRow = generateTableEntry(article);
         if(articleRow!=undefined)
             excelTableHTMLBody = excelTableHTMLBody.add(articleRow);
+        if(endpointUrl!=undefined && endpointUrl==="orcid/"){
+            updateAgregatedData(article);
+        }
     });
     $("#request-result-container").append(articleListHTML);
     //Generate the article excel table HTML
@@ -235,6 +403,11 @@ function generateHTML(data){
     }
     $("#pagination").append(paginationButtonListHTML);
     changePage(0);
+    if(endpointUrl!=undefined && endpointUrl==="orcid/"){
+        let agregatedDataHTML = generateAgregatedDataHTML();
+        agregatedDataHTML.insertBefore("#page-start");
+        generateCharts();
+    }
 }
 
 function showErrorHTML(statusCode){
@@ -267,6 +440,8 @@ function performRequest(url){
     $("#pagination").hide();
     //Remove the last request result
     $(".request-result").remove();
+    //Reset the agregated data
+    resetAgregatedData();
     //Hide the result error container
     $(".request-error-container").hide();
     //Show the waiting for response message while the request is being performed
@@ -281,7 +456,7 @@ function performRequest(url){
             showErrorHTML(404);
         } else {
             //Generate the html code for the request result
-            generateHTML(data);
+            generateHTML(data,url);
             //Show the result container
             $("#request-result-container").show();
             //Show the result pagination
@@ -325,6 +500,8 @@ function init(){
     $("#pagination").hide();
     //Remove the last request result
     $(".request-result").remove();
+    //Reset the agregated data
+    resetAgregatedData();
     //Hide the result error container
     $(".request-error-container").hide();
 }
