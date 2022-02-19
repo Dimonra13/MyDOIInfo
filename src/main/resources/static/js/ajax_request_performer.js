@@ -14,6 +14,15 @@ let totalQ4 = 0;
 let totalGGSClass1 = 0;
 let totalGGSClass2 = 0;
 let totalGGSClass3 = 0;
+let hIndex = 0;
+let foundHI = false;
+//Graphs variables
+let jcrData = undefined;
+let jcrConfig = undefined;
+let jcrChart = undefined;
+let conferenceData = undefined;
+let conferenceConfig = undefined;
+let conferenceChart = undefined;
 
 function generateHTMLForArticle(article,page){
     if(article===undefined || article.title===undefined || article.title==="" || article.title===" ")
@@ -221,7 +230,7 @@ function generateTable(){
     return $(exceltable.join(''));
 }
 
-function updateAgregatedData(article){
+function updateAgregatedData(article,position){
     if(article===undefined || article.title===undefined || article.title==="" || article.title===" ")
         return undefined;
     if(article.citations!=undefined)
@@ -261,6 +270,20 @@ function updateAgregatedData(article){
             }
         }
     }
+    if(!foundHI){
+        if(article.citations!=undefined){
+            if(article.citations<position){
+                hIndex=position-1;
+                foundHI=true;
+            } else if(article.citations==position){
+                hIndex=position;
+                foundHI=true;
+            }
+        }else{
+            hIndex=position-1;
+            foundHI=true;
+        }
+    }
 }
 
 function resetAgregatedData(){
@@ -274,14 +297,28 @@ function resetAgregatedData(){
     totalGGSClass1 = 0;
     totalGGSClass2 = 0;
     totalGGSClass3 = 0;
-
+    hIndex = 0;
+    foundHI = false;
+    jcrData = undefined;
+    jcrConfig = undefined;
+    if (jcrChart != undefined){
+        jcrChart.destroy();
+        jcrChart = undefined;
+    }
+    conferenceData = undefined;
+    conferenceConfig = undefined;
+    if (conferenceChart != undefined){
+        conferenceChart.destroy();
+        conferenceChart = undefined;
+    }
 }
 
 function generateAgregatedDataHTML(){
     let agregatedData = [
         '<div class="request-result">',
             '<h3 class="fw-bolder">Información general de los resultados</h3>',
-            '<p class="lead text-center">El número total de citas de todos los artículos del investigador es <span class="bold-text">'+ totalcitations + '</span>.</p>',
+            '<p class="lead text-center">El número total de citas (CrossRef) de todos los artículos del investigador es <span class="bold-text">'+ totalcitations + '</span>.</p>',
+            '<p class="lead text-center">El <span class="bold-text">h-index</span> de este investigador es de <span class="bold-text">' + hIndex + '</span>.</p>',
             '<div class="row gx-5 justify-content-center align-items-center">',
                 '<div class="col-lg-6 order-lg-1">',
                     '<div class="card">',
@@ -292,8 +329,8 @@ function generateAgregatedDataHTML(){
                             '<p class="lead text-center">Se han publicado <span class="bold-text">' + totalJCR +'</span> artículos en revistas dentro del JCR</p>',
                         '</div>',
                         '<div class="card-footer">',
-                            ((totalQ1+totalQ2+totalQ3+totalQ4)>0) ? '<h5>Artículos publicados en revistas de cada cuartíl</h5><canvas id="jcrChart"></canvas>'
-                                : '<p>No se ha encontrado ningún artículo publicado en una revista dentro del JCR, por lo que no puede generarse un gráfico.</p>',
+                            ((totalQ1+totalQ2+totalQ3+totalQ4)>0) ? '<h5>Artículos publicados en revistas de cada cuartil</h5><canvas id="jcrChart"></canvas>'
+                                : '<p>No se ha encontrado ningún artículo con JCR asociado con información del cuartil, por lo que no puede generarse un gráfico.</p>',
                         '</div>',
                     '</div>',
                 '</div>',
@@ -313,66 +350,92 @@ function generateAgregatedDataHTML(){
                 '</div>',
             '</div>',
         '</div>',
-        '</br class="request-result">',
-        '</br class="request-result">'
+        '<br class="request-result">',
+        '<br class="request-result">'
     ]
     //Create the jQuery node for the agregated data html
     return $(agregatedData.join(''));
 }
 
 function generateCharts(){
-    const jcrData = {
-        labels: [
-            'Primer cuartil',
-            'Segundo cuartil',
-            'Tercer cuartil',
-            'Cuarto cuartil'
-        ],
-        datasets: [{
-            label: 'JCRDATA',
-            data: [totalQ1, totalQ2, totalQ3, totalQ4],
-            backgroundColor: [
-                'rgb(58,210,80)',
-                'rgb(54, 162, 235)',
-                'rgb(255, 205, 86)',
-                'rgb(255, 99, 132)'
+    if((totalJCR>0) && (totalQ1+totalQ2+totalQ3+totalQ4>0)){
+        jcrData = {
+            labels: [
+                'Primer cuartil',
+                'Segundo cuartil',
+                'Tercer cuartil',
+                'Cuarto cuartil'
             ],
-            hoverOffset: 4
-        }]
-    };
-    const jcrConfig = {
-        type: 'pie',
-        data: jcrData,
-    };
-    const jcrChart = new Chart(
-        document.getElementById('jcrChart'),
-        jcrConfig
-    );
-    const conferenceData = {
-        labels: [
-            'Clase GGS 1',
-            'Clase GGS 2',
-            'Clase GGS 3',
-        ],
-        datasets: [{
-            label: 'CONFERENCEDATA',
-            data: [totalGGSClass1, totalGGSClass2, totalGGSClass3],
-            backgroundColor: [
-                'rgb(54, 162, 235)',
-                'rgb(255, 205, 86)',
-                'rgb(255, 99, 132)'
+            datasets: [{
+                label: 'JCRDATA',
+                data: [totalQ1, totalQ2, totalQ3, totalQ4],
+                backgroundColor: [
+                    'rgb(58,210,80)',
+                    'rgb(54, 162, 235)',
+                    'rgb(255, 205, 86)',
+                    'rgb(255, 99, 132)'
+                ],
+                hoverOffset: 4
+            }]
+        };
+        jcrConfig = {
+            type: 'pie',
+            data: jcrData,
+        };
+        jcrChart = new Chart(
+            document.getElementById('jcrChart'),
+            jcrConfig
+        );
+    }
+    if((totalConference>0) && (totalGGSClass1+totalGGSClass2+totalGGSClass3>0)){
+        conferenceData = {
+            labels: [
+                'Clase GGS 1',
+                'Clase GGS 2',
+                'Clase GGS 3',
             ],
-            hoverOffset: 4
-        }]
-    };
-    const conferenceConfig = {
-        type: 'pie',
-        data: conferenceData,
-    };
-    const conferenceChart = new Chart(
-        document.getElementById('conferenceChart'),
-        conferenceConfig
-    );
+            datasets: [{
+                label: 'CONFERENCEDATA',
+                data: [totalGGSClass1, totalGGSClass2, totalGGSClass3],
+                backgroundColor: [
+                    'rgb(54, 162, 235)',
+                    'rgb(255, 205, 86)',
+                    'rgb(255, 99, 132)'
+                ],
+                hoverOffset: 4
+            }]
+        };
+        conferenceConfig = {
+            type: 'pie',
+            data: conferenceData,
+        };
+        conferenceChart = new Chart(
+            document.getElementById('conferenceChart'),
+            conferenceConfig
+        );
+    }
+}
+
+function compareArticlesByCitations(a, b){
+    if(a.citations!=undefined){
+        if(b.citations!=undefined){
+            if(a.citations>b.citations){
+                return -1;
+            } else if(a.citations<b.citations){
+                return 1;
+            }else{
+                return 0;
+            }
+        }else{
+            return -1;
+        }
+    } else {
+        if(b.citations!=undefined){
+            return 1;
+        }else{
+            return 0;
+        }
+    }
 }
 
 function generateHTML(data,endpointUrl){
@@ -380,7 +443,15 @@ function generateHTML(data,endpointUrl){
     //Generate the article list HTML
     let articleListHTML = $();
     let excelTableHTMLBody = $();
-    data.forEach(function(article, index) {
+    let articleList = data;
+    //It is necessary to sort the list in order to calculate the h-index if the endpoint is orcid
+    if(endpointUrl!=undefined && endpointUrl==="orcid/"){
+        articleList = data.sort(compareArticlesByCitations);
+        //To solve the particular case in which all of the researcher's articles have more citations than his position,
+        //the h-index is set to the length of the array initially
+        hIndex = data.length;
+    }
+    articleList.forEach(function(article, index) {
         let page = Math.trunc(index/PAGE_SIZE);
         let articleHTML = generateHTMLForArticle(article,page);
         if(articleHTML!=undefined)
@@ -389,7 +460,7 @@ function generateHTML(data,endpointUrl){
         if(articleRow!=undefined)
             excelTableHTMLBody = excelTableHTMLBody.add(articleRow);
         if(endpointUrl!=undefined && endpointUrl==="orcid/"){
-            updateAgregatedData(article);
+            updateAgregatedData(article,index+1);
         }
     });
     $("#request-result-container").append(articleListHTML);
