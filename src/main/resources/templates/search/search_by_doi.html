@@ -108,6 +108,16 @@
                 <p class="lead">Tenga en cuenta que actualmente el sistema solo es capaz de obtener la información de
                     los artículos científicos publicados por ACM, IEEE, Elsevier, Springer y la revista Science.</p>
             </div>
+            <div class="col-lg-8 request-error-container" id="request-error-gateway-timeout">
+                <h2 class="fw-bolder" style="color: darkorange;">Tiempo máximo de petición excedido</h2>
+                <h4 class="fw-bolder">El despliegue actual de MyDOIinfo solo permite realizar peticiones de
+                    uno o dos minutos como máximo.</h4>
+                <div class="p-5">
+                    <img class="img-fluid" src="/assets/img/errors/504.jpg" style="width: 100%">
+                </div>
+                <p class="lead">Por favor, espere unos cinco minutos y vuelva a repetir su búsqueda. Si esta búsqueda
+                    vuelve a dar error 504, pruebe a reducir el número de DOIs solicitados.</p>
+            </div>
             <div class="col-lg-8 request-error-container" id="request-error-general">
                 <h2 class="fw-bolder" style="color: darkorange;">Se ha producido un error durante la busqueda</h2>
                 <div class="p-5">

@@ -492,6 +492,11 @@ function showErrorHTML(statusCode){
         $("#request-error-bad-request").show();
         //Scroll to the bad-request section
         document.getElementById("request-error-bad-request").scrollIntoView({behavior: 'smooth'});
+    }else if(statusCode==504){
+        //Show the 504 error html
+        $("#request-error-gateway-timeout").show();
+        //Scroll to the gateway-timeout section
+        document.getElementById("request-error-gateway-timeout").scrollIntoView({behavior: 'smooth'});
     }else{
         //Show generic error html
         $("#request-error-general").show();
