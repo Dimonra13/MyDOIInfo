@@ -330,7 +330,7 @@ function generateAgregatedDataHTML(){
                         '</div>',
                         '<div class="card-footer">',
                             ((totalQ1+totalQ2+totalQ3+totalQ4)>0) ? '<h5>Artículos publicados en revistas de cada cuartil</h5><canvas id="jcrChart"></canvas>'
-                                : '<p>No se ha encontrado ningún artículo con JCR asociado con información del cuartil, por lo que no puede generarse un gráfico.</p>',
+                                : '<p>No se ha encontrado ningún artículo con un JCR asociado con información del cuartil, por lo que no puede generarse un gráfico.</p>',
                         '</div>',
                     '</div>',
                 '</div>',
