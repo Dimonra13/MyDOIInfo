@@ -44,8 +44,8 @@ public class ORCIDService {
             return null;
         //Create the client
         Client client = new ResteasyClientBuilder()
-                .establishConnectionTimeout(3, TimeUnit.SECONDS)
-                .socketTimeout(3, TimeUnit.SECONDS)
+                .establishConnectionTimeout(5, TimeUnit.SECONDS)
+                .socketTimeout(5, TimeUnit.SECONDS)
                 .build();
         //Set the target URL and response type (JSON)
         WebTarget webTarget = client.target(BASE_ORCID_URL+id+"/"+endpoint);
